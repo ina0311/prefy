@@ -1,6 +1,9 @@
 inherit_from:
   - .rubocop_todo.yml
-  - .rubocop/relaxed-ruby-style.yml
+  - https://relaxed.ruby.style/rubocop.yml
+
+inherit_gem:
+  relaxed-rubocop: .rubocop.yml
 
 require:
   - rubocop-performance
@@ -8,9 +11,36 @@ require:
   - rubocop-rspec
 
 AllCops:
-  TargetRubyVersion: X.X.X
+  TargetRubyVersion: 3.0.3
   Exclude:
     - .git/**/*
     - node_modules/**/*
     - vendor/**/*
     - bin/**/*
+
+Bundler/OrderedGems:
+  Exclude:
+    - 'Gemfile'
+
+Layout/SpaceInsideArrayLiteralBrackets:
+  Exclude:
+    - 'config/environments/production.rb'
+
+Rails/FilePath:
+  Exclude:
+    - 'config/environments/development.rb'
+
+Style/BlockComments:
+  Exclude:
+    - 'spec/spec_helper.rb'
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/GlobalStdStream:
+  Exclude:
+    - 'config/environments/production.rb'
+
+Style/RedundantFetchBlock:
+  Exclude:
+    - 'config/puma.rb'
