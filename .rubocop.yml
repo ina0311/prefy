@@ -1,0 +1,16 @@
+inherit_from:
+  - .rubocop_todo.yml
+  - .rubocop/relaxed-ruby-style.yml
+
+require:
+  - rubocop-performance
+  - rubocop-rails
+  - rubocop-rspec
+
+AllCops:
+  TargetRubyVersion: X.X.X
+  Exclude:
+    - .git/**/*
+    - node_modules/**/*
+    - vendor/**/*
+    - bin/**/*
