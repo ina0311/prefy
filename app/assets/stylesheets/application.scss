@@ -1,1 +1,16 @@
-@import '../../node_modules/bootstrap/scss/bootstrap.scss';
+@import '../../../node_modules/bootstrap/scss/bootstrap.scss';
+@import 'home';
+
+html, body {
+  position: relative;
+  height: 100%;
+  overflow-x: hidden;
+  padding: 0%;
+  margin: 0%;
+  background-color: #fff;
+}
+
+ul {
+  list-style: none;
+  padding: 20px;
+}
