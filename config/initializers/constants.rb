@@ -9,6 +9,9 @@ module Constants
   PLAYLISTS = ['playlist-modify-private', 'playlist-read-collaborative', 'playlist-read-private', 'playlist-modify-public'].freeze
 
   AUTHORIZATIONSCOPES = [IMAGES + SPOTIFYCONNECT + USERS + FOLLOW + LIBRARY + PLAYBACK + LISTENINGHISTORY + PLAYLISTS].join(' ').freeze
-
   AUTHORIZATIONSTRING = [ENV['SPOTIFY_CLIENT_ID'] + ':' + ENV['SPOTIFY_SECRET_ID']].join.freeze
+
+  AUTHORIZATIONURL = 'https://accounts.spotify.com/authorize'.freeze
+  REQUESTTOKENURL = 'https://accounts.spotify.com/api/token'.freeze
+  BASEURL = 'https://api.spotify.com/v1/'.freeze
 end
