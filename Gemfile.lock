@@ -148,6 +148,10 @@ GEM
       hpricot
     i18n (1.8.11)
       concurrent-ruby (~> 1.0)
+    interactor (3.1.2)
+    interactor-rails (2.2.1)
+      interactor (~> 3.0)
+      rails (>= 4.2)
     jbuilder (2.11.3)
       activesupport (>= 5.0.0)
     json (2.6.1)
@@ -353,6 +357,7 @@ DEPENDENCIES
   faraday
   faraday_middleware
   html2slim
+  interactor-rails (~> 2.0)
   jbuilder (~> 2.7)
   listen (~> 3.3)
   mysql2
