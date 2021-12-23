@@ -18,10 +18,10 @@ ActiveRecord::Schema.define(version: 2021_12_20_045210) do
     t.string "country", null: false
     t.string "spotify_id", null: false
     t.integer "age"
-    t.string "encrypted_access_token", null: false
-    t.string "encrypted_access_token_iv", null: false
-    t.string "encrypted_refresh_token", null: false
-    t.string "encrypted_refresh_token_iv", null: false
+    t.text "encrypted_access_token"
+    t.text "encrypted_access_token_iv"
+    t.text "encrypted_refresh_token"
+    t.text "encrypted_refresh_token_iv"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
