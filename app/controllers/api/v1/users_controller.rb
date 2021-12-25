@@ -1,4 +1,2 @@
-module Api
-  class Api::V1::UsersController < ApplicationController
-  end
+class Api::V1::UsersController < ApplicationController
 end

@@ -1,0 +1,13 @@
+#sidebarMenu.col-md-3.col-lg-2.d-md-block.bg-dark.sidebarcollape
+  .possion-sticky.pt-3
+    ul.nav.nav-pills.flex-column
+      li.nav-item
+        = link_to 'プレイリスト作成', '#', class: 'nav-link text-white'
+      li.nav-item
+        = link_to 'プレイリスト一覧', '#', class: 'nav-link text-white'
+      li.nav-item
+        = link_to '検索', '#', class: 'nav-link text-white'
+      li.nav-item
+        = link_to 'プロフィール', '#', class: 'nav-link text-white'
+      li.nav-item
+        = link_to 'ログアウト', api_v1_logout_path, method: :delete,  class: 'nav-link text-white'

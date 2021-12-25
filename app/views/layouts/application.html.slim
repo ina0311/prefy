@@ -11,4 +11,8 @@ html
     = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
 
   body
-    = yield
+    .container-fluid 
+      .row
+        - if logged_in?
+          = render 'shared/sidebar'
+        = yield
