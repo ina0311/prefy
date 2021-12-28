@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_28_055504) do
+ActiveRecord::Schema.define(version: 2021_12_28_060254) do
 
   create_table "albums", charset: "utf8mb3", force: :cascade do |t|
     t.string "spotify_id", null: false
@@ -61,6 +61,15 @@ ActiveRecord::Schema.define(version: 2021_12_28_055504) do
     t.index ["user_id"], name: "index_playlists_on_user_id"
   end
 
+  create_table "track_genres", charset: "utf8mb3", force: :cascade do |t|
+    t.bigint "track_id", null: false
+    t.bigint "genre_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["genre_id"], name: "index_track_genres_on_genre_id"
+    t.index ["track_id"], name: "index_track_genres_on_track_id"
+  end
+
   create_table "tracks", charset: "utf8mb3", force: :cascade do |t|
     t.string "spotify_id", null: false
     t.string "name", null: false
@@ -89,5 +98,7 @@ ActiveRecord::Schema.define(version: 2021_12_28_055504) do
   add_foreign_key "playlist_of_tracks", "playlists"
   add_foreign_key "playlist_of_tracks", "tracks"
   add_foreign_key "playlists", "users"
+  add_foreign_key "track_genres", "genres"
+  add_foreign_key "track_genres", "tracks"
   add_foreign_key "tracks", "albums"
 end
