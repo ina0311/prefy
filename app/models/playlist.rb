@@ -1,6 +1,9 @@
 class Playlist < ApplicationRecord
   include RequestUrl
 
+  belongs_to :user
+  has_many :playlist_of_tracks, dependent: :destroy
+
   def self.find_or_create_playlists(response)
     playlists = []
     response.each do |playlist_params|

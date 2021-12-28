@@ -6,7 +6,7 @@ class User < ApplicationRecord
   validates :country, presence: true
   validates :spotify_id, presence: true
 
-
+  has_many :playlists, dependent: :destroy
 
   def access_token_expired?
     (Time.now - self.updated_at) > 3300
