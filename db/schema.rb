@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_28_054900) do
+ActiveRecord::Schema.define(version: 2021_12_28_055504) do
 
   create_table "albums", charset: "utf8mb3", force: :cascade do |t|
     t.string "spotify_id", null: false
@@ -27,6 +27,12 @@ ActiveRecord::Schema.define(version: 2021_12_28_054900) do
     t.string "spotify_id", null: false
     t.string "name", null: false
     t.string "image", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "genres", charset: "utf8mb3", force: :cascade do |t|
+    t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
