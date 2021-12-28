@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 2021_12_28_060254) do
   create_table "artists", charset: "utf8mb3", force: :cascade do |t|
     t.string "spotify_id", null: false
     t.string "name", null: false
-    t.string "image", null: false
+    t.string "image"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
