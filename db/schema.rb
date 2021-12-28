@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(version: 2021_12_28_055504) do
   end
 
   create_table "genres", charset: "utf8mb3", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
