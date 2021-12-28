@@ -10,7 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_28_053349) do
+ActiveRecord::Schema.define(version: 2021_12_28_053918) do
+
+  create_table "albums", charset: "utf8mb3", force: :cascade do |t|
+    t.string "spotify_id", null: false
+    t.string "name", null: false
+    t.string "image", null: false
+    t.string "release_date", null: false
+    t.bigint "artist_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["artist_id"], name: "index_albums_on_artist_id"
+  end
 
   create_table "artists", charset: "utf8mb3", force: :cascade do |t|
     t.string "spotify_id", null: false
@@ -49,5 +60,6 @@ ActiveRecord::Schema.define(version: 2021_12_28_053349) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "albums", "artists"
   add_foreign_key "playlists", "users"
 end
