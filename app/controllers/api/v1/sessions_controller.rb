@@ -15,7 +15,7 @@ class Api::V1::SessionsController < ApplicationController
 
       auth_params = GetToken.call(code: params[:code], code_verifier: find_codeverifier)
 
-      profile_response = conn_request.get('me') do |request|
+      profile_response = conn_request_profile.get('me') do |request|
         request.headers["Authorization"] = "#{auth_params.gettoken_response[:token_type]} #{auth_params.gettoken_response[:access_token]}"
       end
 
@@ -47,7 +47,7 @@ class Api::V1::SessionsController < ApplicationController
     code_verifier
   end
 
-  def conn_request
+  def conn_request_profile
     Faraday::Connection.new(url: Constants::BASEURL) do |builder|
       builder.response :json, parser_options: { symbolize_names: true }
     end
