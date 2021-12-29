@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_28_060254) do
+ActiveRecord::Schema.define(version: 2021_12_29_081654) do
 
   create_table "albums", charset: "utf8mb3", force: :cascade do |t|
     t.string "spotify_id", null: false
@@ -55,10 +55,17 @@ ActiveRecord::Schema.define(version: 2021_12_28_060254) do
     t.integer "that_generation_preference"
     t.integer "max_number_of_track"
     t.integer "max_total_duration_ms"
-    t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id"], name: "index_playlists_on_user_id"
+  end
+
+  create_table "saved_playlists", charset: "utf8mb3", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "playlist_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["playlist_id"], name: "index_saved_playlists_on_playlist_id"
+    t.index ["user_id"], name: "index_saved_playlists_on_user_id"
   end
 
   create_table "track_genres", charset: "utf8mb3", force: :cascade do |t|
@@ -97,7 +104,8 @@ ActiveRecord::Schema.define(version: 2021_12_28_060254) do
   add_foreign_key "albums", "artists"
   add_foreign_key "playlist_of_tracks", "playlists"
   add_foreign_key "playlist_of_tracks", "tracks"
-  add_foreign_key "playlists", "users"
+  add_foreign_key "saved_playlists", "playlists"
+  add_foreign_key "saved_playlists", "users"
   add_foreign_key "track_genres", "genres"
   add_foreign_key "track_genres", "tracks"
   add_foreign_key "tracks", "albums"

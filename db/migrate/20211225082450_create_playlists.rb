@@ -9,7 +9,6 @@ class CreatePlaylists < ActiveRecord::Migration[6.1]
       t.integer :that_generation_preference
       t.integer :max_number_of_track
       t.integer :max_total_duration_ms
-      t.references :user, null: false, foreign_key: true
 
       t.timestamps
     end
