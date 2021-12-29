@@ -51,20 +51,21 @@ ActiveRecord::Schema.define(version: 2021_12_29_081654) do
     t.string "name", null: false
     t.string "image"
     t.string "owner", null: false
-    t.boolean "only_follow_artist"
-    t.integer "that_generation_preference"
-    t.integer "max_number_of_track"
-    t.integer "max_total_duration_ms"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "saved_playlists", charset: "utf8mb3", force: :cascade do |t|
+    t.boolean "only_follow_artist"
+    t.integer "that_generation_prefernce"
+    t.integer "max_number_of_track"
+    t.integer "max_total_duration_ms"
     t.bigint "user_id", null: false
     t.bigint "playlist_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["playlist_id"], name: "index_saved_playlists_on_playlist_id"
+    t.index ["user_id", "playlist_id"], name: "index_saved_playlists_on_user_id_and_playlist_id", unique: true
     t.index ["user_id"], name: "index_saved_playlists_on_user_id"
   end
 
@@ -74,6 +75,7 @@ ActiveRecord::Schema.define(version: 2021_12_29_081654) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["genre_id"], name: "index_track_genres_on_genre_id"
+    t.index ["track_id", "genre_id"], name: "index_track_genres_on_track_id_and_genre_id", unique: true
     t.index ["track_id"], name: "index_track_genres_on_track_id"
   end
 

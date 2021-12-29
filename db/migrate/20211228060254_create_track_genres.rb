@@ -6,5 +6,6 @@ class CreateTrackGenres < ActiveRecord::Migration[6.1]
 
       t.timestamps
     end
+    add_index :track_genres, [:track_id, :genre_id], unique: true
   end
 end
