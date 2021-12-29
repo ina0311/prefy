@@ -12,16 +12,14 @@ module SessionsHelper
   end
 
   def login(user_params)
-    user = User.find_or_create_by(
-      name: user_params[:display_name],
-      image: user_params[:image],
-      country: user_params[:country],
-      spotify_id: user_params[:id]
-    )
+    user = User.find_or_create_by(spotify_id: user_params[:id]) do |user|
+      user.name = user_params[:display_name]
+      user.image = user_params[:image]
+      user.country = user_params[:country]
+    end
 
     user.update(access_token: user_params[:access_token], refresh_token: user_params[:refresh_token])
     session[:user_id] = user.id
-    
   end
 
   def logout
