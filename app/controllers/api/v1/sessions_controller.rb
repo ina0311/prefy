@@ -22,7 +22,7 @@ class Api::V1::SessionsController < ApplicationController
       user_params = profile_response.body.merge(auth_params.gettoken_response)
 
       login(user_params)
-      redirect_to api_v1_playlists_path, success: "ログインしました"
+      redirect_to api_v1_myplaylists_path, success: "ログインしました"
     end
   end
 
