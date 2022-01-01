@@ -1,0 +1,10 @@
+main.col-md-9.ms-sm-auto.col-lg-10.px-md-4
+  .justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.md-3.border-bottom
+    .section
+      .playlist-heading.row
+        = image_tag @playlist.image, class: 'playlist-sumbnail col-2', size: '100x100'
+        .h5.col.playlist-name
+          | #{@playlist.name}
+    .container
+      .tracks-lists.row
+        = render partial: 'shared/track', collection: @tracks

@@ -14,6 +14,7 @@ class Playlist < ApplicationRecord
     playlist
   end
 
+  # imageのurlがあるか確認
   def self.image_present?(image)
     if image.present?
       image[:url]
