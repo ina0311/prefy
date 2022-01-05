@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_29_081654) do
+ActiveRecord::Schema.define(version: 2022_01_05_034952) do
 
   create_table "albums", charset: "utf8mb3", force: :cascade do |t|
     t.string "spotify_id", null: false
@@ -37,6 +37,16 @@ ActiveRecord::Schema.define(version: 2021_12_29_081654) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "playlist_genres", charset: "utf8mb3", force: :cascade do |t|
+    t.bigint "saved_playlist_id", null: false
+    t.bigint "genre_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["genre_id"], name: "index_playlist_genres_on_genre_id"
+    t.index ["saved_playlist_id", "genre_id"], name: "index_playlist_genres_on_saved_playlist_id_and_genre_id", unique: true
+    t.index ["saved_playlist_id"], name: "index_playlist_genres_on_saved_playlist_id"
+  end
+
   create_table "playlist_of_tracks", charset: "utf8mb3", force: :cascade do |t|
     t.bigint "playlist_id", null: false
     t.bigint "track_id", null: false
@@ -53,6 +63,16 @@ ActiveRecord::Schema.define(version: 2021_12_29_081654) do
     t.string "owner", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "saved_playlist_include_artists", charset: "utf8mb3", force: :cascade do |t|
+    t.bigint "saved_playlist_id", null: false
+    t.bigint "artist_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["artist_id"], name: "index_saved_playlist_include_artists_on_artist_id"
+    t.index ["saved_playlist_id", "artist_id"], name: "saved_playlist_and_artist_index", unique: true
+    t.index ["saved_playlist_id"], name: "index_saved_playlist_include_artists_on_saved_playlist_id"
   end
 
   create_table "saved_playlists", charset: "utf8mb3", force: :cascade do |t|
@@ -104,8 +124,12 @@ ActiveRecord::Schema.define(version: 2021_12_29_081654) do
   end
 
   add_foreign_key "albums", "artists"
+  add_foreign_key "playlist_genres", "genres"
+  add_foreign_key "playlist_genres", "saved_playlists"
   add_foreign_key "playlist_of_tracks", "playlists"
   add_foreign_key "playlist_of_tracks", "tracks"
+  add_foreign_key "saved_playlist_include_artists", "artists"
+  add_foreign_key "saved_playlist_include_artists", "saved_playlists"
   add_foreign_key "saved_playlists", "playlists"
   add_foreign_key "saved_playlists", "users"
   add_foreign_key "track_genres", "genres"
