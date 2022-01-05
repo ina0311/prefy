@@ -2,9 +2,9 @@
   .possion-sticky.pt-3
     ul.nav.nav-pills.flex-column
       li.nav-item
-        = link_to 'プレイリスト作成', '#', class: 'nav-link text-white'
+        = link_to 'プレイリスト作成', new_api_v1_saved_playlist_path, class: 'nav-link text-white'
       li.nav-item
-        = link_to 'プレイリスト一覧', '#', class: 'nav-link text-white'
+        = link_to 'プレイリスト一覧', api_v1_saved_playlists_path, class: 'nav-link text-white'
       li.nav-item
         = link_to '検索', '#', class: 'nav-link text-white'
       li.nav-item

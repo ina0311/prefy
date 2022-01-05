@@ -6,7 +6,9 @@ Rails.application.routes.draw do
       get '/callback', to: 'sessions#callback'
       delete '/logout', to: 'sessions#destroy'
 
-      get '/myplaylists', to: 'saved_playlists#index'
+      # get '/myplaylists', to: 'saved_playlists#index'
+      # get '/playlists/new'
+      resources :myplaylists, controller: 'saved_playlists', only: %i[index new create], as: 'saved_playlists'
       resources :playlists, only: %i[show]
     end
   end
