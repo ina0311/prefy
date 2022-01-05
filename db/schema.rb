@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_05_040053) do
+ActiveRecord::Schema.define(version: 2022_01_05_040844) do
 
   create_table "albums", charset: "utf8mb3", force: :cascade do |t|
     t.string "spotify_id", null: false
@@ -45,6 +45,16 @@ ActiveRecord::Schema.define(version: 2022_01_05_040053) do
     t.index ["genre_id"], name: "index_playlist_genres_on_genre_id"
     t.index ["saved_playlist_id", "genre_id"], name: "index_playlist_genres_on_saved_playlist_id_and_genre_id", unique: true
     t.index ["saved_playlist_id"], name: "index_playlist_genres_on_saved_playlist_id"
+  end
+
+  create_table "playlist_include_tracks", charset: "utf8mb3", force: :cascade do |t|
+    t.bigint "saved_playlist_id", null: false
+    t.bigint "track_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["saved_playlist_id", "track_id"], name: "index_playlist_include_tracks_on_saved_playlist_id_and_track_id", unique: true
+    t.index ["saved_playlist_id"], name: "index_playlist_include_tracks_on_saved_playlist_id"
+    t.index ["track_id"], name: "index_playlist_include_tracks_on_track_id"
   end
 
   create_table "playlist_of_tracks", charset: "utf8mb3", force: :cascade do |t|
@@ -83,6 +93,16 @@ ActiveRecord::Schema.define(version: 2022_01_05_040053) do
     t.index ["artist_id"], name: "index_saved_playlist_include_artists_on_artist_id"
     t.index ["saved_playlist_id", "artist_id"], name: "saved_playlist_and_artist_index", unique: true
     t.index ["saved_playlist_id"], name: "index_saved_playlist_include_artists_on_saved_playlist_id"
+  end
+
+  create_table "saved_playlist_include_tracks", charset: "utf8mb3", force: :cascade do |t|
+    t.bigint "saved_playlist_id", null: false
+    t.bigint "track_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["saved_playlist_id", "track_id"], name: "saved_playlist_and_track_index", unique: true
+    t.index ["saved_playlist_id"], name: "index_saved_playlist_include_tracks_on_saved_playlist_id"
+    t.index ["track_id"], name: "index_saved_playlist_include_tracks_on_track_id"
   end
 
   create_table "saved_playlists", charset: "utf8mb3", force: :cascade do |t|
@@ -136,12 +156,16 @@ ActiveRecord::Schema.define(version: 2022_01_05_040053) do
   add_foreign_key "albums", "artists"
   add_foreign_key "playlist_genres", "genres"
   add_foreign_key "playlist_genres", "saved_playlists"
+  add_foreign_key "playlist_include_tracks", "saved_playlists"
+  add_foreign_key "playlist_include_tracks", "tracks"
   add_foreign_key "playlist_of_tracks", "playlists"
   add_foreign_key "playlist_of_tracks", "tracks"
   add_foreign_key "saved_playlist_genres", "genres"
   add_foreign_key "saved_playlist_genres", "saved_playlists"
   add_foreign_key "saved_playlist_include_artists", "artists"
   add_foreign_key "saved_playlist_include_artists", "saved_playlists"
+  add_foreign_key "saved_playlist_include_tracks", "saved_playlists"
+  add_foreign_key "saved_playlist_include_tracks", "tracks"
   add_foreign_key "saved_playlists", "playlists"
   add_foreign_key "saved_playlists", "users"
   add_foreign_key "track_genres", "genres"
