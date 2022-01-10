@@ -2,11 +2,12 @@ class User < ApplicationRecord
   attr_encrypted :access_token, key: ENV['TOKEN_ENCRYPTION_KEY']
   attr_encrypted :refresh_token, key: ENV['TOKEN_ENCRYPTION_KEY']
 
+  has_many :saved_playlists, dependent: :destroy
+  has_many :follow_artists, dependent: :destroy
+
   validates :name, presence: true
   validates :country, presence: true
   validates :spotify_id, presence: true
-
-  has_many :saved_playlists, dependent: :destroy
 
   def access_token_expired?
     (Time.now - self.updated_at) > 3300
