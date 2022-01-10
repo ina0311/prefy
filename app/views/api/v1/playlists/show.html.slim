@@ -2,7 +2,10 @@ main.col-md-9.ms-sm-auto.col-lg-10.px-md-4
   .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.md-3.border-bottom
     .section
       .playlist-heading.row
-        = image_tag @playlist.image, class: 'playlist-sumbnail col-2', size: '100x100'
+        - if @playlist.image.present?
+          = image_tag @playlist.image, size: '100x100', class: 'card-thumbnail'
+        - else
+          = image_tag 'default_image.png', size: '100x100', class: 'card-thumnail'
       .h5.col.playlist-name
         | #{@playlist.name}
     .container
