@@ -37,26 +37,6 @@ ActiveRecord::Schema.define(version: 2022_01_05_040844) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "playlist_genres", charset: "utf8mb3", force: :cascade do |t|
-    t.bigint "saved_playlist_id", null: false
-    t.bigint "genre_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["genre_id"], name: "index_playlist_genres_on_genre_id"
-    t.index ["saved_playlist_id", "genre_id"], name: "index_playlist_genres_on_saved_playlist_id_and_genre_id", unique: true
-    t.index ["saved_playlist_id"], name: "index_playlist_genres_on_saved_playlist_id"
-  end
-
-  create_table "playlist_include_tracks", charset: "utf8mb3", force: :cascade do |t|
-    t.bigint "saved_playlist_id", null: false
-    t.bigint "track_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["saved_playlist_id", "track_id"], name: "index_playlist_include_tracks_on_saved_playlist_id_and_track_id", unique: true
-    t.index ["saved_playlist_id"], name: "index_playlist_include_tracks_on_saved_playlist_id"
-    t.index ["track_id"], name: "index_playlist_include_tracks_on_track_id"
-  end
-
   create_table "playlist_of_tracks", charset: "utf8mb3", force: :cascade do |t|
     t.bigint "playlist_id", null: false
     t.bigint "track_id", null: false
@@ -107,7 +87,9 @@ ActiveRecord::Schema.define(version: 2022_01_05_040844) do
 
   create_table "saved_playlists", charset: "utf8mb3", force: :cascade do |t|
     t.boolean "only_follow_artist"
-    t.integer "that_generation_prefernce"
+    t.integer "that_generation_preference"
+    t.integer "since_year"
+    t.integer "before_year"
     t.integer "max_number_of_track"
     t.integer "max_total_duration_ms"
     t.bigint "user_id", null: false
@@ -154,10 +136,6 @@ ActiveRecord::Schema.define(version: 2022_01_05_040844) do
   end
 
   add_foreign_key "albums", "artists"
-  add_foreign_key "playlist_genres", "genres"
-  add_foreign_key "playlist_genres", "saved_playlists"
-  add_foreign_key "playlist_include_tracks", "saved_playlists"
-  add_foreign_key "playlist_include_tracks", "tracks"
   add_foreign_key "playlist_of_tracks", "playlists"
   add_foreign_key "playlist_of_tracks", "tracks"
   add_foreign_key "saved_playlist_genres", "genres"
