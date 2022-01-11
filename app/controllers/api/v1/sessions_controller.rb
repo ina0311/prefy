@@ -10,18 +10,15 @@ class Api::V1::SessionsController < ApplicationController
     if params[:error]
       redirect_to root_path
     else
-      # code_verifier = session[:code_verifier]
-      # session.delete(:code_verifier)
-
       auth_params = GetToken.call(code: params[:code], code_verifier: find_codeverifier)
-
-      profile_response = conn_request_profile.get('me') do |request|
-        request.headers["Authorization"] = "#{auth_params.gettoken_response[:token_type]} #{auth_params.gettoken_response[:access_token]}"
-      end
-
+      profile_response = conn_request_profile(auth_params)
       user_params = profile_response.body.merge(auth_params.gettoken_response)
 
       login(user_params)
+
+      follow_artist_params = conn_request_follow_artist
+      FollowArtist.list_update(follow_artist_params, current_user)
+
       redirect_to api_v1_saved_playlists_path, success: "ログインしました"
     end
   end
@@ -45,11 +42,5 @@ class Api::V1::SessionsController < ApplicationController
     session.delete(:code_verifier)
 
     code_verifier
-  end
-
-  def conn_request_profile
-    Faraday::Connection.new(url: Constants::BASEURL) do |builder|
-      builder.response :json, parser_options: { symbolize_names: true }
-    end
   end
 end

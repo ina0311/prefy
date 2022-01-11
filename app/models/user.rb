@@ -4,6 +4,7 @@ class User < ApplicationRecord
 
   has_many :saved_playlists, dependent: :destroy
   has_many :follow_artists, dependent: :destroy
+  has_many :follow_artist_lists, through: :follow_artists, source: :artist
 
   validates :name, presence: true
   validates :country, presence: true
