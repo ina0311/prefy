@@ -8,5 +8,6 @@ class CreateTracks < ActiveRecord::Migration[6.1]
 
       t.timestamps
     end
+    add_index :tracks, [:spotify_id], unique: true
   end
 end

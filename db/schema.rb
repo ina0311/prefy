@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 2022_01_10_055049) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["artist_id"], name: "index_albums_on_artist_id"
+    t.index ["spotify_id"], name: "index_albums_on_spotify_id", unique: true
   end
 
   create_table "artists", charset: "utf8mb3", force: :cascade do |t|
@@ -29,6 +30,7 @@ ActiveRecord::Schema.define(version: 2022_01_10_055049) do
     t.string "image"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["spotify_id"], name: "index_artists_on_spotify_id", unique: true
   end
 
   create_table "follow_artists", charset: "utf8mb3", force: :cascade do |t|
@@ -63,6 +65,7 @@ ActiveRecord::Schema.define(version: 2022_01_10_055049) do
     t.string "owner", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["spotify_id"], name: "index_playlists_on_spotify_id", unique: true
   end
 
   create_table "saved_playlist_genres", charset: "utf8mb3", force: :cascade do |t|
@@ -129,6 +132,7 @@ ActiveRecord::Schema.define(version: 2022_01_10_055049) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["album_id"], name: "index_tracks_on_album_id"
+    t.index ["spotify_id"], name: "index_tracks_on_spotify_id", unique: true
   end
 
   create_table "users", charset: "utf8mb3", force: :cascade do |t|
@@ -143,6 +147,7 @@ ActiveRecord::Schema.define(version: 2022_01_10_055049) do
     t.text "encrypted_refresh_token_iv"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["spotify_id"], name: "index_users_on_spotify_id", unique: true
   end
 
   add_foreign_key "albums", "artists"
