@@ -1,5 +1,4 @@
 class Api::V1::PlaylistsController < ApplicationController
-  include RequestUrl
 
   def show
     @playlist = Playlist.find(params[:id])

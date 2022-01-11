@@ -1,5 +1,4 @@
 class Api::V1::SavedPlaylistsController < ApplicationController
-  include RequestUrl
 
   def index
     # ユーザーのプレイリストを所得
