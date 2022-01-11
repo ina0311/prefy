@@ -30,6 +30,7 @@ gem 'bootsnap', '>= 1.4.4', require: false
 
 gem 'draper'
 gem "interactor-rails", "~> 2.0"
+gem 'activerecord-import'
 
 gem 'dotenv-rails'
 gem "attr_encrypted"
