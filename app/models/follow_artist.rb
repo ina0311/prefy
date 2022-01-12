@@ -12,30 +12,27 @@ class FollowArtist < ApplicationRecord
 
     Artist.all_update(params)
 
-    if unfollow_artists_ids.present?
-      unfollow_artists = Artist.where(spotify_id: unfollow_artist_ids).ids
-      FollowArtist.unfollow_all(unfollow_artists, user)
-    end
-
-    if new_follow_artist_ids.present?
-      new_follow_artists = Artist.where(spotify_id: new_follow_artist_ids).ids
-      FollowArtist.follow_all(new_follow_artists, user)
-    end
+    FollowArtist.unfollow_all(unfollow_artist_ids, user) if unfollow_artists_ids.present?
+    FollowArtist.follow_all(new_follow_artists, user) if new_follow_artist_ids.present?
   end
 
   def self.follow(artist, user)
     follow_artist = user.follow_artists.create(artist_id: artist.id) 
   end
 
-  def self.unfollow_all(unfollow_artists, user)
-    user.follow_artists.destroy_all(spotify_id: id)
+  def self.unfollow_all(unfollow_artist_ids, user)
+    unfollow_artists = Artist.where(spotify_id: unfollow_artist_ids).ids
+    FollowArtist.transaction do
+      user.follow_artists.where(artist_id: unfollow_artists).destroy_all
+    end
   end
 
-  def self.follow_all(follow_artists, user)
+  def self.follow_all(new_follow_artist_ids, user)
+    follow_artists = Artist.where(spotify_id: new_follow_artist_ids).ids
+    # ここでは新しくフォローしたアーティストしかいないのでinsert_all
     follow_artist_attributes = follow_artists.map do |id| 
                                 {user_id: user.id, artist_id: id, created_at: Time.current, updated_at: Time.current}
                               end
-
     FollowArtist.insert_all(follow_artist_attributes)
   end
 end
