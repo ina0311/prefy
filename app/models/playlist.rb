@@ -4,13 +4,17 @@ class Playlist < ApplicationRecord
   has_many :saved_playlists, dependent: :destroy
   has_many :playlist_of_tracks, dependent: :destroy
 
-  def self.find_or_create_playlist(playlist_params)
-    image = playlist_params[:images][0]
-    playlist = Playlist.find_or_create_by!(spotify_id: playlist_params[:id]) do |playlist|
-                playlist.name = playlist_params[:name]
-                playlist.owner = playlist_params[:owner][:id]
-                playlist.image = image.nil? ? nil : image[:url]
-              end
-    playlist
+  def self.all_update(playlist_attributes)
+    Playlist.transaction do
+      playlists = playlist_attributes.map do |playlist|
+                    Playlist.new(
+                      spotify_id: playlist[:spotify_id],
+                      name: playlist[:name],
+                      owner: playlist[:owner],
+                      image: playlist[:image]
+                    )
+                  end
+      Playlist.import!(playlists, on_duplicate_key_update: %i[name image])
+    end
   end
 end

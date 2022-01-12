@@ -3,6 +3,8 @@ class User < ApplicationRecord
   attr_encrypted :refresh_token, key: ENV['TOKEN_ENCRYPTION_KEY']
 
   has_many :saved_playlists, dependent: :destroy
+  has_many :my_playlists, through: :saved_playlists, source: :playlist
+  
   has_many :follow_artists, dependent: :destroy
   has_many :follow_artist_lists, through: :follow_artists, source: :artist
 

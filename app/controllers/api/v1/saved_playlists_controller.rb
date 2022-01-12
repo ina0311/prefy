@@ -1,11 +1,9 @@
 class Api::V1::SavedPlaylistsController < ApplicationController
 
   def index
-    # ユーザーのプレイリストを所得
-    response = conn_request.get('me/playlists').body[:items]
-
-    # 取得したプレイリストの情報を元に元からあればfind、なければcreate
-    @saved_playlists = current_user.saved_playlists.find_or_create_savedplaylists(response)
+    # ユーザーのプレイリストの情報を所得
+    playlist_attributes = conn_request_saved_playlists
+    @saved_playlists = SavedPlaylist.list_get(playlist_attributes, current_user)
   end
 
   def new

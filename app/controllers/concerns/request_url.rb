@@ -19,14 +19,6 @@ module RequestUrl
     response = request.get
   end
 
-  def conn_request_playlist
-    response = conn_request.post("users/#{current_user.spotify_id}/playlists") do |request|
-      request.body = { name: "new playlist" }.to_json
-    end
-    playlist_attributes = response.body.slice(:name).merge({ spotify_id: response.body.dig(:id), image: response.body.dig(:images, 0, :url), owner: response.body.dig(:owner, :id) })
-    playlist = Playlist.create(playlist_attributes)
-  end
-
   def conn_request_follow_artist
     follow_artist_params = []
     last_id = nil
@@ -42,12 +34,37 @@ module RequestUrl
 
       response.each do |res|
         r = res.slice(:id, :name, :images)
- 
         follow_artist_params << r
       end
       break if count < 50
     end
-
     follow_artist_params
+  end
+
+  def conn_request_saved_playlists
+    saved_playlist_params = []
+    offset = nil
+    while true
+      if offset.nil?
+        response = conn_request.get('me/playlists?limit=50').body[:items]
+      else
+        response = conn_request.get("me/playlists?limit=50&offset=#{offset}").body[:items]
+      end
+      offset = response.size
+      response.each do |res|
+        r = res.slice(:name).merge({ spotify_id: res[:id], owner: res[:owner][:id], image: res.dig(:images, 0, :url) })
+        saved_playlist_params << r
+      end
+      break if offset < 50
+    end
+    saved_playlist_params
+  end
+
+  def conn_request_playlist
+    response = conn_request.post("users/#{current_user.spotify_id}/playlists") do |request|
+      request.body = { name: "new playlist" }.to_json
+    end
+    playlist_attributes = response.body.slice(:name).merge({ spotify_id: response.body[:id], image: response.body.dig(:images, 0, :url), owner: response.body[:owner][:id] })
+    playlist = Playlist.create!(playlist_attributes)
   end
 end
