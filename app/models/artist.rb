@@ -3,10 +3,17 @@ class Artist < ApplicationRecord
   has_many :saved_playlist_include_artists, dependent: :destroy
   has_many :follow_artists, dependent: :destroy
 
-  def self.find_or_create_artist(artist_params)
-    Artist.find_or_create_by!(spotify_id: artist_params[:id]) do |artist|
-      artist.name = artist_params[:name]
-      artist.image = artist_params[:images][0][:url]
+  def self.all_update(artist_attributes)
+    Artist.transaction do
+    artist = artist_attributes.map do |artist|
+              Artist.new(
+                spotify_id: artist[:id],
+                name: artist[:name],
+                image: artist[:images][0][:url]
+              )
+              end
+
+    Artist.import!(artist, on_duplicate_key_update: %i[name image])
     end
   end
 end
