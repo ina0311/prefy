@@ -4,16 +4,16 @@ class FollowArtist < ApplicationRecord
 
   validates :user_id, uniqueness: { scope: :artist_id }
 
-  def self.list_update(params, user)
-    Artist.all_update(params)
-
+  def self.list_update(attributes, user)
+    Artist.all_update(attributes)
+    
     default_follow_artist_ids = user.follow_artist_lists.pluck(:spotify_id)
-    now_follow_artist_ids = params.pluck(:id)
-    unfollow_artists_ids = default_follow_artist_ids - now_follow_artist_ids
+    now_follow_artist_ids = attributes.pluck(:spotify_id)
+    unfollow_artist_ids = default_follow_artist_ids - now_follow_artist_ids
     new_follow_artist_ids = now_follow_artist_ids - default_follow_artist_ids
 
-    FollowArtist.unfollow_all(unfollow_artist_ids, user) if unfollow_artists_ids.present?
-    FollowArtist.follow_all(new_follow_artists, user) if new_follow_artist_ids.present?
+    FollowArtist.unfollow_all(unfollow_artist_ids, user) if unfollow_artist_ids.present?
+    FollowArtist.follow_all(new_follow_artist_ids, user) if new_follow_artist_ids.present?
   end
 
   def self.follow(artist, user)

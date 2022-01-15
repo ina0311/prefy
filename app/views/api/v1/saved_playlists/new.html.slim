@@ -26,8 +26,8 @@ main.col-md-9.ms-sm-auto.col-lg-10.px-md-4
         = f.number_field :max_total_duration_ms, min: 600_000, max: 25_200_000, prompt: '', class: 'form-control'
       .form-group
         = f.label :artist_ids, "アーティストを選択してください"
-        = f.collection_select :artist_ids, Artist.all, :id, :name, { multiple: true }
+        = f.collection_select :artist_ids, Artist.all, :id, :name, { include_blank: true, multiple: true }, { name: "artist_ids[]" }
       .form-group
         = f.label :track_ids, "曲を選択してください"
-        = f.collection_select :track_ids, Track.all, :id, :name, { multiple: true }
+        = f.collection_select :track_ids, Track.all, :id, :name, { include_blank: true, multiple: true }, { name: "track_ids[]" }
       = f.submit '作成する', class: 'btn btn-primary'

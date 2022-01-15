@@ -7,9 +7,9 @@ class Artist < ApplicationRecord
     Artist.transaction do
       artists = artist_attributes.map do |artist|
                   Artist.new(
-                    spotify_id: artist[:id],
+                    spotify_id: artist[:spotify_id],
                     name: artist[:name],
-                    image: artist[:images][0][:url]
+                    image: artist[:image]
                   )
                 end
 

@@ -16,8 +16,8 @@ class Api::V1::SessionsController < ApplicationController
 
       login(user_params)
 
-      follow_artist_params = conn_request_follow_artist
-      FollowArtist.list_update(follow_artist_params, current_user)
+      follow_artist_attributes = conn_request_follow_artist
+      FollowArtist.list_update(follow_artist_attributes, current_user)
 
       redirect_to api_v1_saved_playlists_path, success: "ログインしました"
     end

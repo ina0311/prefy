@@ -55,7 +55,7 @@ class SavedPlaylistForm
     end
 
     ActiveRecord::Base.transaction do
-      if artist_ids.present?
+      unless artist_ids.first.zero?
         default_artist_ids = saved_playlist.saved_playlist_include_artists.ids
         artist_ids.each do |id|
           saved_playlist.saved_playlist_include_artists.find_or_create_by!(artist_id: id)
@@ -65,9 +65,7 @@ class SavedPlaylistForm
         delete_artist_ids.each { |id| saved_playlist.artists.destroy(id) } if delete_artist_ids.present?
       end
 
-      if genre_ids.present?
-        
-        binding.pry
+      unless genre_ids.first.zero?
         default_genre_ids = saved_playlist.saved_playlist_genres.ids
         genre_ids.each do |id|
           saved_playlist.saved_playlist_genres.find_or_create_by!(genre_id: id)
@@ -77,7 +75,7 @@ class SavedPlaylistForm
         delete_genre_ids.each { |id| saved_playlist.genres.destroy(id) } if delete_genre_ids.present?
       end
       
-      if track_ids.present?
+      unless track_ids.first.zero?
         default_track_ids = saved_playlist.saved_playlist_include_tracks.ids
         track_ids.each do |id|
           saved_playlist.saved_playlist_include_tracks.find_or_create_by!(track_id: id)
@@ -86,8 +84,8 @@ class SavedPlaylistForm
         delete_track_ids = default_track_ids - track_ids
         delete_track_ids.each { |id| saved_playlist.tracks.destroy(id) } if delete_track_ids.present?
       end
-      @saved_playlist = saved_playlist
     end
+    saved_playlist.persisted?
   end
 
   def to_model
