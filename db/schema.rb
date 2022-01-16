@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 2022_01_10_055049) do
     t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_genres_on_name", unique: true
   end
 
   create_table "playlist_of_tracks", charset: "utf8mb3", force: :cascade do |t|
