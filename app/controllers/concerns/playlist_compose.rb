@@ -10,7 +10,10 @@ module PlaylistCompose
 
     tracks = conn_request_search_track(match_artists.pluck(:name), period, saved_playlist_genres)
     playlist_of_tracks = tracks.sample(@saved_playlist[:max_number_of_track])
-    
+    album_ids = playlist_of_tracks.pluck(:album_spotify_id)
+    album_attributes = conn_request_album_info(album_info)
+    Album.all_update(album_attributes)
+    @playlist.playlist_of_tracks.all_update(playlist_of_tracks)
     binding.pry
   end
 

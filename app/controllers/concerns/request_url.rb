@@ -2,6 +2,7 @@ module RequestUrl
   extend ActiveSupport::Concern
   include SessionsHelper
 
+  # ユーザーの情報を取得する
   def conn_request_profile(auth_params)
     request = Faraday::Connection.new("#{Constants::BASEURL}me") do |builder|
       builder.response :json, parser_options: { symbolize_names: true }
@@ -11,6 +12,7 @@ module RequestUrl
     response = request.get
   end
 
+  # ユーザーのフォローアーティストを取得する
   def conn_request_follow_artist
     follow_artist_attributes = []
     last_id = nil
@@ -32,6 +34,7 @@ module RequestUrl
     follow_artist_attributes
   end
 
+  # ユーザーが保存しているプレイリストを取得する
   def conn_request_saved_playlists
     saved_playlist_params = []
     offset = nil
@@ -51,6 +54,7 @@ module RequestUrl
     saved_playlist_params
   end
 
+  # プレイリストを作成する
   def conn_request_playlist
     response = conn_request.post("users/#{current_user.spotify_id}/playlists") do |request|
       request.body = { name: "new playlist" }.to_json
@@ -59,6 +63,7 @@ module RequestUrl
     playlist = Playlist.create!(playlist_attributes)
   end
 
+  # アーティストのジャンルを取得する
   def conn_request_artist_info(artists)
     artists_info = []
     count = 0
@@ -75,6 +80,7 @@ module RequestUrl
     artists_info
   end
 
+  # 条件にそって曲を取得する
   def conn_request_search_track(match_artists, period, genres)
     tracks = []
     beginning = 0
@@ -93,10 +99,19 @@ module RequestUrl
       end
       beginning = tracks.size
     end
-    
-    binding.pry
-    
     tracks
+  end
+
+  # アルバムの情報を取得する
+  def conn_request_album_info(ids)
+    album_attributes = []
+    response = conn_request("albums?ids=#{ids.join(',')}").body[:albums]
+    
+    response.each do |res|
+      r = res.slice(:name, :release_date)merge({ spotify_id: res[:id], image: res.dig(:images, 0, :url), artist_spotify_id: res[:artists][:id] })
+      album_attributes << r
+    end
+    album_attributes
   end
 
   private
