@@ -12,30 +12,36 @@
 
 ActiveRecord::Schema.define(version: 2022_01_10_055049) do
 
-  create_table "albums", charset: "utf8mb3", force: :cascade do |t|
-    t.string "spotify_id", null: false
+  create_table "albums", primary_key: "spotify_id", id: :string, charset: "utf8mb3", force: :cascade do |t|
     t.string "name", null: false
     t.string "image", null: false
     t.string "release_date", null: false
-    t.bigint "artist_id", null: false
+    t.string "artist_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["artist_id"], name: "index_albums_on_artist_id"
-    t.index ["spotify_id"], name: "index_albums_on_spotify_id", unique: true
   end
 
-  create_table "artists", charset: "utf8mb3", force: :cascade do |t|
-    t.string "spotify_id", null: false
+  create_table "artist_genres", charset: "utf8mb3", force: :cascade do |t|
+    t.string "artist_id", null: false
+    t.bigint "genre_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["artist_id", "genre_id"], name: "index_artist_genres_on_artist_id_and_genre_id", unique: true
+    t.index ["artist_id"], name: "index_artist_genres_on_artist_id"
+    t.index ["genre_id"], name: "index_artist_genres_on_genre_id"
+  end
+
+  create_table "artists", primary_key: "spotify_id", id: :string, charset: "utf8mb3", force: :cascade do |t|
     t.string "name", null: false
     t.string "image"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["spotify_id"], name: "index_artists_on_spotify_id", unique: true
   end
 
   create_table "follow_artists", charset: "utf8mb3", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "artist_id", null: false
+    t.string "user_id", null: false
+    t.string "artist_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["artist_id"], name: "index_follow_artists_on_artist_id"
@@ -50,22 +56,21 @@ ActiveRecord::Schema.define(version: 2022_01_10_055049) do
   end
 
   create_table "playlist_of_tracks", charset: "utf8mb3", force: :cascade do |t|
-    t.bigint "playlist_id", null: false
-    t.bigint "track_id", null: false
+    t.string "playlist_id", null: false
+    t.string "track_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["playlist_id", "track_id"], name: "index_playlist_of_tracks_on_playlist_id_and_track_id", unique: true
     t.index ["playlist_id"], name: "index_playlist_of_tracks_on_playlist_id"
     t.index ["track_id"], name: "index_playlist_of_tracks_on_track_id"
   end
 
-  create_table "playlists", charset: "utf8mb3", force: :cascade do |t|
-    t.string "spotify_id", null: false
+  create_table "playlists", primary_key: "spotify_id", id: :string, charset: "utf8mb3", force: :cascade do |t|
     t.string "name", null: false
     t.string "image"
     t.string "owner", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["spotify_id"], name: "index_playlists_on_spotify_id", unique: true
   end
 
   create_table "saved_playlist_genres", charset: "utf8mb3", force: :cascade do |t|
@@ -80,7 +85,7 @@ ActiveRecord::Schema.define(version: 2022_01_10_055049) do
 
   create_table "saved_playlist_include_artists", charset: "utf8mb3", force: :cascade do |t|
     t.bigint "saved_playlist_id", null: false
-    t.bigint "artist_id", null: false
+    t.string "artist_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["artist_id"], name: "index_saved_playlist_include_artists_on_artist_id"
@@ -90,7 +95,7 @@ ActiveRecord::Schema.define(version: 2022_01_10_055049) do
 
   create_table "saved_playlist_include_tracks", charset: "utf8mb3", force: :cascade do |t|
     t.bigint "saved_playlist_id", null: false
-    t.bigint "track_id", null: false
+    t.string "track_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["saved_playlist_id", "track_id"], name: "saved_playlist_and_track_index", unique: true
@@ -105,8 +110,8 @@ ActiveRecord::Schema.define(version: 2022_01_10_055049) do
     t.integer "before_year"
     t.integer "max_number_of_track"
     t.integer "max_total_duration_ms"
-    t.bigint "user_id", null: false
-    t.bigint "playlist_id", null: false
+    t.string "user_id", null: false
+    t.string "playlist_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["playlist_id"], name: "index_saved_playlists_on_playlist_id"
@@ -114,32 +119,19 @@ ActiveRecord::Schema.define(version: 2022_01_10_055049) do
     t.index ["user_id"], name: "index_saved_playlists_on_user_id"
   end
 
-  create_table "track_genres", charset: "utf8mb3", force: :cascade do |t|
-    t.bigint "track_id", null: false
-    t.bigint "genre_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["genre_id"], name: "index_track_genres_on_genre_id"
-    t.index ["track_id", "genre_id"], name: "index_track_genres_on_track_id_and_genre_id", unique: true
-    t.index ["track_id"], name: "index_track_genres_on_track_id"
-  end
-
-  create_table "tracks", charset: "utf8mb3", force: :cascade do |t|
-    t.string "spotify_id", null: false
+  create_table "tracks", primary_key: "spotify_id", id: :string, charset: "utf8mb3", force: :cascade do |t|
     t.string "name", null: false
     t.integer "duration_ms", null: false
-    t.bigint "album_id", null: false
+    t.string "album_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["album_id"], name: "index_tracks_on_album_id"
-    t.index ["spotify_id"], name: "index_tracks_on_spotify_id", unique: true
   end
 
-  create_table "users", charset: "utf8mb3", force: :cascade do |t|
+  create_table "users", primary_key: "spotify_id", id: :string, charset: "utf8mb3", force: :cascade do |t|
     t.string "name", null: false
     t.string "image"
     t.string "country", null: false
-    t.string "spotify_id", null: false
     t.integer "age"
     t.text "encrypted_access_token"
     t.text "encrypted_access_token_iv"
@@ -147,23 +139,22 @@ ActiveRecord::Schema.define(version: 2022_01_10_055049) do
     t.text "encrypted_refresh_token_iv"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["spotify_id"], name: "index_users_on_spotify_id", unique: true
   end
 
-  add_foreign_key "albums", "artists"
-  add_foreign_key "follow_artists", "artists"
-  add_foreign_key "follow_artists", "users"
-  add_foreign_key "playlist_of_tracks", "playlists"
-  add_foreign_key "playlist_of_tracks", "tracks"
+  add_foreign_key "albums", "artists", primary_key: "spotify_id"
+  add_foreign_key "artist_genres", "artists", primary_key: "spotify_id"
+  add_foreign_key "artist_genres", "genres"
+  add_foreign_key "follow_artists", "artists", primary_key: "spotify_id"
+  add_foreign_key "follow_artists", "users", primary_key: "spotify_id"
+  add_foreign_key "playlist_of_tracks", "playlists", primary_key: "spotify_id"
+  add_foreign_key "playlist_of_tracks", "tracks", primary_key: "spotify_id"
   add_foreign_key "saved_playlist_genres", "genres"
   add_foreign_key "saved_playlist_genres", "saved_playlists"
-  add_foreign_key "saved_playlist_include_artists", "artists"
+  add_foreign_key "saved_playlist_include_artists", "artists", primary_key: "spotify_id"
   add_foreign_key "saved_playlist_include_artists", "saved_playlists"
   add_foreign_key "saved_playlist_include_tracks", "saved_playlists"
-  add_foreign_key "saved_playlist_include_tracks", "tracks"
-  add_foreign_key "saved_playlists", "playlists"
-  add_foreign_key "saved_playlists", "users"
-  add_foreign_key "track_genres", "genres"
-  add_foreign_key "track_genres", "tracks"
-  add_foreign_key "tracks", "albums"
+  add_foreign_key "saved_playlist_include_tracks", "tracks", primary_key: "spotify_id"
+  add_foreign_key "saved_playlists", "playlists", primary_key: "spotify_id"
+  add_foreign_key "saved_playlists", "users", primary_key: "spotify_id"
+  add_foreign_key "tracks", "albums", primary_key: "spotify_id"
 end
