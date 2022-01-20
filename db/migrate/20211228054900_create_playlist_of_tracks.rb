@@ -8,6 +8,5 @@ class CreatePlaylistOfTracks < ActiveRecord::Migration[6.1]
     end
     add_foreign_key :playlist_of_tracks, :playlists, column: :playlist_id , primary_key: :spotify_id
     add_foreign_key :playlist_of_tracks, :tracks, column: :track_id , primary_key: :spotify_id
-    add_index :playlist_of_tracks, [:playlist_id, :track_id], unique: true
   end
 end

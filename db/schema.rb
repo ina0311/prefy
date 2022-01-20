@@ -61,7 +61,6 @@ ActiveRecord::Schema.define(version: 2022_01_10_055049) do
     t.string "track_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["playlist_id", "track_id"], name: "index_playlist_of_tracks_on_playlist_id_and_track_id", unique: true
     t.index ["playlist_id"], name: "index_playlist_of_tracks_on_playlist_id"
     t.index ["track_id"], name: "index_playlist_of_tracks_on_track_id"
   end
