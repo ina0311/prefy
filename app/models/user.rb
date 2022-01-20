@@ -26,6 +26,10 @@ class User < ApplicationRecord
     end
   end
 
+  def own?(playlist)
+    spotify_id == playlist.owner
+  end
+
   private
 
   def conn_request_refreshtoken

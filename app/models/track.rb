@@ -1,8 +1,8 @@
 class Track < ApplicationRecord
   belongs_to :album
+  delegate :artist, to: :album
 
   has_many :playlist_of_tracks, dependent: :destroy
-  has_many :track_genres, dependent: :destroy
   has_many :saved_playlist_include_tracks, dependent: :destroy
   has_many :saved_playlists, through: :saved_playlist_include_tracks
 
@@ -13,13 +13,11 @@ class Track < ApplicationRecord
           spotify_id: track[:spotify_id],
           name: track[:name],
           duration_ms: track[:duration_ms],
-          album_id: search_album(track[:album_id])
+          album_id: track[:album_spotify_id]
         )
       end
-    end
-  end
 
-  def search_album(id)
-    Album.find_by(spotify_id: id).id
+      Track.import!(tracks, ignore: true)
+    end
   end
 end

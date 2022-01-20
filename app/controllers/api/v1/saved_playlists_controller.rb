@@ -12,7 +12,7 @@ include PlaylistCompose
   end
 
   def create
-    @playlist = conn_request_playlist
+    @playlist = conn_request_playlist_create
     @form = SavedPlaylistForm.new(saved_playlist_params)
 
     if @form.save(@form.artist_ids, @form.genre_ids, @form.track_ids)

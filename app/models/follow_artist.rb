@@ -6,7 +6,7 @@ class FollowArtist < ApplicationRecord
 
   def self.list_update(attributes, user)
     Artist.all_update(attributes)
-    
+
     default_follow_artist_ids = user.follow_artist_lists.pluck(:spotify_id)
     now_follow_artist_ids = attributes.pluck(:spotify_id)
     unfollow_artist_ids = default_follow_artist_ids - now_follow_artist_ids

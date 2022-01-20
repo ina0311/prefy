@@ -3,6 +3,7 @@ class Playlist < ApplicationRecord
 
   has_many :saved_playlists, dependent: :destroy
   has_many :playlist_of_tracks, dependent: :destroy
+  has_many :included_tracks, through: :playlist_of_tracks, source: :track
 
   def self.all_update(playlist_attributes)
     Playlist.transaction do
@@ -16,5 +17,12 @@ class Playlist < ApplicationRecord
                   end
       Playlist.import!(playlists, on_duplicate_key_update: %i[name image])
     end
+  end
+
+  def info_update(info, playlist_id)
+    Artist.all_update(info[:artists])
+    Album.all_insert(info[:albums])
+    Track.all_insert(info[:tracks].uniq)
+    PlaylistOfTrack.all_update(info[:tracks], playlist_id)
   end
 end
