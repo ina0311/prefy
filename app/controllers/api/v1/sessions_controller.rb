@@ -1,5 +1,5 @@
 class Api::V1::SessionsController < ApplicationController
-  skip_before_action :require_login, :current_user
+  skip_before_action :require_login, :access_token_changed?, :current_user
   def authorize
     response = AuthorizationSpotify.call(code_challenge: create_codechallenge)
 
@@ -8,13 +8,17 @@ class Api::V1::SessionsController < ApplicationController
 
   def callback
     if params[:error]
-      redirect_to root_path
+      redirect_to root_path, danger: '認可されませんでした'
     else
-      auth_params = GetToken.call(code: params[:code], code_verifier: find_codeverifier)
-      profile_response = conn_request_profile(auth_params)
-      user_params = profile_response.body.merge(auth_params.gettoken_response)
+      get_token_response = GetToken.call(code: params[:code], code_verifier: find_codeverifier)
 
-      login(user_params)
+      profile_response = conn_request_profile(get_token_response)
+      user_attributes = profile_response.merge(
+                          access_token: get_token_response[:access_token],
+                          refresh_token: get_token_response[:refresh_token]
+                        )
+      
+      login(user_attributes)
 
       follow_artist_attributes = conn_request_follow_artist
       FollowArtist.list_update(follow_artist_attributes, current_user)

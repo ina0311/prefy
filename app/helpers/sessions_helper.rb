@@ -11,14 +11,15 @@ module SessionsHelper
     redirect_to root_path unless logged_in?
   end
 
-  def login(user_params)
-    user = User.find_or_create_by(spotify_id: user_params[:id]) do |user|
-      user.name = user_params[:display_name]
-      user.image = user_params[:image]
-      user.country = user_params[:country]
-    end
-
-    user.update(access_token: user_params[:access_token], refresh_token: user_params[:refresh_token])
+  def login(user_attributes)
+    user = User.find_or_initialize_by(spotify_id: user_attributes[:id])
+    user.update!(
+      name: user_attributes[:display_name],
+      image: user_attributes.dig(:images, 0, :url),
+      country: user_attributes[:country],
+      access_token: user_attributes[:access_token],
+      refresh_token: user_attributes[:refresh_token]
+    )
     session[:user_id] = user.id
   end
 
