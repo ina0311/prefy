@@ -6,6 +6,11 @@ class Track < ApplicationRecord
   has_many :saved_playlist_include_tracks, dependent: :destroy
   has_many :saved_playlists, through: :saved_playlist_include_tracks
 
+  with_options presence: true do 
+    validates :name
+    validates :duration_ms, numericality: { only_integer: true }
+  end
+
   def self.all_insert(track_attributes)
     Track.transaction do
       tracks = track_attributes.map do |track|

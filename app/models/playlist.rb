@@ -5,6 +5,13 @@ class Playlist < ApplicationRecord
   has_many :playlist_of_tracks, dependent: :destroy
   has_many :included_tracks, through: :playlist_of_tracks, source: :track
 
+  with_options presence: true do
+    validates :name
+    validates :owner, format: { with: /\w+/ }
+  end
+
+  validates :image, format: { with: /\Ahttps:\/\/([\w-]+\.*)+\/([\w]+\/)+([\w-]+[-\/\.]*)+\z/, allow_nil: true }
+
   def self.all_update(playlist_attributes)
     Playlist.transaction do
       playlists = playlist_attributes.map do |playlist|

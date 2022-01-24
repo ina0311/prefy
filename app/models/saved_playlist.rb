@@ -4,15 +4,17 @@ class SavedPlaylist < ApplicationRecord
   belongs_to :user
   belongs_to :playlist
   validates :user_id, uniqueness: { scope: :playlist_id }
+  
+  # その他のバリデーションはFormに記載
 
   has_many :saved_playlist_genres, dependent: :destroy
   has_many :genres, through: :saved_playlist_genres
 
   has_many :saved_playlist_include_artists, dependent: :destroy
-  has_many :artists, through: :saved_playlist_include_artists
+  has_many :include_artists, through: :saved_playlist_include_artists
 
   has_many :saved_playlist_include_tracks, dependent: :destroy
-  has_many :tracks, through: :saved_playlist_include_tracks
+  has_many :include_tracks, through: :saved_playlist_include_tracks
 
   enum that_generation_preference: %i(junior_high_school high_school university 20s 30s)
 

@@ -7,7 +7,7 @@ class ArtistGenre < ApplicationRecord
   def self.all_import(artist_genres)
     artist_genre_attributes = []
     ArtistGenre.transaction do
-      artist_genres.map do |artist_genre|
+      artist_genres.each do |artist_genre|
         Genre.where(name: artist_genre[:genres]).ids.map do |genre_id|
           attributes = ArtistGenre.new(
                          artist_id: artist_genre[:spotify_id],
