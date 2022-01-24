@@ -3,13 +3,32 @@ module RequestUrl
   include SessionsHelper
 
   # ユーザーの情報を取得する
-  def conn_request_profile(auth_params)
+  def conn_request_profile(response)
     request = Faraday::Connection.new("#{Constants::BASEURL}me") do |builder|
       builder.response :json, parser_options: { symbolize_names: true }
-      builder.headers["Authorization"] = "#{auth_params.gettoken_response[:token_type]} #{auth_params.gettoken_response[:access_token]}"
+      builder.headers["Authorization"] = "#{response[:token_type]} #{response[:access_token]}"
     end
 
-    response = request.get
+    request.get.body.slice(:id, :display_name, :country, :images)
+  end
+  
+  # 制限が近いユーザーのアクセストークンを再取得する
+  def conn_request_accesstoken
+    body = {
+      grant_type: 'refresh_token',
+      refresh_token: current_user.refresh_token
+    }
+
+    request_accesstoken = Faraday::Connection.new(Constants::REQUESTTOKENURL) do |builder|
+                            builder.response :json, parser_options: { symbolize_names: true }
+                            builder.request :url_encoded
+                            builder.headers["Authorization"] = "Basic #{encode_spotify_id}"
+                          end
+
+    response = request_accesstoken.post do |request|
+      request.body = body
+    end
+    response.body.slice(:access_token, :refresh_token)
   end
 
   # アーティストの情報を取得する
@@ -121,31 +140,34 @@ module RequestUrl
   end
 
   # 条件にそって曲を取得する
-  def conn_request_search_track(match_artists, period, genres)
+  def conn_request_search_track(querys)
     tracks = []
     beginning = 0
     last = 0
-    match_artists.each do |artist|
-      string = "artist:#{artist[:name]} year:#{period} genre:#{genres.join(' ')}"
-      query = URI.encode_www_form_component(string)
-      response = conn_request.get("search?q=#{query}&type=track&limit=50").body[:tracks][:items]
-      
+    querys.each do |query|
+      if query[:query].present?
+        response = conn_request.get("search?q=#{query[:query]}&type=track&limit=50").body[:tracks][:items]
+      else
+        response = conn_request.get("search?type=track&limit=50").body[:tracks][:items]
+      end
+
       response.each do |res|
         # TODO: コンピレーションアルバムに対応する
-        next if 'compilation' == res[:album][:album_type]
+        next if 'compilation' == res[:album][:album_type] || query[:artist_spotify_id] != res[:artists][0][:id]
         r = res.slice(:name).merge({ 
               spotify_id: res[:id],
               duration_ms: res[:duration_ms],
               album_spotify_id: res[:album][:id],
               artist_spotify_id: res[:artists][0][:id]
             })
-
-        if artist[:spotify_id] == r[:artist_spotify_id]
-          # 曲を絞るために検証する範囲をアーティストごとに分ける
-          unless tracks[beginning..last].map { |h| h.has_value?(r[:name]) }.any?
+        # アーティストの同名曲を排除する
+        case
+          when !tracks[beginning..last].map { |h| h.has_value?(r[:name]) }.any?
             tracks << r
             last += 1
-          end
+          when query[:artist_spotify_id].nil?
+            tracks << r
+            last += 1
         end
       end
       beginning = tracks.size
@@ -182,5 +204,9 @@ module RequestUrl
       builder.headers['Authorization'] = "Bearer #{current_user.access_token}"
       builder.headers['Content-Type'] = 'application/json'
     end
+  end
+
+  def encode_spotify_id
+    Base64.urlsafe_encode64(ENV['SPOTIFY_CLIENT_ID'] + ':' + ENV['SPOTIFY_SECRET_ID'])
   end
 end

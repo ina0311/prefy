@@ -17,17 +17,12 @@ class SavedPlaylistForm
   attribute :track_ids
 
   validates :only_follow_artist, inclusion: { in: [true, false] }
-  validates :max_number_of_track, numericality: { in: 1..50 }
+  validates :max_number_of_track, numericality: { in: 1..50, allow_nil: true }
   validates :max_total_duration_ms, numericality: { in: 600_000..25_200_000, allow_nil: true }
 
-  with_options numericality: { only_integer: true }, format: { with: /[0-9]{4}/ } do
+  with_options numericality: { only_integer: true, allow_nil: true }, format: { with: /[0-9]{4}/ } do
     validates :since_year
     validates :before_year
-  end
-
-  with_options presence: true do
-    validates :user_id
-    validates :playlist_id
   end
 
   delegate :persisted?, to: :saved_playlist
@@ -62,7 +57,7 @@ class SavedPlaylistForm
         end
         
         delete_artist_ids = default_artist_ids - artist_ids
-        delete_artist_ids.each { |id| saved_playlist.artists.destroy(id) } if delete_artist_ids.present?
+        delete_artist_ids.each { |id| saved_playlist.include_artists.destroy(id) } if delete_artist_ids.present?
       end
 
       unless genre_ids.first.zero?
@@ -82,7 +77,7 @@ class SavedPlaylistForm
         end
 
         delete_track_ids = default_track_ids - track_ids
-        delete_track_ids.each { |id| saved_playlist.tracks.destroy(id) } if delete_track_ids.present?
+        delete_track_ids.each { |id| saved_playlist.include_tracks.destroy(id) } if delete_track_ids.present?
       end
     end
     saved_playlist.persisted?
