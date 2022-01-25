@@ -30,7 +30,7 @@ class Artist < ApplicationRecord
 
     artist_genres = artist_attributes.map { |artist| artist.slice(:spotify_id, :genres) }
 
-    artist_genres.delete_if { |h| h[:genres].nil? }
+    artist_genres.delete_if { |h| h[:genres].blank? }
     ArtistGenre.all_import(artist_genres)
   end
 end
