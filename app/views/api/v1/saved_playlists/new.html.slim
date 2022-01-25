@@ -23,7 +23,8 @@ main.col-md-9.ms-sm-auto.col-lg-10.px-md-4
         = f.number_field :max_number_of_track, min: 1, max: 50, prompt: '', class: 'form-control'
       .form-group
         = f.label :max_total_duration_ms
-        = f.number_field :max_total_duration_ms, min: 600_000, max: 25_200_000, prompt: '', class: 'form-control'
+        = f.number_field :duration_hour, min: 0, max: 6, prompt: '', class: 'form-control'
+        = f.number_field :duration_minute, min: 0, max: 50, prompt: '', class: 'form-control'
       .form-group
         = f.label :artist_ids, "アーティストを選択してください"
         = f.collection_select :artist_ids, Artist.all, :id, :name, { include_blank: true, multiple: true }, { name: "artist_ids[]" }

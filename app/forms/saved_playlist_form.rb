@@ -1,8 +1,11 @@
 class SavedPlaylistForm
   include ActiveModel::Model
   include ActiveModel::Attributes
-  include ActiveRecord::AttributeAssignment
+  include ActiveModel::Validations::Callbacks
   include ActionView::Helpers::DateHelper
+
+  HOUR_TO_MS = 3600000
+  MINUTE_TO_MS = 60000
 
   attr_accessor :user_id, :playlist_id
 
@@ -11,6 +14,8 @@ class SavedPlaylistForm
   attribute :since_year, :integer
   attribute :before_year, :integer
   attribute :max_number_of_track, :integer
+  attribute :duration_hour, :integer
+  attribute :duration_minute, :integer
   attribute :max_total_duration_ms, :integer
   attribute :artist_ids
   attribute :genre_ids
@@ -18,7 +23,11 @@ class SavedPlaylistForm
 
   validates :only_follow_artist, inclusion: { in: [true, false] }
   validates :max_number_of_track, numericality: { in: 1..50, allow_nil: true }
+  validates :duration_hour, numericality: { in: 0..7, allow_nil: true }
+  validates :duration_minute, numericality: { in: 0..50, allow_nil: true }
   validates :max_total_duration_ms, numericality: { in: 600_000..25_200_000, allow_nil: true }
+
+  before_validation :set_max_duration_ms
 
   with_options numericality: { only_integer: true, allow_nil: true }, format: { with: /[0-9]{4}/ } do
     validates :since_year
@@ -109,5 +118,11 @@ class SavedPlaylistForm
       genre_ids: saved_playlist.saved_playlist_genres,
       track_ids: saved_playlist.saved_playlist_include_tracks
     }
+  end
+
+  def set_max_duration_ms
+    duration_hour_to_ms = duration_hour * HOUR_TO_MS
+    duration_minute_to_ms = duration_minute * MINUTE_TO_MS
+    self.max_total_duration_ms = duration_hour_to_ms + duration_minute_to_ms
   end
 end

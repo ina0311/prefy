@@ -35,6 +35,8 @@ include PlaylistCompose
       :max_total_duration_ms,
       :max_number_of_track,
     ).merge(
+      duration_hour: params[:saved_playlist][:duration_hour].to_i,
+      duration_minute: params[:saved_playlist][:duration_minute].to_i,
       artist_ids: params[:artist_ids]&.map(&:to_i),
       genre_ids: params[:genre_ids]&.map(&:to_i),
       track_ids: params[:track_ids]&.map(&:to_i),
