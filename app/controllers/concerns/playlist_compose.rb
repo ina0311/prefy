@@ -13,7 +13,8 @@ module PlaylistCompose
     playlist_of_tracks = limit_track(saved_playlist, tracks)
 
     # 曲からアルバムの情報を取得する
-    album_attributes = conn_request_album_info(playlist_of_tracks.pluck(:album_spotify_id).uniq)
+    album_ids, artist_ids = uniq_album_and_artist_ids(playlist_of_tracks)
+    album_attributes = conn_request_album_info(album_ids, artist_ids)
     Album.all_insert(album_attributes)
     
     # 曲を保存する
@@ -81,7 +82,7 @@ module PlaylistCompose
     when saved_playlist.max_total_duration_ms.present?
       total_duration_ms = 0
       limited_tracks = []
-      tracks.each do |track|
+      tracks.shuffle.each do |track|
         total_duration_ms += track[:duration_ms]
         break if saved_playlist.max_total_duration_ms < total_duration_ms
         limited_tracks << track
@@ -90,5 +91,16 @@ module PlaylistCompose
     else
       track.sample(50)
     end
+  end
+
+  def uniq_album_and_artist_ids(tracks)
+    ids = tracks.map { |tracks| tracks.slice(:album_spotify_id, :artist_spotify_id) }.uniq
+    album_ids = []
+    artist_ids = []
+    ids.map do |h|
+      album_ids << h[:album_spotify_id]
+      artist_ids << h[:artist_spotify_id]
+    end
+    return album_ids, artist_ids
   end
 end

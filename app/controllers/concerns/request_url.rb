@@ -176,22 +176,23 @@ module RequestUrl
   end
 
   # アルバムの情報を取得する
-  def conn_request_album_info(ids)
+  def conn_request_album_info(album_ids, artist_ids)
     album_attributes = []
     offset = 0
+    response = []
     while true
-      response = conn_request.get("albums?ids=#{ids[offset, 20].join(',')}").body[:albums]
-
-      response.each do |res|
-        r = res.slice(:name, :release_date).merge({
-              spotify_id: res[:id],
-              image: res.dig(:images, 0, :url),
-              artist_spotify_id: res[:artists][0][:id]
-            })
-        album_attributes << r
-      end
-      break if response.size <= 19
+      response.push(conn_request.get("albums?ids=#{album_ids[offset, 20].join(',')}").body[:albums]).flatten!
       offset += 20
+      break if response.size != offset
+    end
+
+    response.zip(artist_ids).each do |res|
+      r = res[0].slice(:name, :release_date).merge({
+            spotify_id: res[0][:id],
+            image: res[0].dig(:images, 0, :url),
+            artist_spotify_id: res[0][:artists].pluck(:id).find { |id| id == res[1] }
+          })
+      album_attributes << r
     end
     album_attributes
   end

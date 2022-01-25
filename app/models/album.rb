@@ -5,7 +5,7 @@ class Album < ApplicationRecord
   with_options presence: true do
     validates :name
     validates :image, format: { with: /\Ahttps:\/\/i.scdn.co\/image\/[a-z0-9]+\z/ }
-    validates :release_date, format: { with: /\A\d{4}-\d{2}-\d{2}\z/ }
+    validates :release_date, format: { with: /\A\d{4}[-\d{2}]*[-\d{2}]*\z/ }
   end
 
 
