@@ -190,7 +190,7 @@ module RequestUrl
       r = res[0].slice(:name, :release_date).merge({
             spotify_id: res[0][:id],
             image: res[0].dig(:images, 0, :url),
-            artist_spotify_id: res[0][:artists].pluck(:id).find { |id| id == res[1] }
+            artist_spotify_id: res[1]
           })
       album_attributes << r
     end
