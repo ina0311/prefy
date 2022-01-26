@@ -13,6 +13,9 @@ html
   body
     .container-fluid 
       .row
+        - flash.each do |message_type, message|
+            = message
+
         - if logged_in?
           = render 'shared/sidebar'
         = yield
