@@ -6,11 +6,11 @@ class Playlist < ApplicationRecord
   has_many :included_tracks, through: :playlist_of_tracks, source: :track
 
   with_options presence: true do
-    validates :name
+    validates :name, format: { with: /\A[ぁ-んァ-ン一-龥\w]+/}
     validates :owner, format: { with: /\w+/ }
   end
 
-  validates :image, format: { with: /\Ahttps:\/\/([\w-]+\.*)+\/([\w]+\/)+([\w-]+[-\/\.]*)+\z/, allow_nil: true }
+  scope :my_playlists, ->(ids, user_id) { where(spotify_id: ids).where(owner: user_id) }
 
   def self.all_update(playlist_attributes)
     Playlist.transaction do
@@ -31,5 +31,13 @@ class Playlist < ApplicationRecord
     Album.all_insert(info[:albums])
     Track.all_insert(info[:tracks].uniq)
     PlaylistOfTrack.all_update(info[:tracks], playlist_id)
+  end
+
+  def self.create_by_response(response)
+    playlist = Playlist.create(spotify_id: response[:id],
+                            name: response[:name],
+                            image: response.dig(:image, 0, :url),
+                            owner: response[:owner][:id]
+                           )
   end
 end

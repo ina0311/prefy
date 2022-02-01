@@ -125,12 +125,11 @@ module RequestUrl
   end
 
   # プレイリストを作成する
-  def conn_request_playlist_create
+  def conn_request_playlist_create(name)
     response = conn_request.post("users/#{current_user.spotify_id}/playlists") do |request|
-      request.body = { name: "new playlist" }.to_json
+      request.body = name.present? ? { name: name }.to_json : { name: "new playlist" }.to_json
     end
-    playlist_attributes = response.body.slice(:name).merge({ spotify_id: response.body[:id], image: response.body.dig(:images, 0, :url), owner: response.body[:owner][:id] })
-    playlist = Playlist.create!(playlist_attributes)
+    Playlist.create_by_response(response.body)
   end
 
   # プレイリストの曲を更新する
@@ -181,7 +180,7 @@ module RequestUrl
     offset = 0
     response = []
     while true
-      response.push(conn_request.get("albums?ids=#{album_ids[offset, 20].join(',')}").body[:albums]).flatten!
+      response.concat(conn_request.get("albums?ids=#{album_ids[offset, 20].join(',')}").body[:albums])
       offset += 20
       break if response.size != offset
     end
