@@ -4,6 +4,8 @@ class FollowArtist < ApplicationRecord
 
   validates :user_id, uniqueness: { scope: :artist_id }
 
+  scope :genres_id_order_desc, -> { joins(artist: [artist_genres: :genre]).group("genres.id").having('count(*) >= ?', 5).order("count_all DESC").count }
+
   def self.list_update(attributes, user)
     Artist.all_update(attributes)
 

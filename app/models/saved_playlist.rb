@@ -11,7 +11,7 @@ class SavedPlaylist < ApplicationRecord
   has_many :genres, through: :saved_playlist_genres
 
   has_many :saved_playlist_include_artists, dependent: :destroy
-  has_many :include_artists, through: :saved_playlist_include_artists
+  has_many :include_artists, through: :saved_playlist_include_artists, source: :artist
 
   has_many :saved_playlist_include_tracks, dependent: :destroy
   has_many :include_tracks, through: :saved_playlist_include_tracks
@@ -37,10 +37,7 @@ class SavedPlaylist < ApplicationRecord
   end
 
   def self.destroy_from_my_playlist(deleted_my_playlist_ids, user)
-    destroy_saved_playlists = Playlist.where(spotify_id: deleted_my_playlist_ids).ids
-    SavedPlaylist.transaction do
-      user.saved_playlists.where(playlist_id: destroy_saved_playlists).destroy_all
-    end
+    Playlist.my_playlists(deleted_my_playlist_ids, user.spotify_id).destroy_all
   end
 
   def self.add_my_playlist(add_my_playlist_ids, user)
