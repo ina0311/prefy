@@ -2,14 +2,14 @@
 
 / メインページ
 section.home-section.home-full-height
-  .row.justify-content-center
+  .row.mt-5.pt-5.justify-content-center
     .chatches
       .main-chatche
         h1
           | Prefy
     .link-container
       .top-login
-        = link_to "ログイン", api_v1_auth_path, class: 'btn btn-primary btn-lg'
+        = link_to "ログイン", '/auth/spotify', method: :post, class: 'btn btn-primary btn-lg'
       .top-registration
         h3
           = link_to 'spotifyアカウントを作る', "https://www.spotify.com/jp/signup", target: '_blank', rel: 'noopener noreferrer'
