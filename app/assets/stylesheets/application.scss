@@ -1,0 +1,18 @@
+@import '../../../node_modules/bootstrap/scss/bootstrap.scss';
+@import 'home';
+@import 'sidebar';
+@import 'card';
+
+html, body {
+  position: relative;
+  height: 100%;
+  overflow-x: hidden;
+  padding: 0%;
+  margin: 0%;
+  background-color: #fff;
+}
+
+ul {
+  list-style: none;
+  padding: 20px;
+}

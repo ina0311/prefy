@@ -1,3 +1,13 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  root 'home#top'
+  get '/auth/:provider/callback', to: 'api/v1/sessions#create'
+  get '/auth/failure', to: 'api/v1/sessions#failure'
+  namespace :api do
+    namespace :v1 do
+      delete '/logout', to: 'sessions#destroy'
+
+      resources :myplaylists, controller: 'saved_playlists', only: %i[index new create], as: 'saved_playlists'
+      resources :playlists, only: %i[show]
+    end
+  end
 end

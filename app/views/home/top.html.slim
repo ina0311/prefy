@@ -1,0 +1,18 @@
+= render 'header'
+
+/ メインページ
+section.home-section.home-full-height
+  .row.mt-5.pt-5.justify-content-center
+    .chatches
+      .main-chatche
+        h1
+          | Prefy
+    .link-container
+      .top-login
+        = link_to "ログイン", '/auth/spotify', method: :post, class: 'btn btn-primary btn-lg'
+      .top-registration
+        h3
+          = link_to 'spotifyアカウントを作る', "https://www.spotify.com/jp/signup", target: '_blank', rel: 'noopener noreferrer'
+      .top-password-reset
+        h4
+          = link_to 'パスワードをお忘れですか？', "https://www.spotify.com/jp/password-reset/", target: '_blank', rel: 'noopener noreferrer'
