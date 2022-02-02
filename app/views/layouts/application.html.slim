@@ -11,4 +11,11 @@ html
     = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
 
   body
-    = yield
+    .container-fluid 
+      .row
+        - flash.each do |message_type, message|
+            = message
+
+        - if logged_in?
+          = render 'shared/sidebar'
+        = yield

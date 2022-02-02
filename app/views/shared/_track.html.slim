@@ -1,0 +1,15 @@
+.track.d-flex
+  .col-1
+    = image_tag track.album.image, class: 'track-album-image', size: '40x40'
+  .col
+    track-name
+      = track.name
+  .col
+    track-artist-name
+      = track.album.artist.name
+  .col
+    strack-album-name
+      = track.album.name
+  .col
+    track-playtime
+      = track.decorate.convert_ms_to_min_and_sec
