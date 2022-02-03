@@ -1,6 +1,5 @@
 class Api::V1::SessionsController < ApplicationController
-  skip_before_action :require_login, :access_token_changed?, :current_user
-  skip_before_action :verify_authenticity_token, only: :create
+  skip_before_action :verify_authenticity_token, :require_login, :access_token_changed?, only: %i(create failure)
 
   def create
     user = User.find_or_create_from_auth_hash!(request.env['omniauth.auth'])
@@ -12,7 +11,7 @@ class Api::V1::SessionsController < ApplicationController
   end
 
   def destroy
-    logout
+    reset_session
     redirect_to root_path
   end
 

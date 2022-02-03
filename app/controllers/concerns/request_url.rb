@@ -2,16 +2,6 @@ module RequestUrl
   extend ActiveSupport::Concern
   include SessionsHelper
 
-  # ユーザーの情報を取得する
-  def conn_request_profile(response)
-    request = Faraday::Connection.new("#{Constants::BASEURL}me") do |builder|
-      builder.response :json, parser_options: { symbolize_names: true }
-      builder.headers["Authorization"] = "#{response[:token_type]} #{response[:access_token]}"
-    end
-
-    request.get.body.slice(:id, :display_name, :country, :images)
-  end
-  
   # 制限が近いユーザーのアクセストークンを再取得する
   def conn_request_accesstoken
     body = {
@@ -204,9 +194,5 @@ module RequestUrl
       builder.headers['Authorization'] = "Bearer #{current_user.access_token}"
       builder.headers['Content-Type'] = 'application/json'
     end
-  end
-
-  def encode_spotify_id
-    Base64.urlsafe_encode64(ENV['SPOTIFY_CLIENT_ID'] + ':' + ENV['SPOTIFY_SECRET_ID'])
   end
 end
