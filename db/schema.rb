@@ -106,8 +106,7 @@ ActiveRecord::Schema.define(version: 2022_01_10_055049) do
   create_table "saved_playlists", charset: "utf8mb3", force: :cascade do |t|
     t.boolean "only_follow_artist"
     t.integer "that_generation_preference"
-    t.integer "since_year"
-    t.integer "before_year"
+    t.string "period"
     t.integer "max_number_of_track"
     t.integer "max_total_duration_ms"
     t.string "user_id", null: false

@@ -7,10 +7,10 @@ class SavedPlaylistForm
   HOUR_TO_MS = 3600000
   MINUTE_TO_MS = 60000
 
-  attr_accessor :playlist_name, :user_id, :playlist_id
-
+  attribute :playlist_name, :string
   attribute :only_follow_artist, :boolean
   attribute :that_generation_preference, :integer
+  attribute :period, :string
   attribute :since_year, :integer
   attribute :before_year, :integer
   attribute :max_number_of_track, :integer
@@ -19,9 +19,12 @@ class SavedPlaylistForm
   attribute :max_total_duration_ms, :integer
   attribute :artist_ids
   attribute :genre_ids
+  attribute :user_id, :string
+  attribute :playlist_id, :string
 
   validates :only_follow_artist, inclusion: { in: [true, false] }
   validates :max_number_of_track, numericality: { in: 1..50, allow_nil: true }
+  validates :period, format: { with: /([0-9]{4})+(-[0-9]{4})*/ }, allow_blank: true
   validates :duration_hour, numericality: { in: 1..7, allow_nil: true }
   validates :duration_minute, numericality: { in: 10..50, allow_nil: true }
   validates :max_total_duration_ms, numericality: { in: 600_000..25_200_000, allow_nil: true }
@@ -31,7 +34,7 @@ class SavedPlaylistForm
     validates :before_year
   end
 
-  before_validation :set_max_duration_ms
+  before_validation :set_max_duration_ms, :set_period
 
   delegate :persisted?, to: :saved_playlist
 
@@ -43,13 +46,12 @@ class SavedPlaylistForm
 
   def save(artist_ids, genre_ids)
     return if invalid?
-
+    
     ActiveRecord::Base.transaction do
       saved_playlist.update!(
         only_follow_artist: only_follow_artist,
         that_generation_preference: that_generation_preference,
-        since_year: since_year,
-        before_year: before_year,
+        period: period,
         max_number_of_track: max_number_of_track,
         max_total_duration_ms: max_total_duration_ms,
         user_id: user_id,
@@ -88,8 +90,7 @@ class SavedPlaylistForm
       playlist_name: saved_playlist.playlist&.name,
       only_follow_artist: saved_playlist.only_follow_artist,
       that_generation_preference: saved_playlist.that_generation_preference,
-      since_year: saved_playlist.since_year,
-      before_year: saved_playlist.before_year,
+      period: saved_playlist.period,
       max_number_of_track: saved_playlist.max_number_of_track,
       max_total_duration_ms: saved_playlist.max_total_duration_ms,
       user_id: saved_playlist.user_id,
@@ -104,5 +105,20 @@ class SavedPlaylistForm
     duration_minute_to_ms = duration_minute * MINUTE_TO_MS
     total = duration_hour_to_ms + duration_minute_to_ms
     self.max_total_duration_ms = total > 0 ? total : nil
+  end
+
+  def set_period
+    self.period = case 
+                  when since_year.blank? && before_year.blank?
+                    nil
+                  when since_year < before_year
+                    "#{since_year}-#{before_year}"
+                  when since_year > before_year
+                    "#{before_year}-#{since_year}"
+                  when since_year.present? && before_year.blank?
+                    "#{since_year}"
+                  when since_year.blank? && before_year.present?
+                    "#{before_year}"
+                  end
   end
 end

@@ -17,11 +17,9 @@ main.col-md-9.ms-sm-auto.col-lg-10.px-md-4
           = f.label :that_generation_preference
           = f.select :that_generation_preference, SavedPlaylist.that_generation_preferences.keys.to_a, { include_blank: true }
       .form-group
-        = f.label :since_year
-        = f.select :since_year, @form.years, { include_blank: true }
-      .form-group
-        = f.label :before_year
-        = f.select :before_year, @form.years, { include_blank: true }
+        = f.label :period
+        = f.select :since_year, @form.years, { include_blank: true }, class: 'form-control'
+        = f.select :before_year, @form.years, { include_blank: true }, class: 'form-control'
       .form-group
         = f.label :max_number_of_track
         = f.number_field :max_number_of_track, in: 1..50, step: 1, include_blank: true, class: 'form-control'

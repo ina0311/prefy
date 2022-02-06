@@ -3,8 +3,7 @@ class CreateSavedPlaylists < ActiveRecord::Migration[6.1]
     create_table :saved_playlists do |t|
       t.boolean :only_follow_artist
       t.integer :that_generation_preference
-      t.integer :since_year
-      t.integer :before_year
+      t.string :period
       t.integer :max_number_of_track
       t.integer :max_total_duration_ms
       t.references :user, null: false, type: :string
