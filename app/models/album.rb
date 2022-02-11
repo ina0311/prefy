@@ -1,5 +1,6 @@
 class Album < ApplicationRecord
-  belongs_to :artist
+  has_many :artist_and_albums, dependent: :destroy
+  has_many :artists, through: :artist_and_albums
   has_many :tracks, dependent: :destroy
 
   with_options presence: true do
