@@ -1,50 +1,21 @@
 class Api::V1::SessionsController < ApplicationController
-  skip_before_action :require_login, :access_token_changed?, :current_user
-  def authorize
-    response = AuthorizationSpotify.call(code_challenge: create_codechallenge)
+  skip_before_action :verify_authenticity_token, :require_login, :access_token_changed?, only: %i(create failure)
 
-    redirect_to "#{response[:location]}"
-  end
-
-  def callback
-    if params[:error]
-      redirect_to root_path, danger: '認可されませんでした'
-    else
-      get_token_response = GetToken.call(code: params[:code], code_verifier: find_codeverifier)
-
-      profile_response = conn_request_profile(get_token_response)
-      user_attributes = profile_response.merge(
-                          access_token: get_token_response[:access_token],
-                          refresh_token: get_token_response[:refresh_token]
-                        )
-      
-      login(user_attributes)
-
-      follow_artist_attributes = conn_request_follow_artist
-      FollowArtist.list_update(follow_artist_attributes, current_user)
-
-      redirect_to api_v1_saved_playlists_path, success: "ログインしました"
-    end
+  def create
+    rspotify_user = RSpotify::User.new(request.env['omniauth.auth'])
+    user = User.find_or_create_from_rspotify!(rspotify_user)
+    session[:user_id] = user[:spotify_id]
+    
+    Users::UserFollowArtistsGetter.call(rspotify_user, user)
+    redirect_to api_v1_saved_playlists_path, success: "ログインしました"
   end
 
   def destroy
-    logout
+    reset_session
     redirect_to root_path
   end
 
-  private
-
-  def create_codechallenge
-    # code_verifierの作成
-    session[:code_verifier] = SecureRandom.alphanumeric(64)
-    # code_challengeの作成
-    Base64.urlsafe_encode64(OpenSSL::Digest::SHA256.digest(session[:code_verifier]), padding: false)
-  end
-
-  def find_codeverifier
-    code_verifier = session[:code_verifier]
-    session.delete(:code_verifier)
-
-    code_verifier
+  def failure
+    redirect_to root_url, alert: "Authentication failed."
   end
 end

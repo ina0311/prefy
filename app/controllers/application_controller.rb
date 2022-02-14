@@ -2,10 +2,10 @@ class ApplicationController < ActionController::Base
   include SessionsHelper
   include RequestUrl
 
-  before_action :current_user, :require_login, :access_token_changed?
+  before_action :require_login, :access_token_changed?
 
   add_flash_types :success, :info, :warning, :danger
-
+  
   def access_token_expired?
     (Time.now - current_user.updated_at) > 3300
   end

@@ -31,11 +31,12 @@ include PlaylistCompose
     params.require(:saved_playlist).permit(
       :only_follow_artist,
       :that_generation_preference,
-      :since_year,
-      :before_year,
+      :period,
       :max_total_duration_ms,
       :max_number_of_track,
     ).merge(
+      since_year: params[:saved_playlist][:since_year],
+      before_year: params[:saved_playlist][:before_year],
       duration_hour: params[:saved_playlist][:duration_hour].to_i,
       duration_minute: params[:saved_playlist][:duration_minute].to_i,
       artist_ids: params[:artist_ids],

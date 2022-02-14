@@ -102,6 +102,8 @@ GEM
     crass (1.0.6)
     debug_inspector (1.1.0)
     diff-lcs (1.4.4)
+    domain_name (0.5.20190701)
+      unf (>= 0.0.5, < 1.0.0)
     dotenv (2.7.6)
     dotenv-rails (2.7.6)
       dotenv (= 2.7.6)
@@ -145,18 +147,18 @@ GEM
     ffi (1.15.4)
     globalid (1.0.0)
       activesupport (>= 5.0)
+    hashie (5.0.0)
     hpricot (0.8.6)
     html2slim (0.2.0)
       hpricot
+    http-cookie (1.0.4)
+      domain_name (~> 0.5)
     i18n (1.8.11)
       concurrent-ruby (~> 1.0)
-    interactor (3.1.2)
-    interactor-rails (2.2.1)
-      interactor (~> 3.0)
-      rails (>= 4.2)
     jbuilder (2.11.3)
       activesupport (>= 5.0.0)
     json (2.6.1)
+    jwt (2.3.0)
     listen (3.7.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -168,14 +170,38 @@ GEM
     marcel (1.0.2)
     matrix (0.4.2)
     method_source (1.0.0)
+    mime-types (3.4.1)
+      mime-types-data (~> 3.2015)
+    mime-types-data (3.2022.0105)
     mini_mime (1.1.2)
     minitest (5.14.4)
     msgpack (1.4.2)
+    multi_json (1.15.0)
+    multi_xml (0.6.0)
     multipart-post (2.1.1)
     mysql2 (0.5.3)
+    netrc (0.11.0)
     nio4r (2.5.8)
     nokogiri (1.12.5-x86_64-darwin)
       racc (~> 1.4)
+    oauth2 (1.4.7)
+      faraday (>= 0.8, < 2.0)
+      jwt (>= 1.0, < 3.0)
+      multi_json (~> 1.3)
+      multi_xml (~> 0.5)
+      rack (>= 1.2, < 3)
+    omniauth (2.0.4)
+      hashie (>= 3.4.6)
+      rack (>= 1.6.2, < 3)
+      rack-protection
+    omniauth-oauth2 (1.7.2)
+      oauth2 (~> 1.4)
+      omniauth (>= 1.9, < 3)
+    omniauth-rails_csrf_protection (1.0.0)
+      actionpack (>= 4.2)
+      omniauth (~> 2.0)
+    omniauth-spotify (0.0.13)
+      omniauth-oauth2 (~> 1.1)
     parallel (1.21.0)
     parser (3.0.3.1)
       ast (~> 2.4.1)
@@ -192,6 +218,8 @@ GEM
     rack (2.2.3)
     rack-mini-profiler (2.3.3)
       rack (>= 1.2.0)
+    rack-protection (2.1.0)
+      rack
     rack-proxy (0.7.0)
       rack
     rack-test (1.1.0)
@@ -240,6 +268,10 @@ GEM
     request_store (1.5.0)
       rack (>= 1.4)
     require_all (3.0.0)
+    rest-client (2.0.2)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 4.0)
+      netrc (~> 0.8)
     rexml (3.2.5)
     rspec-core (3.10.1)
       rspec-support (~> 3.10.0)
@@ -258,6 +290,10 @@ GEM
       rspec-mocks (~> 3.10)
       rspec-support (~> 3.10)
     rspec-support (3.10.3)
+    rspotify (2.11.1)
+      addressable (~> 2.8.0)
+      omniauth-oauth2 (>= 1.6)
+      rest-client (~> 2.0.2)
     rubocop (1.23.0)
       parallel (~> 1.10)
       parser (>= 3.0.0.0)
@@ -320,6 +356,9 @@ GEM
     turbolinks-source (5.2.0)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.8)
     unicode-display_width (2.1.0)
     web-console (4.2.0)
       actionview (>= 6.0.0)
@@ -348,7 +387,7 @@ PLATFORMS
 DEPENDENCIES
   activerecord-import
   annotate
-  attr_encrypted
+  attr_encrypted (~> 3.1.0)
   better_errors
   binding_of_caller
   bootsnap (>= 1.4.4)
@@ -360,10 +399,12 @@ DEPENDENCIES
   faraday
   faraday_middleware
   html2slim
-  interactor-rails (~> 2.0)
   jbuilder (~> 2.7)
   listen (~> 3.3)
   mysql2
+  omniauth
+  omniauth-rails_csrf_protection
+  omniauth-spotify
   pry-byebug
   puma (~> 5.0)
   rack-mini-profiler (~> 2.0)
@@ -371,6 +412,7 @@ DEPENDENCIES
   rails_best_practices
   relaxed-rubocop
   rspec-rails
+  rspotify
   rubocop
   rubocop-performance
   rubocop-rails

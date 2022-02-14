@@ -15,6 +15,18 @@ class User < ApplicationRecord
     validates :image, format: { with: /\Ahttps:\/\/i.scdn.co\/image\/[a-z0-9]+\z/ }
   end
 
+
+  def self.find_or_create_from_rspotify!(rspotify_user)
+    user = User.find_or_initialize_by(spotify_id: rspotify_user.id)
+    user.update!(
+      name: rspotify_user.display_name,
+      image: rspotify_user.images.dig(0, 'url'),
+      country: rspotify_user.country,
+      access_token: rspotify_user.credentials.token,
+      refresh_token: rspotify_user.credentials.refresh_token)
+    user
+  end
+
   def own?(playlist)
     spotify_id == playlist.owner
   end

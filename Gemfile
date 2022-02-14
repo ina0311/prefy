@@ -29,11 +29,15 @@ gem 'jbuilder', '~> 2.7'
 gem 'bootsnap', '>= 1.4.4', require: false
 
 gem 'draper'
-gem "interactor-rails", "~> 2.0"
 gem 'activerecord-import'
 
 gem 'dotenv-rails'
-gem "attr_encrypted"
+gem "attr_encrypted", "~> 3.1.0"
+gem 'omniauth'
+gem 'omniauth-spotify'
+gem "omniauth-rails_csrf_protection"
+gem 'rspotify'
+
 
 gem 'html2slim'
 gem 'slim-rails'
