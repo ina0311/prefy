@@ -2,11 +2,11 @@ class Api::V1::SessionsController < ApplicationController
   skip_before_action :verify_authenticity_token, :require_login, :access_token_changed?, only: %i(create failure)
 
   def create
-    user = User.find_or_create_from_auth_hash!(request.env['omniauth.auth'])
+    rspotify_user = RSpotify::User.new(request.env['omniauth.auth'])
+    user = User.find_or_create_from_rspotify!(rspotify_user)
     session[:user_id] = user[:spotify_id]
-
-    follow_artist_attributes = conn_request_follow_artist
-    FollowArtist.list_update(follow_artist_attributes, user)
+    
+    Users::UserFollowArtistsGetter.call(rspotify_user, user)
     redirect_to api_v1_saved_playlists_path, success: "ログインしました"
   end
 
