@@ -46,7 +46,7 @@ class SavedPlaylistForm
 
   def save(artist_ids, genre_ids)
     return if invalid?
-    
+
     ActiveRecord::Base.transaction do
       saved_playlist.update!(
         only_follow_artist: only_follow_artist,

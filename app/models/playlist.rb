@@ -34,10 +34,10 @@ class Playlist < ApplicationRecord
   end
 
   def self.create_by_response(response)
-    playlist = Playlist.create(spotify_id: response[:id],
-                            name: response[:name],
-                            image: response.dig(:image, 0, :url),
-                            owner: response[:owner][:id]
-                           )
+    Playlist.create(spotify_id: response[:id],
+                    name: response[:name],
+                    image: response.dig(:images, 0, :url),
+                    owner: response[:owner][:id]
+                    )
   end
 end

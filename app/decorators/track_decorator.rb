@@ -6,4 +6,9 @@ class TrackDecorator < ApplicationDecorator
     convert_min_and_sec = convert_ms_to_sec.divmod(60)
     return "#{convert_min_and_sec[0]}分 #{convert_min_and_sec[1]}秒"
   end
+
+  def artists
+    names = self.album.artists.map(&:name)
+    return "#{names.join(',')}"
+  end
 end
