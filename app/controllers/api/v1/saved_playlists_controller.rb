@@ -1,5 +1,4 @@
 class Api::V1::SavedPlaylistsController < ApplicationController
-include PlaylistCompose
 
   def index
     # ユーザーのプレイリストの情報を所得
