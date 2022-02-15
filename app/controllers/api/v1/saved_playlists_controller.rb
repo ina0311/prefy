@@ -12,17 +12,22 @@ include PlaylistCompose
   end
 
   def create
-    @playlist = conn_request_playlist_create(params[:saved_playlist][:playlist_name])
-    
+    @playlist = Playlists::PlaylistCreater.call(current_user, playlist_name_params)
     @form = SavedPlaylistForm.new(saved_playlist_params)
 
     if @form.save(@form.artist_ids, @form.genre_ids)
-      @saved_playlist = current_user.saved_playlists.find_by(playlist_id: @form.playlist_id)
-      playlist_track_update(@saved_playlist)
-      redirect_to api_v1_playlist_path(@playlist.id)
+      @saved_playlist = SavedPlaylist.find_by(playlist_id: @form.playlist_id)
     else
       render :new
     end
+
+    @playlist_of_tracks = SavedPlaylists::BasedOnSavedPlaylistTracksGetter.call(@saved_playlist)
+    albums = Albums::AlbumRegistrar.call(@playlist_of_tracks)
+    Artists::ArtistRegistrar.call(albums_convert_artist_ids(albums), albums)
+    Playlists::TrackUpdater.call(current_user, @saved_playlist.playlist_id, @playlist_of_tracks)
+    # TODO エラー処理
+
+    redirect_to api_v1_playlist_path(@playlist.id)
   end
 
   private
@@ -44,5 +49,13 @@ include PlaylistCompose
       user_id: current_user.id,
       playlist_id: @playlist.id
     )
+  end
+
+  def playlist_name_params
+    params.require(:saved_playlist).permit(:playlist_name)[:playlist_name]
+  end
+
+  def albums_convert_artist_ids(albums)
+    albums.flatten.map { |a| a.artists.map(&:id) }
   end
 end

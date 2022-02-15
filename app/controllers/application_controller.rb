@@ -12,8 +12,8 @@ class ApplicationController < ActionController::Base
 
   def access_token_changed?
     if access_token_expired?
-      response = conn_request_accesstoken
-      @current_user.update!(access_token: response[:access_token], refresh_token: response[:refresh_token])
+      response = conn_request_access_token(current_user)
+      @current_user.update!(access_token: response[:access_token])
     end
   end
 end

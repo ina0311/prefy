@@ -2,17 +2,11 @@ module RequestUrl
   extend ActiveSupport::Concern
   include SessionsHelper
 
-  def request_find_user(user_id)
-    
-    binding.pry
-    
-    RSpotify::User.find(user_id)
-  end
   # 制限が近いユーザーのアクセストークンを再取得する
-  def conn_request_access_token
+  def conn_request_access_token(user)
     body = {
       grant_type: 'refresh_token',
-      refresh_token: current_user.refresh_token
+      refresh_token: user.refresh_token
     }
 
     request_access_token = Faraday::Connection.new(Constants::REQUESTTOKENURL) do |builder|
@@ -110,10 +104,10 @@ module RequestUrl
 
   # プレイリストを作成する
   def request_create_playlist(user, name)
-    
-    binding.pry
-    
-    user.create_playlist!(name)
+    @user = user
+    response = conn_request.post("users/#{@user.spotify_id}/playlists") do |req|
+      req.body = name.present? ? { name: name }.to_json : { name: "new playlist" }.to_json
+    end
   end
 
   # プレイリストを取得する
@@ -122,11 +116,9 @@ module RequestUrl
   end
 
   # プレイリストの曲を更新する
-  def request_playlist_tracks_update(playlist, track_ids)
-    
-    binding.pry
-    
-    playlist.add_tracks!(track_ids)
+  def request_playlist_tracks_update(user, playlist_id, query)
+    @user = user
+    conn_request.put("playlists/#{playlist_id}/tracks?uris=spotify:track:#{query}").status
   end
 
   # 条件にそって曲を取得する
@@ -161,7 +153,7 @@ module RequestUrl
   def conn_request
     Faraday::Connection.new(Constants::BASEURL) do |builder|
       builder.response :json, parser_options: { symbolize_names: true }
-      builder.headers['Authorization'] = "Bearer #{current_user.access_token}"
+      builder.headers['Authorization'] = "Bearer #{@user.access_token}"
       builder.headers['Content-Type'] = 'application/json'
     end
   end

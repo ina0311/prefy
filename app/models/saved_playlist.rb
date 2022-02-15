@@ -1,10 +1,11 @@
 class SavedPlaylist < ApplicationRecord
-  include RequestUrl
+  include ConvertQuery
+  include TrackRefine
 
   belongs_to :user
   belongs_to :playlist
+
   validates :user_id, uniqueness: { scope: :playlist_id }
-  
   # その他のバリデーションはFormに記載
 
   has_many :saved_playlist_genres, dependent: :destroy
@@ -46,5 +47,35 @@ class SavedPlaylist < ApplicationRecord
                                   {user_id: user.id, playlist_id: id, created_at: Time.current, updated_at: Time.current}
                                 end
     SavedPlaylist.insert_all(saved_playlist_atttibutes)
+  end
+
+  def create_querys
+    fillter = self.convert_fillter
+    convert_querys(fillter)
+  end
+
+  def convert_fillter
+    artists = self.get_artists if self.only_follow_artist.present?
+    targets = self.include_artists if self.include_artists.present?
+
+    { artists: artists, period: self.period, targets: targets}
+  end
+
+  # ジャンルが指定されていればフォローアーティストを絞り込み検索する
+  def get_artists
+    if self.genres.present?
+      self.user.follow_artist_lists.includes(:artist_genre_lists).search_genre_names(self.genres.only_names)
+    else
+      self.user.follow_artist_lists
+    end
+  end
+
+  # saved_playlistのカラムによって絞り込み方法を変える
+  def refine_tracks(tracks, target_tracks)
+    if self.max_number_of_track.present?
+      playlist_of_tracks = self.refine_by_max_number_of_track(tracks, target_tracks)
+    else
+      playlist_of_tracks = self.refine_by_duration_ms(tracks, target_tracks)
+    end
   end
 end
