@@ -12,14 +12,14 @@ class Playlist < ApplicationRecord
 
   scope :my_playlists, ->(ids, user_id) { where(spotify_id: ids).where(owner: user_id) }
 
-  def self.all_update(playlist_attributes)
+  def self.all_update(response)
     Playlist.transaction do
-      playlists = playlist_attributes.map do |playlist|
+      playlists = response.map do |res|
                     Playlist.new(
-                      spotify_id: playlist[:spotify_id],
-                      name: playlist[:name],
-                      owner: playlist[:owner],
-                      image: playlist[:image]
+                      spotify_id: res[:id],
+                      name: res[:name],
+                      owner: res[:owner][:id],
+                      image: res.dig(:images, 0, :url)
                     )
                   end
       Playlist.import!(playlists, on_duplicate_key_update: %i[name image])

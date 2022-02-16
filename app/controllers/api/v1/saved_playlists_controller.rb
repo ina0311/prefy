@@ -2,8 +2,7 @@ class Api::V1::SavedPlaylistsController < ApplicationController
 
   def index
     # ユーザーのプレイリストの情報を所得
-    playlist_attributes = conn_request_saved_playlists
-    @saved_playlists = SavedPlaylist.list_get(playlist_attributes, current_user)
+    @saved_playlists = Users::PlaylistsGetter.call(current_user)
   end
 
   def new

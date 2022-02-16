@@ -47,24 +47,17 @@ module RequestUrl
   end
 
   # ユーザーが保存しているプレイリストを取得する
-  def conn_request_saved_playlists
-    saved_playlist_params = []
+  def request_saved_playlists(user)
+    @user = user
+    playlists = []
     offset = 0
     while true
-      if offset.zero?
-        response = conn_request.get('me/playlists?limit=50').body[:items]
-      else
-        response = conn_request.get("me/playlists?limit=50&offset=#{offset}").body[:items]
-      end
-
-      response.each do |res|
-        r = res.slice(:name).merge({ spotify_id: res[:id], owner: res[:owner][:id], image: res.dig(:images, 0, :url) })
-        saved_playlist_params << r
-      end
+      response = conn_request.get("users/#{@user.spotify_id}/playlists?limit=50&offset=#{offset}").body[:items]
+      playlists.concat(response)
       break if response.size <= 49
       offset += 50
     end
-    saved_playlist_params
+    playlists
   end
 
   # プレイリストの情報を取得する
