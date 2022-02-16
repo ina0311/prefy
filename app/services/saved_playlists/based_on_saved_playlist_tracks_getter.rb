@@ -23,7 +23,6 @@ class SavedPlaylists::BasedOnSavedPlaylistTracksGetter < SpotifyService
   def check_tracks
     @tracks = nil unless @tracks.any?
     @target_tracks = nil unless @target_tracks.flatten.any?
-    
   end
 
   def search_tracks(querys)

@@ -14,10 +14,7 @@ class Users::PlaylistsGetter < SpotifyService
     now = response.map { |res| res[:id] }
 
     delete_playlists(now, defaults)
-    
     add_my_playlists(now, defaults)
-
-    @user.my_playlists
   end
 
   private

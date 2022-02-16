@@ -2,6 +2,10 @@ module RequestUrl
   extend ActiveSupport::Concern
   include SessionsHelper
 
+  def request_user(user_id)
+    RSpotify::User.find(user_id)
+  end
+
   # 制限が近いユーザーのアクセストークンを再取得する
   def conn_request_access_token(user)
     body = {
@@ -60,39 +64,9 @@ module RequestUrl
     playlists
   end
 
-  # プレイリストの情報を取得する
-  def request_playlist_info(playlist)
-    response = conn_request.get("playlists/#{playlist.spotify_id}/tracks").body[:items]
-    return unless response.present?
-
-    response.delete_if { |res| res[:track][:id].nil? }
-    artist_attributes = []
-    album_attributes = []
-    track_attributes = []
-    artist_ids = response.map { |res| res[:track][:artists][0][:id] }
-    artist_attributes = request_artists_info(artist_ids.compact.uniq)
-
-    response.each do |res|
-      album = res[:track][:album].slice(:name).merge({
-                spotify_id: res[:track][:album][:id],
-                image: res.dig(:track, :album, :images, 0, :url),
-                release_date: res[:track][:album][:release_date],
-                artist_spotify_id: res[:track][:artists][0][:id]
-              })
-      album_attributes.push(album) unless album_attributes.include?(album)
-    end
-
-    response.each do |res|
-      next if res[:track][:id].nil?
-      track = res[:track].slice(:name).merge({
-                spotify_id: res[:track][:id],
-                duration_ms: res[:track][:duration_ms],
-                album_spotify_id: res[:track][:album][:id]
-              })
-      track_attributes.push(track)
-    end
-
-    return { artists: artist_attributes, albums: album_attributes, tracks: track_attributes }
+  # プレイリストを取得する
+  def request_get_playlist(playlist_id)
+    RSpotify::Playlist.find_by_id(playlist_id)
   end
 
   # プレイリストを作成する
@@ -103,17 +77,17 @@ module RequestUrl
     end
   end
 
-  # プレイリストを取得する
-  def request_find_playlist(playlist_id)
-    RSpotify::Playlist.find_by_id(playlist_id)
-  end
-
   # プレイリストの曲を更新する
   def request_playlist_tracks_update(user, playlist_id, query)
     @user = user
     conn_request.put("playlists/#{playlist_id}/tracks?uris=spotify:track:#{query}").status
   end
 
+  # 曲を取得する
+  def request_get_tracks(track_ids)
+    RSpotify::Track.find(track_ids)
+  end
+  
   # 条件にそって曲を取得する
   def request_search_tracks(querys)
     tracks = []
