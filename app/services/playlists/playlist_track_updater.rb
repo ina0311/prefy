@@ -1,4 +1,4 @@
-class Playlists::TrackUpdater < SpotifyService
+class Playlists::PlaylistTrackUpdater < SpotifyService
   def self.call(user, playlist_id, tracks)
     new(user, playlist_id, tracks).update
   end
@@ -13,7 +13,7 @@ class Playlists::TrackUpdater < SpotifyService
     query = @tracks.pluck(:spotify_id).join(',spotify:track:')
     response = request_playlist_tracks_update(@user, @playlist_id, query)
     if response == 201
-      Track.import!(@tracks, ignore: true)
+      Tracks::TrackInfoGetter.call(@tracks.pluck(:spotify_id))
       PlaylistOfTrack.all_update(@playlist_id, @tracks.map(&:spotify_id))
     end
     

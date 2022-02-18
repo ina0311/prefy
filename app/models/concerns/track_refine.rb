@@ -11,9 +11,9 @@ module TrackRefine
         playlist_of_tracks.concat(tg_tracks.sample(self.max_number_of_track * PERCENTAGE))
       end
       remaining = self.max_number_of_track - playlist_of_tracks.size
-      playlist_of_tracks.concat(tracks.sample(remaining))
+      playlist_of_tracks.concat(tracks.sample(remaining)).shuffle!
     else
-      playlist_of_tracks.concat(tracks.sample(self.max_number_of_track))
+      playlist_of_tracks.concat(tracks.sample(self.max_number_of_track)).shuffle!
     end
   end
 
@@ -26,11 +26,10 @@ module TrackRefine
         playlist_of_tracks.concat(check_total_duration_and_add_tracks(limit, tg_tracks))
       end
       remaining = self.max_duration_ms - playlist_of_tracks.pluck(:duration_ms).sum
-      playlist_of_tracks.concat(check_total_duration_and_add_tracks(remaining, tracks))
+      playlist_of_tracks.concat(check_total_duration_and_add_tracks(remaining, tracks)).shuffle!
     else
-      playlist_of_tracks.concat(check_total_duration_and_add_tracks(self.max_total_duration_ms, tracks))
+      playlist_of_tracks.concat(check_total_duration_and_add_tracks(self.max_total_duration_ms, tracks)).shuffle!
     end
-    playlist_of_tracks
   end
 
   # 再生時間を判定し、追加

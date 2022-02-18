@@ -2,6 +2,10 @@ module RequestUrl
   extend ActiveSupport::Concern
   include SessionsHelper
 
+  def request_user(user_id)
+    RSpotify::User.find(user_id)
+  end
+
   # 制限が近いユーザーのアクセストークンを再取得する
   def conn_request_access_token(user)
     body = {
@@ -47,59 +51,22 @@ module RequestUrl
   end
 
   # ユーザーが保存しているプレイリストを取得する
-  def conn_request_saved_playlists
-    saved_playlist_params = []
+  def request_saved_playlists(user)
+    @user = user
+    playlists = []
     offset = 0
     while true
-      if offset.zero?
-        response = conn_request.get('me/playlists?limit=50').body[:items]
-      else
-        response = conn_request.get("me/playlists?limit=50&offset=#{offset}").body[:items]
-      end
-
-      response.each do |res|
-        r = res.slice(:name).merge({ spotify_id: res[:id], owner: res[:owner][:id], image: res.dig(:images, 0, :url) })
-        saved_playlist_params << r
-      end
+      response = conn_request.get("users/#{@user.spotify_id}/playlists?limit=50&offset=#{offset}").body[:items]
+      playlists.concat(response)
       break if response.size <= 49
       offset += 50
     end
-    saved_playlist_params
+    playlists
   end
 
-  # プレイリストの情報を取得する
-  def request_playlist_info(playlist)
-    response = conn_request.get("playlists/#{playlist.spotify_id}/tracks").body[:items]
-    return unless response.present?
-
-    response.delete_if { |res| res[:track][:id].nil? }
-    artist_attributes = []
-    album_attributes = []
-    track_attributes = []
-    artist_ids = response.map { |res| res[:track][:artists][0][:id] }
-    artist_attributes = request_artists_info(artist_ids.compact.uniq)
-
-    response.each do |res|
-      album = res[:track][:album].slice(:name).merge({
-                spotify_id: res[:track][:album][:id],
-                image: res.dig(:track, :album, :images, 0, :url),
-                release_date: res[:track][:album][:release_date],
-                artist_spotify_id: res[:track][:artists][0][:id]
-              })
-      album_attributes.push(album) unless album_attributes.include?(album)
-    end
-
-    response.each do |res|
-      next if res[:track][:id].nil?
-      track = res[:track].slice(:name).merge({
-                spotify_id: res[:track][:id],
-                duration_ms: res[:track][:duration_ms],
-                album_spotify_id: res[:track][:album][:id]
-              })
-      track_attributes.push(track)
-    end
-
-    return { artists: artist_attributes, albums: album_attributes, tracks: track_attributes }
+  # プレイリストを取得する
+  def request_get_playlist(playlist_id)
+    RSpotify::Playlist.find_by_id(playlist_id)
   end
 
   # プレイリストを作成する
@@ -110,17 +77,34 @@ module RequestUrl
     end
   end
 
-  # プレイリストを取得する
-  def request_find_playlist(playlist_id)
-    RSpotify::Playlist.find_by_id(playlist_id)
-  end
-
   # プレイリストの曲を更新する
   def request_playlist_tracks_update(user, playlist_id, query)
     @user = user
     conn_request.put("playlists/#{playlist_id}/tracks?uris=spotify:track:#{query}").status
   end
 
+  # 曲を取得する
+  def request_get_tracks(track_ids)
+    offset = 0
+    response = []
+    while true
+      response.concat(RSpotify::Track.find(track_ids[offset, 50]))
+      break if response.size == track_ids.size
+      offset += 50
+    end
+    response
+  end
+
+  def request_reset_playlist_tracks(playlist_id, user, request_bodys)
+    @user = user
+    request_bodys.each do |request_body|
+      response = conn_request.delete("playlists/#{playlist_id}/tracks") do |req|
+                   req.body = request_body.to_json
+                 end
+      break if response.status != 200 
+    end
+  end
+  
   # 条件にそって曲を取得する
   def request_search_tracks(querys)
     tracks = []

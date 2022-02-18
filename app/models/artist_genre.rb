@@ -4,12 +4,15 @@ class ArtistGenre < ApplicationRecord
 
   validates :artist_id, uniqueness: { scope: :genre_id }
 
-  def self.all_import(artist_and_genre_names)
+  def self.all_import!(response)
     ArtistGenre.transaction do
+      artist_and_genre_names = convert_artist_and_genre_names(response)
       artist_genres = convert_artist_genres(artist_and_genre_names)
       ArtistGenre.import!(artist_genres, ignore: true)
     end
   end
+
+  private
 
   def self.convert_artist_genres(artist_and_genre_names)
     artist_genres = []
@@ -29,5 +32,16 @@ class ArtistGenre < ApplicationRecord
       )
     end
     artist_genres
+  end
+
+  def self.convert_artist_and_genre_names(response)
+    artist_and_genres = response.map do |res| 
+                          next if res.genres.blank?
+                          {
+                            artist_id: res.id, 
+                            genre_names: res.genres 
+                          }
+                        end
+    artist_and_genres.compact
   end
 end

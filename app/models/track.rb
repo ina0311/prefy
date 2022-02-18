@@ -13,14 +13,14 @@ class Track < ApplicationRecord
 
   class << self
     
-    def all_insert(track_attributes)
+    def all_import!(response)
       Track.transaction do
-        tracks = track_attributes.map do |track|
+        tracks = response.map do |res|
           Track.new(
-            spotify_id: track[:spotify_id],
-            name: track[:name],
-            duration_ms: track[:duration_ms],
-            album_id: track[:album_spotify_id]
+            spotify_id: res.id,
+            name: res.name,
+            duration_ms: res.duration_ms,
+            album_id: res.album.id
           )
         end
   

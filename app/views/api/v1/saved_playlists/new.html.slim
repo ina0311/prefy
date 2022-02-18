@@ -2,32 +2,4 @@ main.col-md-9.ms-sm-auto.col-lg-10.px-md-4
   .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.md-3.border-bottom
     h2.page-title
       | プレイリスト作成
-    = form_with model: @form, url: api_v1_saved_playlists_path, local: true do |f|
-      .form-group
-        = f.label :playlist_name
-        = f.text_field :playlist_name, class: 'form-control'
-      .form-group
-        = f.label :only_follow_artist
-        = f.check_box :only_follow_artist, { checked: true }, true, false
-      .form-group
-        = f.label :genre_ids, 'フォローアーティストのジャンルを選択してください'
-        = f.collection_select :genre_ids, Genre.order_by_ids_search(@current_user.follow_artists.genres_id_order_desc.keys), :id, :name, { include_blank: true, multiple: true }, { name: "genre_ids[]" }
-      - if @current_user.age.present?
-        .form-group
-          = f.label :that_generation_preference
-          = f.select :that_generation_preference, SavedPlaylist.that_generation_preferences.keys.to_a, { include_blank: true }
-      .form-group
-        = f.label :period
-        = f.select :since_year, @form.years, { include_blank: true }, class: 'form-control'
-        = f.select :before_year, @form.years, { include_blank: true }, class: 'form-control'
-      .form-group
-        = f.label :max_number_of_track
-        = f.number_field :max_number_of_track, in: 1..50, step: 1, include_blank: true, class: 'form-control'
-      .form-group
-        = f.label :max_total_duration_ms
-        = f.number_field :duration_hour, in: 1..6, step: 1, include_blank: true, class: 'form-control'
-        = f.number_field :duration_minute, in: 10..50, step: 10, include_blank: true, class: 'form-control'
-      .form-group
-        = f.label :artist_ids, "アーティストを選択してください"
-        = f.collection_select :artist_ids, current_user.follow_artist_lists.all, :spotify_id, :name, { include_blank: true, multiple: true }, { name: "artist_ids[]" }
-      = f.submit '作成する', class: 'btn btn-primary'
+    = render 'form', form: @form, url: api_v1_saved_playlists_path, method: :post

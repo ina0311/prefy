@@ -4,7 +4,7 @@ class ArtistAndAlbum < ApplicationRecord
 
   validates :artist_id, uniqueness: { scope: :album_id }
 
-  def self.all_insert(albums)
+  def self.all_import!(albums)
     ArtistAndAlbum.transaction do
       objects = albums.map do |album|
                   album.artists.map(&:id).map do |artist_id|
