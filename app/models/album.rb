@@ -9,7 +9,7 @@ class Album < ApplicationRecord
     validates :release_date, format: { with: /\A\d{4}[-\d{2}]*[-\d{2}]*\z/ }
   end
 
-    def self.all_insert(response)
+    def self.all_import!(response)
       Album.transaction do
         albums = response.map do |res|
                   Album.new(

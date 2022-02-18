@@ -13,7 +13,7 @@ class Track < ApplicationRecord
 
   class << self
     
-    def all_import(response)
+    def all_import!(response)
       Track.transaction do
         tracks = response.map do |res|
           Track.new(

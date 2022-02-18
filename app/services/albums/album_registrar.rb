@@ -10,7 +10,7 @@ class Albums::AlbumRegistrar < SpotifyService
   def register
     ids = uniq_album_ids
     albums = request_album_info(ids)
-    Album.all_insert(albums)
+    Album.all_import!(albums)
     albums
   end
 

@@ -8,6 +8,8 @@ main.col-md-9.ms-sm-auto.col-lg-10.px-md-4
           = image_tag 'default_image.png', size: '100x100', class: 'card-thumnail'
       .h5.col.playlist-name
         | #{@playlist.name}
+      - if current_user.own?(@playlist)
+        = render partial: "api/v1/saved_playlists/form", locals: { form: @form, url: api_v1_saved_playlist_path, method: :put }
     .container
       .tracks-lists.row
         = render partial: 'shared/track', collection: @tracks

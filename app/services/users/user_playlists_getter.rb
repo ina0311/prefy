@@ -1,4 +1,4 @@
-class Users::PlaylistsGetter < SpotifyService
+class Users::UserPlaylistsGetter < SpotifyService
   def self.call(user)
     new(user).get
   end

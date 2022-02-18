@@ -1,4 +1,5 @@
 class SavedPlaylists::BasedOnSavedPlaylistTracksGetter < SpotifyService
+  # saved_playlistの情報からクエリを作成、曲を取得、絞り込み
   def self.call(saved_playlist)
     new(saved_playlist).get
   end
@@ -22,7 +23,7 @@ class SavedPlaylists::BasedOnSavedPlaylistTracksGetter < SpotifyService
   # 条件にあった曲がない場合にnil
   def check_tracks
     @tracks = nil unless @tracks.any?
-    @target_tracks = nil unless @target_tracks.flatten.any?
+    @target_tracks = nil unless @target_tracks&.flatten&.any?
   end
 
   def search_tracks(querys)

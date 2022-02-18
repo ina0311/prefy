@@ -85,7 +85,24 @@ module RequestUrl
 
   # 曲を取得する
   def request_get_tracks(track_ids)
-    RSpotify::Track.find(track_ids)
+    offset = 0
+    response = []
+    while true
+      response.concat(RSpotify::Track.find(track_ids[offset, 50]))
+      break if response.size == track_ids.size
+      offset += 50
+    end
+    response
+  end
+
+  def request_reset_playlist_tracks(playlist_id, user, request_bodys)
+    @user = user
+    request_bodys.each do |request_body|
+      response = conn_request.delete("playlists/#{playlist_id}/tracks") do |req|
+                   req.body = request_body.to_json
+                 end
+      break if response.status != 200 
+    end
   end
   
   # 条件にそって曲を取得する

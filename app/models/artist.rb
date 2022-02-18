@@ -7,10 +7,8 @@ class Artist < ApplicationRecord
   has_many :saved_playlist_include_artists, dependent: :destroy
   has_many :follow_artists, dependent: :destroy
 
-  with_options presence: true do
-    validates :name
-    validates :image, format: { with: /\Ahttps:\/\/i.scdn.co\/image\/[a-z0-9]+\z/ }
-  end
+  validates :image, format: { with: /\Ahttps:\/\/i.scdn.co\/image\/[a-z0-9]+\z/, allow_nil: true }
+  validates :name, presence: true
 
   scope :search_genre_names, ->(names) { where(artist_genre_lists: { name: names }) }
 
