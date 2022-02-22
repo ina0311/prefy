@@ -6,12 +6,12 @@ $(document).on("turbolinks:load", function() {
     const $this = $(this)
 
     let ops = {
+      allowClear: true,
       multiple: true,
       maximumSelectionLength: 3,
       dropdownAutoWidth: true,
       theme: 'classic',
-      width: 'resolve',
-      debug: 'true'
+      width: 'resolve'
     }
 
     $this.select2(ops)

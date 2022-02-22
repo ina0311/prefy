@@ -34,12 +34,18 @@ class SavedPlaylistForm
     validates :before_year
   end
 
+  with_options length: { maximum: 3 } do
+    validates :artist_ids
+    validates :genre_ids
+  end
+
   before_validation :set_max_duration_ms, :set_period
 
   delegate :persisted?, to: :saved_playlist
 
   def initialize(attributes = nil, saved_playlist: SavedPlaylist.new)
     @saved_playlist = saved_playlist
+    binding.pry
     attributes ||= default_attributes
     super(attributes)
   end
@@ -91,8 +97,8 @@ class SavedPlaylistForm
       max_total_duration_ms: saved_playlist.max_total_duration_ms,
       user_id: saved_playlist.user_id,
       playlist_id: saved_playlist.playlist_id,
-      artist_ids: saved_playlist.saved_playlist_include_artists,
-      genre_ids: saved_playlist.saved_playlist_genres
+      artist_ids: saved_playlist.saved_playlist_include_artists.pluck(:artist_id),
+      genre_ids: saved_playlist.saved_playlist_genres.pluck(:genre_id)
     }
   end
 
