@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
 
   before_action :require_login, :access_token_changed?
 
-  add_flash_types :success, :info, :warning, :danger
+  add_flash_types :success, :secondary, :info, :warning, :danger
   
   def access_token_expired?
     (Time.now - current_user.updated_at) > 3300

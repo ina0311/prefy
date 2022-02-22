@@ -1,2 +1,7 @@
-| $("#modal-edit-playlist").html("#{j(render 'modal_edit_playlist', playlist: @playlist, tracks: @tracks)}");
-| $("#modal-edit-playlist").modal('show');
+| $("#modal-container").html("#{j(render 'modal_edit_playlist', playlist: @playlist, tracks: @tracks)}");
+| $("#modal-container").modal('show');
+
+| $("#modal-close").click(function() {
+|   $('.modal-backdrop').removeClass();
+|   $("#modal-container").modal('hide');
+| });

@@ -8,8 +8,13 @@
     track-artist-name
       = track.decorate.artists
   .col
-    strack-album-name
+    track-album-name
       = track.album.name
   .col
     track-playtime
       = track.decorate.convert_ms_to_min_and_sec
+
+  - if action_name == 'edit'
+    .col
+      track-destory-button
+        / = render partial: 'api/v1/tracks/delete_button', locals: { track_id: track.spotify_id }

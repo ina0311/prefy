@@ -1,9 +1,13 @@
-.modal#modal-edit-playlist
-  .modal-dialog
-    .modal-content 
-      .modal-header 
-        h5.modal-title プレイリストの編集
-          button.close aria-label="Close" data-dismiss="modal" type="button"
-            span aria-hidden="true" ✗
+#modal-edit-playlist tabindex="-1" aria-hidden="true"
+    .modal-dialog.modal-xl
+      .modal-content 
+        .modal-header 
+          .modal-title
+            h5
+              | プレイリストの編集
+
         .modal-body
-          
+          = render partial: 'api/v1/tracks/track', collection: @playlist.included_tracks, format: :html
+        .modal-footer
+          button.close#modal-close aria-label="Close" data-bs-dismiss="modal" type="button" aria-hidden="true"
+            | 閉じる
