@@ -56,10 +56,10 @@ class SavedPlaylist < ApplicationRecord
 
   # saved_playlistのカラムによって絞り込み方法を変える
   def refine_tracks(tracks, target_tracks)
-    if self.max_number_of_track.present?
-      playlist_of_tracks = self.refine_by_max_number_of_track(tracks, target_tracks)
+    if self.max_total_duration_ms.present?
+      self.refine_by_duration_ms(tracks, target_tracks)
     else
-      playlist_of_tracks = self.refine_by_duration_ms(tracks, target_tracks)
+      self.refine_by_max_number_of_track(tracks, target_tracks)
     end
   end
 end

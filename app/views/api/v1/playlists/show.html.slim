@@ -9,7 +9,8 @@ main.col-md-9.ms-sm-auto.col-lg-10.px-md-4
       .h5.col.playlist-name
         | #{@playlist.name}
       - if current_user.own?(@playlist)
-        = render partial: "api/v1/saved_playlists/form", locals: { form: @form, url: api_v1_saved_playlist_path, method: :put }
+        = render partial: 'api/v1/saved_playlists/form', locals: { form: @form, url: api_v1_saved_playlist_path, method: :put }
+        = link_to '編集', edit_api_v1_playlist_path, remote: true, class: 'btn btn-success', id: 'modal-edit-playlist' 
     .container
       .tracks-lists.row
-        = render partial: 'shared/track', collection: @tracks
+        = render partial: 'api/v1/tracks/track', collection: @tracks

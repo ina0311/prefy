@@ -2,18 +2,20 @@ module TrackRefine
   extend ActiveSupport::Concern
   
   PERCENTAGE = 0.2
+  DEFAULT = 50
 
   # 曲数で絞り込む
   def refine_by_max_number_of_track(tracks, target_tracks)
     playlist_of_tracks = []
+    total = self.max_number_of_track.present? ? self.max_number_of_track : DEFAULT
     if target_tracks.present?
       target_tracks.each do |tg_tracks|
-        playlist_of_tracks.concat(tg_tracks.sample(self.max_number_of_track * PERCENTAGE))
+        playlist_of_tracks.concat(tg_tracks.sample(total * PERCENTAGE))
       end
-      remaining = self.max_number_of_track - playlist_of_tracks.size
+      remaining = total - playlist_of_tracks.size
       playlist_of_tracks.concat(tracks.sample(remaining)).shuffle!
     else
-      playlist_of_tracks.concat(tracks.sample(self.max_number_of_track)).shuffle!
+      playlist_of_tracks.concat(tracks.sample(total)).shuffle!
     end
   end
 

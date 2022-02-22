@@ -7,7 +7,10 @@ Rails.application.routes.draw do
       delete '/logout', to: 'sessions#destroy'
 
       resources :myplaylists, controller: 'saved_playlists', expect: %i[show], as: 'saved_playlists'
-      resources :playlists, only: %i[show]
+      resources :playlists, only: %i[show edit] do
+        resources :playlist_of_tracks, only: %i[create destroy], path: 'tracks'
+      end
+      
     end
   end
 end
