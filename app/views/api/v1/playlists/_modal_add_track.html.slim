@@ -1,0 +1,12 @@
+.modal-header#js-add-track
+  .modal-title
+    h5
+      | 曲の追加
+    
+    = button_tag '編集', class: 'btn btn-success', id: 'js-switch-button'
+    = button_tag '閉じる', class: 'btn btn-secondary', id: 'js-modal-close'
+  .modal-body
+    h2
+      / = form_with url: track_search_api_v1_playlist do |f|
+      /   = f.label '曲の検索'
+      /   = f.text_field :search
