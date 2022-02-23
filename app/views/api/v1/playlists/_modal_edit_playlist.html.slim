@@ -1,13 +1,13 @@
-#modal-edit-playlist tabindex="-1" aria-hidden="true"
-    .modal-dialog.modal-xl
+#modal-edit-playlist tabindex="-1" aria-hidden="true" role="dialog"
+    .modal-dialog.modal-dialog-scrollable.modal-xl
       .modal-content 
         .modal-header 
           .modal-title
             h5
               | プレイリストの編集
-
+            
+            = button_tag '閉じる', class: 'btn btn-secondary', id: 'modal-close', "aria-hidden": true
         .modal-body
           = render partial: 'api/v1/tracks/track', collection: @playlist.included_tracks, format: :html
         .modal-footer
-          button.close#modal-close aria-label="Close" data-bs-dismiss="modal" type="button" aria-hidden="true"
-            | 閉じる
+          = button_tag '閉じる', class: 'btn btn-secondary', id: 'modal-close', "aria-hidden": true

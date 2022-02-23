@@ -1,4 +1,4 @@
-.track.d-flex
+div class="track d-flex" id="js-track-#{track.spotify_id}"
   .col-1
     = image_tag track.album.image, class: 'track-album-image', size: '40x40'
   .col
@@ -17,4 +17,9 @@
   - if action_name == 'edit'
     .col
       track-destory-button
-        / = render partial: 'api/v1/tracks/delete_button', locals: { track_id: track.spotify_id }
+        = link_to '削除', api_v1_playlist_track_path(playlist_id: @playlist.spotify_id, track_id: track.spotify_id),
+          id: "js-delete-button-#{track.spotify_id}",
+          data: { confirm: 'この曲を削除しますか？' },
+          method: :delete,
+          class: 'btn btn-danger',
+          remote: true

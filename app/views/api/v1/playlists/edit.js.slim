@@ -1,7 +1,6 @@
 | $("#modal-container").html("#{j(render 'modal_edit_playlist', playlist: @playlist, tracks: @tracks)}");
 | $("#modal-container").modal('show');
 
-| $("#modal-close").click(function() {
-|   $('.modal-backdrop').removeClass();
+| $("#modal-close, :not(#modal-dialog)").click(function() {
 |   $("#modal-container").modal('hide');
 | });

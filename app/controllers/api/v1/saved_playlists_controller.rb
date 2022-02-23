@@ -33,10 +33,13 @@ class Api::V1::SavedPlaylistsController < ApplicationController
 
     if @form.save(@form.artist_ids, @form.genre_ids)
       @saved_playlist = SavedPlaylist.find_by(playlist_id: @form.playlist_id)
-      Playlists::PlaylistTracksResetter.call(@playlist.spotify_id, current_user)
+      track_ids = PlaylistOfTrack.where(playlist_id: @playlist_id).pluck(:track_id)
+      return if track_ids.blank?
+      Playlists::PlaylistTracksRemover.call(current_user, @playlist.spotify_id, track_ids)
     else
       redirect_back(fallback_location: root_path)
     end
+
     @playlist_of_tracks = SavedPlaylists::BasedOnSavedPlaylistTracksGetter.call(@saved_playlist)
     Playlists::PlaylistTrackUpdater.call(current_user, @saved_playlist.playlist_id, @playlist_of_tracks)
 

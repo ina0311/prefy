@@ -83,6 +83,16 @@ module RequestUrl
     conn_request.put("playlists/#{playlist_id}/tracks?uris=spotify:track:#{query}").status
   end
 
+  def request_remove_playlist_tracks(playlist_id, user, request_bodys)
+    @user = user
+    request_bodys.each do |request_body|
+      response = conn_request.delete("playlists/#{playlist_id}/tracks") do |req|
+                   req.body = request_body.to_json
+                 end
+      break if response.status != 200 
+    end
+  end
+
   # 曲を取得する
   def request_get_tracks(track_ids)
     offset = 0
@@ -95,15 +105,7 @@ module RequestUrl
     response
   end
 
-  def request_reset_playlist_tracks(playlist_id, user, request_bodys)
-    @user = user
-    request_bodys.each do |request_body|
-      response = conn_request.delete("playlists/#{playlist_id}/tracks") do |req|
-                   req.body = request_body.to_json
-                 end
-      break if response.status != 200 
-    end
-  end
+
   
   # 条件にそって曲を取得する
   def request_search_tracks(querys)
