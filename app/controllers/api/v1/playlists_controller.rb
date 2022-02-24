@@ -15,6 +15,6 @@ class Api::V1::PlaylistsController < ApplicationController
   private
 
   def playlist_params
-    params.permit(:id)[:id]
+    params.require('id')
   end
 end

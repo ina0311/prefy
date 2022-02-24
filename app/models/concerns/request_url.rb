@@ -105,8 +105,6 @@ module RequestUrl
     response
   end
 
-
-  
   # 条件にそって曲を取得する
   def request_search_tracks(querys)
     tracks = []
@@ -120,6 +118,10 @@ module RequestUrl
       tracks << artist_tracks.compact
     end
     tracks
+  end
+
+  def request_search(word)
+    response = RSpotify::Base.search(word, 'artist,album,track')
   end
 
   # アルバムの情報を取得する
