@@ -20,7 +20,7 @@ div class="track d-flex" id="js-track-#{track.spotify_id}"
     .col
       .track-add-button
         = link_to '追加する',
-          api_v1_playlist_track_path(playlist_id: @playlist_id),
+          api_v1_playlist_track_path(playlist_id: @playlist_id, id: track.spotify_id),
           method: :put, 
           remote: true, 
           class: 'btn btn-primary'
