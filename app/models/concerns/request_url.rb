@@ -77,34 +77,53 @@ module RequestUrl
     end
   end
 
+  # プレイリストに曲を追加する
+  def request_playlist_add_track(user, playlist_id, query)
+    @user = user
+    conn_request.post("playlists/#{playlist_id}/tracks?uris=spotify:track:#{query}").status
+  end
+
   # プレイリストの曲を更新する
   def request_playlist_tracks_update(user, playlist_id, query)
     @user = user
     conn_request.put("playlists/#{playlist_id}/tracks?uris=spotify:track:#{query}").status
   end
 
+  # プレイリストの極を削除する
+  def request_remove_playlist_tracks(user, playlist_id, request_bodys)
+    @user = user
+    if request_bodys.class == 'Array'
+      request_bodys.each do |request_body|
+        response = conn_request.delete("playlists/#{playlist_id}/tracks") do |req|
+                    req.body = request_body.to_json
+                  end
+        break if response.status != 200
+        return 200
+      end
+    else
+      response = conn_request.delete("playlists/#{playlist_id}/tracks") do |req|
+                  req.body = request_bodys.to_json
+                 end
+      return response.status
+    end
+  end
+
   # 曲を取得する
   def request_get_tracks(track_ids)
     offset = 0
-    response = []
-    while true
-      response.concat(RSpotify::Track.find(track_ids[offset, 50]))
-      break if response.size == track_ids.size
-      offset += 50
+    if track_ids.class == 'Array'
+      response = []
+      while true
+        response.concat(RSpotify::Track.find(track_ids[offset, 50]))
+        break if response.size == track_ids.size
+        offset += 50
+      end
+      response
+    else
+      RSpotify::Track.find(track_ids)
     end
-    response
   end
 
-  def request_reset_playlist_tracks(playlist_id, user, request_bodys)
-    @user = user
-    request_bodys.each do |request_body|
-      response = conn_request.delete("playlists/#{playlist_id}/tracks") do |req|
-                   req.body = request_body.to_json
-                 end
-      break if response.status != 200 
-    end
-  end
-  
   # 条件にそって曲を取得する
   def request_search_tracks(querys)
     tracks = []
@@ -118,6 +137,10 @@ module RequestUrl
       tracks << artist_tracks.compact
     end
     tracks
+  end
+
+  def request_search(word)
+    response = RSpotify::Base.search(word, 'artist,album,track')
   end
 
   # アルバムの情報を取得する

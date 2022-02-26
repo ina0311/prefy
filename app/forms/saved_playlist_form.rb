@@ -45,7 +45,6 @@ class SavedPlaylistForm
 
   def initialize(attributes = nil, saved_playlist: SavedPlaylist.new)
     @saved_playlist = saved_playlist
-    binding.pry
     attributes ||= default_attributes
     super(attributes)
   end

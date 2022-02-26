@@ -1,9 +1,7 @@
-.modal#modal-edit-playlist
-  .modal-dialog
-    .modal-content 
-      .modal-header 
-        h5.modal-title プレイリストの編集
-          button.close aria-label="Close" data-dismiss="modal" type="button"
-            span aria-hidden="true" ✗
-        .modal-body
-          
+#modal-edit-playlist tabindex="-1" aria-hidden="true" role="dialog"
+    .modal-dialog.modal-dialog-scrollable.modal-xl
+      .modal-content
+        = render partial: 'modal_edit_track', locals: { playlist: @playlist }
+        = render partial: 'modal_add_track'
+        .modal-footer
+          = button_tag '閉じる', class: 'btn btn-secondary', id: 'js-modal-close', "aria-hidden": true

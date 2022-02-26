@@ -8,7 +8,6 @@ class TrackDecorator < ApplicationDecorator
   end
 
   def artists
-    names = self.album.artists.map(&:name)
-    return "#{names.join(',')}"
+    object.artist_names.present? ? object.artist_names.join(',') : album.artists.map(&:name).join(',')
   end
 end

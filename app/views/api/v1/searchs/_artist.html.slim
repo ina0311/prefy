@@ -1,0 +1,7 @@
+div class="artist d-flex" id="js-artist-#{artist.id}"
+  .col
+    = image_tag artist.decorate.image, class: 'artist-image', size: '30x30'
+  .col
+    = artist.name
+  / .col
+    = link_to track_api_v1_search_path, class: 'btn btn-secondary', remote: true
