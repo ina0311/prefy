@@ -7,10 +7,8 @@
     = button_tag '閉じる', class: 'btn btn-secondary', id: 'js-modal-close'
   .modal-body
     = form_with url: api_v1_search_path, local: false do |f|
-      .form-group
-        = f.label '曲の検索'
-        = f.text_field :search
+      = f.label '曲の検索'
+      = f.text_field :search
       = f.submit '検索', class: 'btn btn-secondary'
 
     .search-result
-      

@@ -77,6 +77,12 @@ module RequestUrl
     end
   end
 
+  # プレイリストに曲を追加する
+  def request_playlist_add_track(user, playlist_id, query)
+    @user = user
+    conn_request.post("playlists/#{playlist_id}/tracks?uris=spotify:track:#{query}").status
+  end
+
   # プレイリストの曲を更新する
   def request_playlist_tracks_update(user, playlist_id, query)
     @user = user
@@ -96,13 +102,17 @@ module RequestUrl
   # 曲を取得する
   def request_get_tracks(track_ids)
     offset = 0
-    response = []
-    while true
-      response.concat(RSpotify::Track.find(track_ids[offset, 50]))
-      break if response.size == track_ids.size
-      offset += 50
+    if track_ids.class == 'Array'
+      response = []
+      while true
+        response.concat(RSpotify::Track.find(track_ids[offset, 50]))
+        break if response.size == track_ids.size
+        offset += 50
+      end
+      response
+    else
+      RSpotify::Track.find(track_ids)
     end
-    response
   end
 
   # 条件にそって曲を取得する

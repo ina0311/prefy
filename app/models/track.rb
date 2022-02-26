@@ -11,6 +11,9 @@ class Track < ApplicationRecord
     validates :duration_ms, numericality: { only_integer: true }
   end
 
+  attribute :artist_names
+  attribute :image, :string
+
   class << self
     
     def all_import!(response)
@@ -48,6 +51,14 @@ class Track < ApplicationRecord
       end
       tracks
     end
+
+    def find_or_create_by_response!(response)
+      Track.find_or_create_by!(
+        spotify_id: response.id,
+        name: response.name,
+        duration_ms: response.duration_ms,
+        album_id: response.album.id
+      )
+    end
   end
-  
 end

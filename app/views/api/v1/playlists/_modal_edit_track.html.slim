@@ -5,5 +5,5 @@
 
     = button_tag '曲の追加', class: 'btn btn-info', id: 'js-switch-button'
     = button_tag '閉じる', class: 'btn btn-secondary', id: 'js-modal-close'
-  .modal-body
+  .modal-body#js-edit-body
     = render partial: 'api/v1/tracks/track', collection: playlist.included_tracks

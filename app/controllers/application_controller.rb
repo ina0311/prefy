@@ -16,4 +16,13 @@ class ApplicationController < ActionController::Base
       @current_user.update!(access_token: response[:access_token])
     end
   end
+
+  def current_playlist_id
+    @playlist_id = session[:playlist_id]
+  end
+
+  def delete_playlist_id
+    return if session[:playlist_id].nil?
+    session.delete(:playlist_id)
+  end
 end
