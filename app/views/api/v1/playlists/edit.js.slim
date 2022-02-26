@@ -1,8 +1,16 @@
 | $("#modal-container").html("#{j(render 'modal_edit_playlist', playlist: @playlist, tracks: @tracks)}");
 | $("#modal-container").modal('show');
 
+| var reload = false;
+
 | $('[id="js-modal-close"]').click(function() {
 |   $("#modal-container").modal('hide');
+| });
+
+| $('#modal-container').on('hidden.bs.modal', function() {
+|   if (reload == true) {
+|     location.reload(false);
+|   }
 | });
 
 | $('[id="js-switch-button"]').click(function(){
