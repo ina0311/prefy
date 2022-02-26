@@ -1,17 +1,17 @@
 class Playlists::PlaylistTracksRemover < SpotifyService
   def self.call(user, playlist_id, track_ids)
-    new(user, playlist_id, track_ids).reset
+    new(user, playlist_id, track_ids).remove
   end
 
-  def initialize( user, playlist_id, track_ids)
+  def initialize(user, playlist_id, track_ids)
     @user = user
     @playlist_id = playlist_id
     @track_ids = track_ids
   end
 
-  def reset
-    request_bodys = @track_ids.instance_of?(Array) ? create_request_body : {uri: "spotify:track:#{@track_ids}"}
-    request_remove_playlist_tracks(@playlist_id, @user, request_bodys)
+  def remove
+    request_bodys = @track_ids.instance_of?(Array) ? create_request_body : {tracks: [{uri: "spotify:track:#{@track_ids}"}]}
+    response = request_remove_playlist_tracks(@user, @playlist_id, request_bodys)
     PlaylistOfTrack.specific(@playlist_id, @track_ids).delete_all
   end
 

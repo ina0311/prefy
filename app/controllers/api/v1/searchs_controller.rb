@@ -1,6 +1,4 @@
 class Api::V1::SearchsController < ApplicationController
-  before_action :delete_playlist_id, only: %i[search]
-
   def search
     response = SpotifySearcher.call(search_params)
     @artists = response[:artists]

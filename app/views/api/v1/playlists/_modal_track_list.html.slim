@@ -1,0 +1,3 @@
+div id="js-track-#{playlist_of_track.id}"
+  = render partial: 'api/v1/tracks/track', locals: { track: playlist_of_track.track, playlist_of_track: playlist_of_track}
+  = render partial: 'api/v1/tracks/delete_button', locals: { playlist_of_track: playlist_of_track }

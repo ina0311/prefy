@@ -89,13 +89,22 @@ module RequestUrl
     conn_request.put("playlists/#{playlist_id}/tracks?uris=spotify:track:#{query}").status
   end
 
-  def request_remove_playlist_tracks(playlist_id, user, request_bodys)
+  # プレイリストの極を削除する
+  def request_remove_playlist_tracks(user, playlist_id, request_bodys)
     @user = user
-    request_bodys.each do |request_body|
+    if request_bodys.class == 'Array'
+      request_bodys.each do |request_body|
+        response = conn_request.delete("playlists/#{playlist_id}/tracks") do |req|
+                    req.body = request_body.to_json
+                  end
+        break if response.status != 200
+        return 200
+      end
+    else
       response = conn_request.delete("playlists/#{playlist_id}/tracks") do |req|
-                   req.body = request_body.to_json
+                  req.body = request_bodys.to_json
                  end
-      break if response.status != 200 
+      return response.status
     end
   end
 

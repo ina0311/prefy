@@ -9,7 +9,7 @@ class Api::V1::PlaylistsController < ApplicationController
   end
 
   def edit
-    @playlist = Playlist.includes(included_tracks: [album: :artists]).find(playlist_params)
+    @playlist = Playlist.includes(playlist_of_tracks: [track: [album: :artists]]).find(playlist_params)
   end
 
   private
