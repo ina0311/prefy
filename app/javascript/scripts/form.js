@@ -16,4 +16,9 @@ $(document).on("turbolinks:load", function() {
 
     $this.select2(ops)
   });
+
+  $('#js-switch-period').on("click", function() {
+    $("#js-generation").toggleClass("active");
+    $("#js-ad").toggleClass("active");
+  });
 });

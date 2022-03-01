@@ -9,10 +9,12 @@
     = f.label :genre_ids, 'フォローアーティストのジャンルを選択してください'
     = f.collection_select :genre_ids, form.decorate.follow_artist_genres(@current_user), :id, :name, { selected: form.genre_ids, include_blank: true }, { name: "genre_ids[]", class: 'js-select2' }
   - if @current_user.age.present?
-    .form-group
+    = button_tag '自分の年代で絞り込み', type: :button, class: 'btn btn-secondary', id: 'js-switch-period'
+
+    .form-group#js-generation
       = f.label :that_generation_preference
-      = f.select :that_generation_preference, form.decorate.generations, { include_blank: true, selected: form.that_generation_preference }, { class: 'form-control' }
-  .form-group
+      = f.select :that_generation_preference, form.decorate.generations, { include_blank: true }, class: 'form-control'
+  .form-group#js-ad.active
     = f.label :period
     = f.select :since_year, form.decorate.years, { include_blank: true }, { class: 'form-control' }
     = f.select :before_year, form.decorate.years, { include_blank: true }, { class: 'form-control' }

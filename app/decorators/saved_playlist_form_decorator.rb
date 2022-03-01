@@ -7,7 +7,7 @@ class SavedPlaylistFormDecorator < ApplicationDecorator
   end
 
   def generations
-    SavedPlaylist.that_generation_preferences.keys.to_a
+    SavedPlaylist.that_generation_preferences.keys.map { |key| [key.titleize, key] }
   end
 
   def years
