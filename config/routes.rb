@@ -12,6 +12,12 @@ Rails.application.routes.draw do
       end
 
       post '/search', to: 'searchs#search'
+      
+      resources :users, only: %i[show] do
+        member do
+          post "/age", to: 'users#age'
+        end
+      end
     end
   end
 end
