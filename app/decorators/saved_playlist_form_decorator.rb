@@ -6,8 +6,13 @@ class SavedPlaylistFormDecorator < ApplicationDecorator
     Genre.order_by_ids_search(user.follow_artists.genres_id_order_desc.keys)
   end
 
-  def generations
-    SavedPlaylist.that_generation_preferences.keys.map { |key| [key.titleize, key] }
+  def generations(user)
+    user_generations = []
+    array = SavedPlaylist.that_generation_preferences.keys.map { |key| [key.titleize, key] }
+    array.zip(SavedPlaylist::GENERATIONS).each do |gen|
+      user_generations << gen[0] if user.age >= gen[1]
+    end
+    user_generations
   end
 
   def years

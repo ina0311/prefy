@@ -22,7 +22,7 @@ class SavedPlaylists::BasedOnSavedPlaylistTracksGetter < SpotifyService
 
   # 条件にあった曲がない場合にnil
   def check_tracks
-    @tracks = nil unless @tracks.any?
+    @tracks = nil unless @tracks&.any?
     @target_tracks = nil unless @target_tracks&.flatten&.any?
   end
 
