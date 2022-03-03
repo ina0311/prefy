@@ -9,22 +9,25 @@
     = f.label :genre_ids, 'フォローアーティストのジャンルを選択してください'
     = f.collection_select :genre_ids, form.decorate.follow_artist_genres(@current_user), :id, :name, { selected: form.genre_ids, include_blank: true }, { name: "genre_ids[]", class: 'js-select2' }
   - if @current_user.age.present?
-    = button_tag '自分の年代で絞り込み', type: :button, class: 'btn btn-secondary', id: 'js-switch-period'
-    .form-group#js-generation
+    = button_tag '自分の年代で絞り込み', type: :button, class: 'btn btn-secondary', id: 'js-switch-generation'
+    = button_tag '西暦で絞り込む', type: :button, class: 'btn btn-secondary', id: 'js-switch-period'
+    .form-group#js-generation.no-active
       = f.label :that_generation_preference
       = f.select :that_generation_preference, form.decorate.generations(@current_user), { include_blank: true }, class: 'form-control', id: 'js-generation-select'
-  .form-group#js-ad.active
+  .form-group#js-ad
     = f.label :period
     = f.select :since_year, form.decorate.years, { include_blank: true }, { class: 'form-control' }
     = f.select :before_year, form.decorate.years, { include_blank: true }, { class: 'form-control' }
-  .form-group
+  = button_tag '曲数を指定する', type: :button, class: 'btn btn-secondary', id: 'js-switch-number'
+  = button_tag '再生時間を指定する', type: :button, class: 'btn btn-secondary', id: 'js-switch-duration-ms'
+  .form-group#js-max-number
     = f.label :max_number_of_track
     = f.number_field :max_number_of_track, { in: 1..50, step: 1, include_blank: true, class: 'form-control' }
-  .form-group
+  .form-group#js-max-duration-ms.no-active
     = f.label :max_total_duration_ms
     = f.number_field :duration_hour, { in: 1..6, step: 1, include_blank: true, class: 'form-control' }
     = f.number_field :duration_minute, { in: 10..50, step: 10, include_blank: true, class: 'form-control' }
   .form-group
     = f.label :artist_ids, "アーティストを選択してください"
     = f.collection_select :artist_ids, @current_user.follow_artist_lists, :spotify_id, :name, { selected: form.artist_ids, include_blank: true }, { name: "artist_ids[]", class: 'js-select2' }
-  = f.submit '作成する', class: 'btn btn-primary'
+  = f.submit '作成する', class: 'btn btn-primary', id: 'js-form-button'
