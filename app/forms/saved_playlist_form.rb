@@ -28,6 +28,8 @@ class SavedPlaylistForm
   validates :duration_hour, numericality: { in: 1..7, allow_nil: true }
   validates :duration_minute, numericality: { in: 10..50, allow_nil: true }
   validates :max_total_duration_ms, numericality: { in: 600_000..25_200_000, allow_nil: true }
+  validate :only_either_generation_or_period, unless: -> { that_generation_preference.nil? && period.nil? }
+  validate :only_either_numver_of_track_or_duration_ms, unless: -> { max_number_of_track.nil? && max_total_duration_ms.nil?}
 
   with_options numericality: { only_integer: true }, allow_blank: true, format: { with: /[0-9]{4}/ } do
     validates :since_year
@@ -51,6 +53,7 @@ class SavedPlaylistForm
 
   def save(artist_ids, genre_ids)
     return if invalid?
+
     saved_playlist = SavedPlaylist.find_or_initialize_by(user_id: user_id, playlist_id: playlist_id)
     ActiveRecord::Base.transaction do
       saved_playlist.update!(
@@ -121,5 +124,17 @@ class SavedPlaylistForm
                   when since_year > before_year
                     "#{before_year}-#{since_year}"
                   end
+  end
+
+  def only_either_generation_or_period
+    return if that_generation_preference.present? ^ period.present?
+    
+    errors.add("西暦と年代はどちらかのみを選択してください")
+  end
+
+  def only_either_numver_of_track_or_duration_ms
+    return if max_number_of_track.present? ^ max_total_duration_ms.present?
+    
+    errors.add("曲数と再生時間はどちらかのみを選択してください")
   end
 end

@@ -3,6 +3,7 @@
 @import 'sidebar';
 @import 'card';
 @import 'modal';
+@import 'form';
 
 html, body {
   position: relative;
@@ -16,4 +17,8 @@ html, body {
 ul {
   list-style: none;
   padding: 20px;
+}
+
+.active {
+  display: block !important;
 }

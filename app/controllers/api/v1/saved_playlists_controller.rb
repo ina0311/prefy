@@ -14,7 +14,7 @@ class Api::V1::SavedPlaylistsController < ApplicationController
   def create
     @playlist = Playlists::PlaylistCreater.call(current_user, playlist_name_params)
     @form = SavedPlaylistForm.new(saved_playlist_params)
-
+ 
     if @form.save(@form.artist_ids, @form.genre_ids)
       @saved_playlist = SavedPlaylist.find_by(playlist_id: @form.playlist_id)
     else
