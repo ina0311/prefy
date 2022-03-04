@@ -50,6 +50,11 @@ module RequestUrl
     follow_artists_hashs
   end
 
+  def request_unfollow_artist(user, artist_id)
+    @user = user
+    conn_request.delete("me/following?type=artist&ids=#{artist_id}").status
+  end
+
   # ユーザーが保存しているプレイリストを取得する
   def request_saved_playlists(user)
     @user = user

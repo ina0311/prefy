@@ -1,4 +1,4 @@
-.card.border-dark.mb-3
+div class="card border-dark mb-3" id="js-follow-artist-#{artist.id}"
   .card-body.text-dark
     - if artist.image.present?
       = image_tag artist.image, size: '100x100', class: 'card-thumbnail'
@@ -6,3 +6,5 @@
       = image_tag 'default_image.png', size: '100x100', class: 'card-thumnail'
     h5.card-title
       | "#{artist.name}"
+
+    = link_to 'フォロー解除', api_v1_follow_artist_path(artist), method: :delete, class: 'btn btn-danger', remote: true
