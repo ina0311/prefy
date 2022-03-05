@@ -1,17 +1,19 @@
 class SpotifySearcher < SpotifyService
   def self.call(word)
-    new(word).search
+    new(word)
   end
 
   def initialize(word)
     @word = word
-    @artists = Array.new
-    @albums = Array.new
-    @tracks = Array.new
   end
 
   def search
-    response = request_search(@word)
+    @artists = Array.new
+    @albums = Array.new
+    @tracks = Array.new
+    type = 'artist,album,track'
+
+    response = request_search(@word, type)
 
     response.each do |res|
       case res.type
@@ -25,6 +27,12 @@ class SpotifySearcher < SpotifyService
     end
 
     {artists: @artists, albums: @albums, tracks: @tracks}
+  end
+
+  def artists
+    type = 'artist'
+    response = request_search(@word, type)
+    response.map { |res| convert_artist(res) }
   end
 
   private

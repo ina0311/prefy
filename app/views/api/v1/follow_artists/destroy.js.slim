@@ -1,1 +1,2 @@
-| $("#js-follow-artist-#{@follow_artist.artist_id}").removeClass(".card");
+| $("#js-follow-artist-#{@artist_id}").remove();
+| $("#js-follow-button-#{@artist_id}").html("#{j(render 'shared/follow_button', artist_id: @artist_id)}");

@@ -9,7 +9,7 @@ class Users::FollowArtistUnfollower < SpotifyService
   end
 
   def unfollow
-    response = request_unfollow_artist(@user, @follow_artist.artist_id)
+    response = request_artist_unfollow(@user, @follow_artist.artist_id)
     if response == 204
       @follow_artist.destroy!
     end

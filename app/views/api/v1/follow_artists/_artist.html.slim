@@ -7,4 +7,4 @@ div class="card border-dark mb-3" id="js-follow-artist-#{artist.id}"
     h5.card-title
       | "#{artist.name}"
 
-    = link_to 'フォロー解除', api_v1_follow_artist_path(artist), method: :delete, class: 'btn btn-danger', remote: true
+    = render partial: 'shared/unfollow_button', locals: { artist_id: artist.spotify_id }
