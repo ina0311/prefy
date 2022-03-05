@@ -9,12 +9,12 @@ class User < ApplicationRecord
   has_many :follow_artist_lists, through: :follow_artists, source: :artist
 
   validates :age, numericality: { in: 1..100, allow_nil: true }
-  
+  validates :image, format: { with: /\Ahttps:\/\/i.scdn.co\/image\/[a-z0-9]+\z/, allow_nil: true }
+
   with_options presence: true do
     validates :name
     validates :spotify_id, uniqueness: true, format: { with: /\w+/ }
     validates :country, format: { with: /[A-Z]{2}/ }
-    validates :image, format: { with: /\Ahttps:\/\/i.scdn.co\/image\/[a-z0-9]+\z/ }
   end
 
 
