@@ -11,10 +11,16 @@ Rails.application.routes.draw do
         resources :tracks, controller: 'playlist_of_tracks', only: %i[update destroy]
       end
 
+      resources :searchs, only: %i[index] do
+        collection do
+          post '/artists', to: 'searchs#artists'
+        end
+      end
       post '/search', to: 'searchs#search'
       
       resources :users, only: %i[show] do
         member do
+          resources :follow_artists, only: %i[index create destroy]
           post "/age", to: 'users#age'
         end
       end

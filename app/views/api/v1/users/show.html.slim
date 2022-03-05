@@ -14,4 +14,7 @@ main.col-md-9.ms-sm-auto.col-lg-10.px-md-4
             = @user.age
           - else
             = render partial: 'age_form', locals: { user: @user }
+
+        .user-follow-artist
+          = link_to 'フォローアーティスト一覧', api_v1_follow_artists_path(@user), class: 'btn btn-primary'
  

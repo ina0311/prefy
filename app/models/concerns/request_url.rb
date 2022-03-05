@@ -50,6 +50,17 @@ module RequestUrl
     follow_artists_hashs
   end
 
+  # アーティストをフォローする
+  def request_artist_follow(user, artist_id)
+    @user = user
+    conn_request.put("me/following?type=artist&ids=#{artist_id}").status
+  end
+
+  def request_artist_unfollow(user, artist_id)
+    @user = user
+    conn_request.delete("me/following?type=artist&ids=#{artist_id}").status
+  end
+
   # ユーザーが保存しているプレイリストを取得する
   def request_saved_playlists(user)
     @user = user
@@ -139,8 +150,9 @@ module RequestUrl
     tracks
   end
 
-  def request_search(word)
-    response = RSpotify::Base.search(word, 'artist,album,track')
+  # 検索する
+  def request_search(word, type)
+    response = RSpotify::Base.search(word, type)
   end
 
   # アルバムの情報を取得する

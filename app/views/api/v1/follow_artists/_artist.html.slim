@@ -1,0 +1,7 @@
+div class="card border-dark mb-3" id="js-follow-artist-#{artist.id}"
+  .card-body.text-dark
+    = image_tag artist.decorate.image, size: '100x100', class: 'card-thumbnail'
+    h5.card-title
+      | "#{artist.name}"
+
+    = render partial: 'shared/unfollow_button', locals: { artist_id: artist.spotify_id }

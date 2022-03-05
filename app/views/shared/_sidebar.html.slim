@@ -6,7 +6,7 @@
       li.nav-item
         = link_to 'プレイリスト一覧', api_v1_saved_playlists_path, class: 'nav-link text-white'
       li.nav-item
-        = link_to '検索', '#', class: 'nav-link text-white'
+        = link_to '検索', api_v1_searchs_path, class: 'nav-link text-white'
       li.nav-item
         = link_to 'プロフィール', api_v1_user_path(current_user.spotify_id), class: 'nav-link text-white'
       li.nav-item
