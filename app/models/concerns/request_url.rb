@@ -6,25 +6,6 @@ module RequestUrl
     RSpotify::User.find(user_id)
   end
 
-  # 制限が近いユーザーのアクセストークンを再取得する
-  def conn_request_access_token(user)
-    body = {
-      grant_type: 'refresh_token',
-      refresh_token: user.refresh_token
-    }
-
-    request_access_token = Faraday::Connection.new(Constants::REQUESTTOKENURL) do |builder|
-                            builder.response :json, parser_options: { symbolize_names: true }
-                            builder.request :url_encoded
-                            builder.headers["Authorization"] = "Basic #{encode_spotify_id}"
-                          end
-
-    response = request_access_token.post do |request|
-      request.body = body
-    end
-    response.body.slice(:access_token)
-  end
-
   # アーティストの情報を取得する
   def request_artists_info(ids)
     response = []
@@ -167,6 +148,24 @@ module RequestUrl
     response
   end
 
+  # 制限が近いユーザーのアクセストークンを再取得する
+  def conn_request_access_token(user)
+    binding.pry
+    body = {
+      grant_type: 'refresh_token',
+      refresh_token: user.refresh_token
+    }
+
+    conn_request_token.post do |request|
+      request.body = body
+    end
+  end
+
+  # ゲストユーザーログイン
+  def request_guest_login
+    conn_request_token.post { |req| req.body = {grant_type: 'client_credentials'} }
+  end
+
   private
 
   def conn_request
@@ -174,6 +173,14 @@ module RequestUrl
       builder.response :json, parser_options: { symbolize_names: true }
       builder.headers['Authorization'] = "Bearer #{@user.access_token}"
       builder.headers['Content-Type'] = 'application/json'
+    end
+  end
+
+  def conn_request_token
+    Faraday::Connection.new(Constants::REQUESTTOKENURL) do |builder|
+      builder.response :json, parser_options: { symbolize_names: true }
+      builder.request :url_encoded
+      builder.headers["Authorization"] = "Basic #{encode_spotify_id}"
     end
   end
 

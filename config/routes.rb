@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   root 'home#top'
   get '/auth/:provider/callback', to: 'api/v1/sessions#create'
   get '/auth/failure', to: 'api/v1/sessions#failure'
+  post '/guest_login', to: 'api/v1/sessions#guest_login'
+
   namespace :api do
     namespace :v1 do
       delete '/logout', to: 'sessions#destroy'

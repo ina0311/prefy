@@ -10,6 +10,8 @@ section.home-section.home-full-height
     .link-container
       .top-login
         = link_to "ログイン", '/auth/spotify', method: :post, class: 'btn btn-primary btn-lg'
+      .guest-login
+        = link_to "ゲストログイン", guest_login_path, method: :post, class: 'btn btn-success btn-lg'
       .top-registration
         h3
           = link_to 'spotifyアカウントを作る', "https://www.spotify.com/jp/signup", target: '_blank', rel: 'noopener noreferrer'
