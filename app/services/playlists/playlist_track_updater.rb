@@ -10,7 +10,7 @@ class Playlists::PlaylistTrackUpdater < SpotifyService
   end
 
   def update
-    if guest_user?(@user)
+    if @user.guest_user?
       playlist_of_tracks_update!
     else
       query = @track_ids.join(',spotify:track:')

@@ -9,7 +9,7 @@ class Playlists::PlaylistCreater < SpotifyService
   end
 
   def create
-    if guest_user?(user)
+    if @user.guest_user?
       Playlist.create_by_guest(@user, @playlist_name)
     else
       response = request_create_playlist(@user, @playlist_name)

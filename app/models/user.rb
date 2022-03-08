@@ -32,4 +32,8 @@ class User < ApplicationRecord
   def own?(playlist)
     spotify_id == playlist.owner
   end
+
+  def guest_user?
+    self.spotify_id == 'guest_user'
+  end
 end

@@ -10,7 +10,7 @@ class Playlists::PlaylistTrackAdder < SpotifyService
   end
 
   def add
-    if guest_user?(@user)
+    if @user.guest_user?
       add_playlist_of_track!
     else
       response = request_playlist_add_track(@user, @playlist_id, @track_id)

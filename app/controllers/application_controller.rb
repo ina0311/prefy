@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   add_flash_types :success, :secondary, :info, :warning, :danger
 
   def access_token_changed?
-    if guest_user?
+    if current_user.guest_user?
       return if (Time.now - current_user.updated_at) < 3600
       redirect_to root_path, danger: '1時間経過したのでログアウトしました'
     else
@@ -24,9 +24,5 @@ class ApplicationController < ActionController::Base
   def delete_playlist_id
     return if session[:playlist_id].nil?
     session.delete(:playlist_id)
-  end
-
-  def guest_user?
-    current_user.spotify_id == 'guest_user'
   end
 end

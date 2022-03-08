@@ -3,7 +3,7 @@ class Api::V1::SavedPlaylistsController < ApplicationController
 
   def index
     # ユーザーのプレイリストの情報を所得
-    Users::UserPlaylistsGetter.call(current_user) unless guest_user?
+    Users::UserPlaylistsGetter.call(current_user) unless current_user.guest_user?
     @saved_playlists = current_user.saved_playlists.includes(:playlist)
   end
 

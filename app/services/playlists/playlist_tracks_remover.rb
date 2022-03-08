@@ -10,7 +10,7 @@ class Playlists::PlaylistTracksRemover < SpotifyService
   end
 
   def remove
-    unless guest_user?(@user)
+    unless @user.guest_user?
       request_bodys = @track_ids.instance_of?(Array) ? create_request_body : {tracks: [{uri: "spotify:track:#{@track_ids}"}]}
       response = request_remove_playlist_tracks(@user, @playlist_id, request_bodys)
     end
