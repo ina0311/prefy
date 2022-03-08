@@ -27,11 +27,19 @@ class Playlist < ApplicationRecord
   end
 
   def self.create_by_response(response)
-    Playlist.create(
+    Playlist.create!(
       spotify_id: response[:id],
       name: response[:name],
       image: response.dig(:images, 0, :url),
       owner: response[:owner][:id]
+    )
+  end
+
+  def self.create_by_guest(user, playlist_name)
+    Playlist.create!(
+      spotify_id: SecureRandom.hex(8),
+      name: playlist_name.present? ? playlist_name : 'new_playlist',
+      owner: user.spotify_id
     )
   end
 end

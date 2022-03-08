@@ -3,7 +3,7 @@ class Api::V1::SavedPlaylistsController < ApplicationController
 
   def index
     # ユーザーのプレイリストの情報を所得
-    Users::UserPlaylistsGetter.call(current_user)
+    Users::UserPlaylistsGetter.call(current_user) unless current_user.guest_user?
     @saved_playlists = current_user.saved_playlists.includes(:playlist)
   end
 
@@ -41,7 +41,7 @@ class Api::V1::SavedPlaylistsController < ApplicationController
     end
 
     @playlist_of_tracks = SavedPlaylists::BasedOnSavedPlaylistTracksGetter.call(@saved_playlist)
-    Playlists::PlaylistTrackUpdater.call(current_user, @saved_playlist.playlist_id, @playlist_of_tracks)
+    Playlists::PlaylistTrackUpdater.call(current_user, @saved_playlist.playlist_id, @playlist_of_tracks.pluck(:spotify_id))
 
     redirect_to api_v1_playlist_path(@playlist.spotify_id)
   end

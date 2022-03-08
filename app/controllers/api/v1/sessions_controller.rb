@@ -1,5 +1,5 @@
 class Api::V1::SessionsController < ApplicationController
-  skip_before_action :verify_authenticity_token, :require_login, :access_token_changed?, only: %i(create failure)
+  skip_before_action :verify_authenticity_token, :require_login, :access_token_changed?, only: %i(create failure guest_login)
 
   def create
     rspotify_user = RSpotify::User.new(request.env['omniauth.auth'])
@@ -13,6 +13,16 @@ class Api::V1::SessionsController < ApplicationController
   def destroy
     reset_session
     redirect_to root_path
+  end
+
+  def guest_login
+    response = SpotifyGuestLogin.call
+    if response.status == 200
+      user = User.find('guest_user')
+      user.update!(access_token: response.body[:access_token])
+      session[:user_id] = user[:spotify_id]
+    end
+    redirect_to api_v1_saved_playlists_path, success: "ゲストユーザーとしてログインしました"
   end
 
   def failure

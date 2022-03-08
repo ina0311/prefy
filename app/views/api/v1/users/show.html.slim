@@ -6,7 +6,7 @@ main.col-md-9.ms-sm-auto.col-lg-10.px-md-4
           | プロフィール
       .container.row
         .user-image.col
-          = image_tag @user.image, size: '100x100'
+          = image_tag @user.decorate.image, size: '100x100'
         .user-name.col 
           = @user.name
         .user-age.col

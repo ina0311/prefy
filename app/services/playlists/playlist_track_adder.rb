@@ -10,19 +10,27 @@ class Playlists::PlaylistTrackAdder < SpotifyService
   end
 
   def add
-    response = request_playlist_add_track(@user, @playlist_id, @track_id)
-    if response == 201
-      track = request_get_tracks(@track_id)
-      album = Album.find_or_create_by_response!(track.album)
-      Artists::ArtistRegistrar.call(artist_ids(album))
-      Track.find_or_create_by_response!(track)
-      PlaylistOfTrack.create!(playlist_id: @playlist_id, track_id: @track_id)
+    if @user.guest_user?
+      add_playlist_of_track!
+    else
+      response = request_playlist_add_track(@user, @playlist_id, @track_id)
+      if response == 201
+        add_playlist_of_track!
+      end
     end
   end
 
   private
 
-  def artist_ids(album)
-    album.artists.map(&:id)
+  def artist_ids(track)
+    track.album.artists.map(&:id)
+  end
+
+  def add_playlist_of_track!
+    track = request_get_tracks(@track_id)
+    Album.find_or_create_by_response!(track.album)
+    Artists::ArtistRegistrar.call(artist_ids(track))
+    Track.find_or_create_by_response!(track)
+    PlaylistOfTrack.create!(playlist_id: @playlist_id, track_id: @track_id)
   end
 end
