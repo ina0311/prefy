@@ -11,7 +11,6 @@ class ApplicationController < ActionController::Base
       return if (Time.now - current_user.updated_at) < 3600
       redirect_to root_path, danger: '1時間経過したのでログアウトしました'
     else
-      binding.pry
       return if (Time.now - current_user.updated_at) < 3500
       Users::UserAccessTokenChanger.call(@current_user)
     end

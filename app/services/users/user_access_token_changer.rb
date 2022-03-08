@@ -9,11 +9,8 @@ class Users::UserAccessTokenChanger < SpotifyService
 
   def change
     response = conn_request_access_token(@user)
-    
-    binding.pry
-    
     if response.status == 200
-      @user.update!(access_token: response[:access_token])
+      @user.update!(access_token: response.body[:access_token])
     end
   end
 end
