@@ -9,9 +9,6 @@ class ApplicationController < ActionController::Base
   def access_token_changed?
     if guest_user?
       return if (Time.now - current_user.updated_at) < 3600
-      
-      binding.pry
-      
       redirect_to root_path, danger: '1時間経過したのでログアウトしました'
     else
       binding.pry
