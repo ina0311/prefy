@@ -5,15 +5,18 @@ class ApplicationController < ActionController::Base
   before_action :require_login, :access_token_changed?
 
   add_flash_types :success, :secondary, :info, :warning, :danger
-  
-  def access_token_expired?
-    (Time.now - current_user.updated_at) > 3300
-  end
 
   def access_token_changed?
-    if access_token_expired?
-      response = conn_request_access_token(current_user)
-      @current_user.update!(access_token: response[:access_token])
+    if guest_user?
+      return if (Time.now - current_user.updated_at) < 3600
+      
+      binding.pry
+      
+      redirect_to root_path, danger: '1時間経過したのでログアウトしました'
+    else
+      binding.pry
+      return if (Time.now - current_user.updated_at) < 3500
+      Users::UserAccessTokenChanger.call(@current_user)
     end
   end
 
@@ -24,5 +27,9 @@ class ApplicationController < ActionController::Base
   def delete_playlist_id
     return if session[:playlist_id].nil?
     session.delete(:playlist_id)
+  end
+
+  def guest_user?
+    current_user.spotify_id == 'guest_user'
   end
 end
