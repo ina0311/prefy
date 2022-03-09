@@ -150,7 +150,6 @@ module RequestUrl
 
   # 制限が近いユーザーのアクセストークンを再取得する
   def conn_request_access_token(user)
-    binding.pry
     body = {
       grant_type: 'refresh_token',
       refresh_token: user.refresh_token

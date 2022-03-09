@@ -2,10 +2,10 @@ import Rails from "@rails/ujs"
 import Turbolinks from "turbolinks"
 import * as ActiveStorage from "@rails/activestorage"
 import "channels"
-
 import "bootstrap"
 import "stylesheets/application"
 import "../scripts/form"
+import "../scripts/player"
 
 Rails.start()
 Turbolinks.start()
