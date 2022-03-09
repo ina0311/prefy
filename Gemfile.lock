@@ -147,6 +147,11 @@ GEM
     ffi (1.15.4)
     globalid (1.0.0)
       activesupport (>= 5.0)
+    gon (6.4.0)
+      actionpack (>= 3.0.20)
+      i18n (>= 0.7)
+      multi_json
+      request_store (>= 1.0)
     hashie (5.0.0)
     hpricot (0.8.6)
     html2slim (0.2.0)
@@ -398,6 +403,7 @@ DEPENDENCIES
   factory_bot_rails
   faraday
   faraday_middleware
+  gon
   html2slim
   jbuilder (~> 2.7)
   listen (~> 3.3)
