@@ -9,7 +9,7 @@ class Playlists::PlaylistInfoGetter < SpotifyService
   end
 
   def get
-    @response = request_get_playlist(@playlist.spotify_id)
+    @response = request_get_playlist
     default_track_ids = @playlist.playlist_of_tracks.pluck(:track_id)
     track_ids = response_convert_track_ids
     new_track_ids = track_ids - default_track_ids
@@ -42,5 +42,9 @@ class Playlists::PlaylistInfoGetter < SpotifyService
 
   def delete_tracks(track_ids)
     PlaylistOfTrack.specific(@playlist.spotify_id, track_ids).delete_all
+  end
+
+  def request_get_playlist
+    RSpotify::Playlist.find_by_id(@playlist.spotify_id)
   end
 end

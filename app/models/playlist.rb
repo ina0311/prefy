@@ -1,6 +1,4 @@
 class Playlist < ApplicationRecord
-  include RequestUrl
-
   has_one :saved_playlist, dependent: :destroy
   has_many :playlist_of_tracks, dependent: :destroy
   has_many :included_tracks, through: :playlist_of_tracks, source: :track

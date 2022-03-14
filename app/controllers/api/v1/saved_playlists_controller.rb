@@ -35,7 +35,7 @@ class Api::V1::SavedPlaylistsController < ApplicationController
     if @form.save(@form.artist_ids, @form.genre_ids)
       @saved_playlist = SavedPlaylist.find_by(playlist_id: @form.playlist_id)
       track_ids = PlaylistOfTrack.where(playlist_id: @playlist_id).pluck(:track_id)
-      Playlists::PlaylistTracksRemover.call(current_user, @playlist.spotify_id, track_ids) if track_ids.blank?
+      Playlists::PlaylistTracksRemover.call(current_user, @playlist.spotify_id, track_ids) if track_ids.present?
     else
       redirect_back(fallback_location: root_path)
     end

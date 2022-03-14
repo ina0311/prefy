@@ -30,4 +30,18 @@ class SavedPlaylists::BasedOnSavedPlaylistTracksGetter < SpotifyService
     response = request_search_tracks(querys)
     tracks = Track.response_convert_tracks(response)
   end
+
+  def request_search_tracks(querys)
+    tracks = []
+    querys.each do |query|
+      response = RSpotify::Base.search(query[:query], 'track', limit: 50)
+      artist_tracks = []
+      response.each do |res|
+        next if res.album.album_type == 'compilation' || res.artists.map { |artist| artist.id != query[:artist_spotify_id] }.all?
+        artist_tracks << res
+      end
+      tracks << artist_tracks.compact
+    end
+    tracks
+  end
 end

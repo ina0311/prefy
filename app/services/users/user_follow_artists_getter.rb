@@ -9,7 +9,7 @@ class Users::UserFollowArtistsGetter < SpotifyService
   end
 
   def get
-    response = request_follow_artist(@rspotify_user)
+    response = request_follow_artist
     now_follow_artists = response.map(&:id)
 
     Artists::ArtistRegistrar.call(now_follow_artists)
@@ -20,5 +20,19 @@ class Users::UserFollowArtistsGetter < SpotifyService
 
     FollowArtist.unfollow_all(unfollow_artists, @user) if unfollow_artists.present?
     FollowArtist.follow_all(new_follow_artists, @user) if new_follow_artists.present?
+  end
+
+  private
+
+  def request_follow_artist
+    follow_artists_hashs = []
+    last_id = nil
+    while true
+      response = @rspotify_user.following(type: 'artist', limit: 50, after: last_id)
+      follow_artists_hashs.concat(response)
+      break if response.size <= 49
+      last_id = response.last.id
+    end
+    follow_artists_hashs
   end
 end

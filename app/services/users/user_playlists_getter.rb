@@ -8,7 +8,7 @@ class Users::UserPlaylistsGetter < SpotifyService
   end
 
   def get
-    response = request_saved_playlists(@user)
+    response = request_saved_playlists
     Playlist.all_update(response)
     defaults = @user.my_playlists.pluck(:spotify_id)
     now = response.map { |res| res[:id] }
@@ -36,5 +36,17 @@ class Users::UserPlaylistsGetter < SpotifyService
     result = now - defaults
     return if result.blank?
     SavedPlaylist.add_my_playlists(result, @user.spotify_id)
+  end
+
+  def request_saved_playlists
+    playlists = []
+    offset = 0
+    while true
+      response = conn_request.get("users/#{@user.spotify_id}/playlists?limit=50&offset=#{offset}").body[:items]
+      playlists.concat(response)
+      break if response.size <= 49
+      offset += 50
+    end
+    playlists
   end
 end

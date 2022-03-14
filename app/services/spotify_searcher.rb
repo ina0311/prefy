@@ -65,4 +65,8 @@ class SpotifySearcher < SpotifyService
       artist_names: response.artists.map(&:name)
     )
   end
+
+  def request_search(word, type)
+    RSpotify::Base.search(word, type)
+  end
 end

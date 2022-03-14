@@ -67,15 +67,13 @@ class SavedPlaylistForm
 
     ActiveRecord::Base.transaction do
       default_artist_ids = saved_playlist.saved_playlist_include_artists.pluck(:artist_id)
-      delete_artist_ids = default_artist_ids - artist_ids
-      new_artist_ids = artist_ids - default_artist_ids
-      SavedPlaylistIncludeArtist.upsert(artist_ids, saved_playlist.id) if new_artist_ids.any?(&:present?)
+      delete_artist_ids = artist_ids.present? ? default_artist_ids - artist_ids : default_artist_ids
+      SavedPlaylistIncludeArtist.all_import!(artist_ids, saved_playlist.id) if artist_ids.present?
       SavedPlaylistIncludeArtist.specific(saved_playlist.id, delete_artist_ids).delete_all if delete_artist_ids.present?
 
       default_genre_ids = saved_playlist.saved_playlist_genres.pluck(:genre_id)
-      delete_genre_ids = default_genre_ids - genre_ids
-      new_genre_ids = genre_ids - default_genre_ids
-      SavedPlaylistGenre.upsert(saved_playlist.id, new_genre_ids) unless new_genre_ids.first&.zero?
+      delete_genre_ids = !genre_ids.first.zero? ? default_genre_ids - genre_ids : default_genre_ids
+      SavedPlaylistGenre.all_import!(saved_playlist.id, genre_ids) unless genre_ids.first&.zero?
       SavedPlaylistGenre.specific(saved_playlist.id, delete_genre_ids).delete_all if delete_genre_ids.present?
     end
     saved_playlist.persisted?

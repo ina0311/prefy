@@ -9,7 +9,7 @@ class Tracks::TrackInfoGetter < SpotifyService
   end
 
   def get
-    tracks = request_get_tracks(@track_ids)
+    tracks = request_get_tracks
     albums = tracks.map(&:album)
     Album.all_import!(albums)
     Track.all_import!(tracks)
@@ -22,5 +22,16 @@ class Tracks::TrackInfoGetter < SpotifyService
 
   def track_convert_artist_ids(tracks)
     tracks.map { |track| track.artists.map(&:id) }.flatten
+  end
+
+  def request_get_tracks
+    offset = 0
+    response = []
+    while true
+      response.concat(RSpotify::Track.find(@track_ids[offset, 50]))
+      break if response.size == @track_ids.size
+      offset += 50
+    end
+    response
   end
 end

@@ -1,7 +1,6 @@
 class ApplicationController < ActionController::Base
   include SessionsHelper
-  include RequestUrl
-
+  
   before_action :require_login, :access_token_changed?
 
   add_flash_types :success, :secondary, :info, :warning, :danger
