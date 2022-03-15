@@ -10,4 +10,12 @@ module SessionsHelper
   def require_login
     redirect_to root_path unless logged_in?
   end
+
+  def player_status
+    session[:player]
+  end
+
+  def now_playing?
+    !!session[:playing]
+  end
 end

@@ -1,0 +1,10 @@
+div class="fixed-bottom #{player_status}" id="player"
+  .d-flex.justify-content-center
+    .row
+      .col.align-self-center
+        - if now_playing?
+          = render 'api/v1/player/pause_button'
+        - else
+          = render 'api/v1/player/start_button'
+      .col
+        = link_to '閉じる', api_v1_close_path, class: 'btn btn-secondary', id: 'js-player-close', remote: true

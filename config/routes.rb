@@ -26,6 +26,11 @@ Rails.application.routes.draw do
           post "/age", to: 'users#age'
         end
       end
+
+      get '/play', to: 'player#play'
+      get '/pause', to: 'player#pause'
+      get '/start', to: 'player#start'
+      get '/close', to: 'player#close'
     end
   end
 end
