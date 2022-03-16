@@ -11,7 +11,7 @@ main.col-md-9.ms-sm-auto.col-lg-10.px-md-4
       - if current_user.own?(@playlist)
         = render partial: 'api/v1/saved_playlists/form', locals: { form: @form, url: api_v1_saved_playlist_path, method: :put }
         = link_to '編集', edit_api_v1_playlist_path(@playlist.spotify_id), data: { toggle: "modal", target: "#modal-container"}, remote: true, id: 'js-edit-playlist', class: 'btn btn-success'
-        = link_to '再生', api_v1_play_path, remote: true, class: 'btn btn-success', id: 'js-player-open'
+        = link_to '再生', api_v1_play_path(uri: "spotify:playlist:#{@playlist.spotify_id}"), remote: true, class: 'btn btn-success', id: 'js-player-open'
         = render partial: 'shared/modal'
     .container
       .tracks-lists.row

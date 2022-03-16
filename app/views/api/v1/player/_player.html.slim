@@ -1,7 +1,7 @@
 div class="fixed-bottom #{player_status}" id="player"
   .d-flex.justify-content-center
     .row
-      .col.align-self-center
+      .col.align-self-center#js-play-control-button
         - if now_playing?
           = render 'api/v1/player/pause_button'
         - else
