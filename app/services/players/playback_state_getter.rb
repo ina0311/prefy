@@ -13,7 +13,8 @@ class Players::PlaybackStateGetter < SpotifyService
       position_ms = response.body[:progress_ms]
       context_uri = response.body[:context][:uri]
       track = response.body[:item][:id]
-      return { uri: context_uri, track: track, position_ms: position_ms}
+      type = response.body[:context][:type]
+      return { uri: context_uri, track: track , position_ms: position_ms, type: type}
     end
   end
 

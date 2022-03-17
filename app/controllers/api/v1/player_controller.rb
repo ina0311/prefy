@@ -14,8 +14,12 @@ class Api::V1::PlayerController < ApplicationController
 
   def start
     response = Players::PlaybackStateGetter.call(current_user)
-    # positionをplaylist_of_tracksテーブルに追加する
-    request_body = create_request_body(context_uri: response[:uri], position_ms: response[:position_ms])
+    if response[:type] == 'playlist'
+      id = response[:uri][/spotify:playlist:(\w+)/, 1]
+      position = PlaylistOfTrack.find_by(playlist_id: id, track_id: response[:track]).position
+    end
+    
+    request_body = create_request_body(context_uri: response[:uri], position: position, position_ms: response[:position_ms])
     Players::TrackStarter.call(current_user, current_player, request_body)
     session[:playing] = true
   end

@@ -27,10 +27,10 @@ class Playlists::PlaylistTrackUpdater < SpotifyService
 
   def playlist_of_tracks_update!
     Tracks::TrackInfoGetter.call(@track_ids)
-    PlaylistOfTrack.all_update(@playlist_id, @track_ids)
+    PlaylistOfTrack.all_update(@playlist, @track_ids)
   end
 
   def request_playlist_tracks_update(query)
-    conn_request.put("playlists/#{@playlist_id}/tracks?uris=spotify:track:#{query}").status
+    conn_request.put("playlists/#{@playlist.spotify_id}/tracks?uris=spotify:track:#{query}").status
   end
 end
