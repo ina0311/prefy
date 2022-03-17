@@ -9,39 +9,32 @@ class Playlists::PlaylistInfoGetter < SpotifyService
   end
 
   def get
-    @response = request_get_playlist
-    default_track_ids = @playlist.playlist_of_tracks.pluck(:track_id)
-    track_ids = response_convert_track_ids
-    new_track_ids = track_ids - default_track_ids
-    delete_track_ids = default_track_ids - track_ids
+    response = request_get_playlist
+    @playlist.update!(name: response.name, image: response.images.dig(0, 'url'))
+
+    default = @playlist.playlist_of_tracks.pluck(:track_id, :position)
+    now = response_convert_track_id_and_position(response)
+
+    new_track_id_and_position = now - default
+    delete_track_id_and_position = default - now
 
     ActiveRecord::Base.transaction do
-      new_tracks(new_track_ids) if new_track_ids.present?
-      delete_tracks(delete_track_ids) if delete_track_ids.present?
-      @playlist.update!(name: @response.name, image: @response.images.dig(0, 'url'))
+      if new_track_id_and_position.present?
+        playlist_of_tracks = new_track_id_and_position.map do |ary|
+          @playlist.playlist_of_tracks.new(track_id: ary.first, position: ary.second)
+        end
+        Tracks::TrackInfoGetter.call(playlist_of_tracks.pluck(:track_id))
+        PlaylistOfTrack.import!(playlist_of_tracks)
+      end
+      PlaylistOfTrack.specific(@playlist.spotify_id, delete_playlist_of_tracks.map(&:second)).delete_all if delete_track_id_and_position.present?
     end
   end
 
   private
-  
-  attr_reader :playlist_id
 
-  # 市場的に聞けない曲がnilを返すのでcompact
-  def response_convert_track_ids
-    @response.tracks_added_at.map(&:first).compact
-  end
-
-  def track_convert_artist_ids(tracks)
-    tracks.map { |track| track.artists.map(&:id) }.flatten
-  end
-
-  def new_tracks(track_ids)
-    Tracks::TrackInfoGetter.call(track_ids)
-    PlaylistOfTrack.all_update(@playlist.spotify_id, track_ids)
-  end
-
-  def delete_tracks(track_ids)
-    PlaylistOfTrack.specific(@playlist.spotify_id, track_ids).delete_all
+  def response_convert_track_id_and_position(response)
+    track_ids = response.tracks_added_at.map(&:first).compact
+    track_ids.map.with_index { |id, index| [id, index] }
   end
 
   def request_get_playlist

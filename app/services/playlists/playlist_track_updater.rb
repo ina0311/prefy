@@ -1,11 +1,11 @@
 class Playlists::PlaylistTrackUpdater < SpotifyService
-  def self.call(user, playlist_id, track_ids)
-    new(user, playlist_id, track_ids).update
+  def self.call(user, playlist, track_ids)
+    new(user, playlist, track_ids).update
   end
 
-  def initialize(user, playlist_id, track_ids)
+  def initialize(user, playlist, track_ids)
     @user = user
-    @playlist_id = playlist_id
+    @playlist = playlist
     @track_ids = track_ids
   end
 
