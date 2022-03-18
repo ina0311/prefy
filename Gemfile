@@ -38,8 +38,6 @@ gem 'omniauth-spotify'
 gem "omniauth-rails_csrf_protection"
 gem 'rspotify'
 
-gem 'gon'
-
 gem 'html2slim'
 gem 'slim-rails'
 
