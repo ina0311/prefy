@@ -12,7 +12,7 @@ class Api::V1::SessionsController < ApplicationController
 
   def destroy
     reset_session
-    redirect_to root_path
+    redirect_to root_path, danger: "ログアウトしました"
   end
 
   def guest_login

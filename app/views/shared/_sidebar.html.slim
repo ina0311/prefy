@@ -1,5 +1,5 @@
-#sidebarMenu.col-md-3.col-lg-2.d-md-block.bg-dark.sidebarcollape
-  .possion-sticky.pt-3
+#sidebarMenu.bg-dark.sidebarcollape
+  .possion-sticky
     ul.nav.nav-pills.flex-column
       li.nav-item
         = link_to 'プレイリスト作成', new_api_v1_saved_playlist_path, class: 'nav-link text-white'
@@ -11,3 +11,4 @@
         = link_to 'プロフィール', api_v1_user_path(current_user.spotify_id), class: 'nav-link text-white'
       li.nav-item
         = link_to 'ログアウト', api_v1_logout_path, method: :delete,  class: 'nav-link text-white'
+ 
