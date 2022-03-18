@@ -18,4 +18,9 @@ module SessionsHelper
   def now_playing?
     !!session[:playing]
   end
+  
+  def current_track
+    return if session[:track_id].nil?
+    Track.includes(album: :artists).find(session[:track_id])
+  end
 end
