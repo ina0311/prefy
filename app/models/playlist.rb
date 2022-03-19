@@ -40,4 +40,8 @@ class Playlist < ApplicationRecord
       owner: user.spotify_id
     )
   end
+
+  def self.delete_owned(playlist_ids, user_id)
+    Playlist.my_playlists(playlist_ids, user_id).destroy_all
+  end
 end

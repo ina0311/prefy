@@ -1,5 +1,11 @@
 main.col-md-9.ms-sm-auto.col-lg-10.px-md-4
+  h2.page-title.pt-5.pb-3
+    | プレイリスト一覧
+
   .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.md-3.border-bottom
     .card-deck
       .card-columns
-        = render partial: 'playlist', collection: @saved_playlists.map(&:playlist), as: :playlist
+        - if @saved_playlists.present?
+          = render partial: 'playlist', collection: @saved_playlists.map(&:playlist), as: :playlist
+        - else
+          | 保存しているプレイリストはありません、早速プレイリストを作ってみましょう！

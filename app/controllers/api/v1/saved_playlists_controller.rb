@@ -2,9 +2,17 @@ class Api::V1::SavedPlaylistsController < ApplicationController
   before_action :delete_playlist_id, only: %i[index new]
 
   def index
-    # ユーザーのプレイリストの情報を所得
-    Users::UserPlaylistsGetter.call(current_user) unless current_user.guest_user?
-    @saved_playlists = current_user.saved_playlists.includes(:playlist)
+    unless current_user.guest_user?
+      response =  Users::UserPlaylistsGetter.call(current_user)
+      if response
+        add_playlists, delete_playlists = response
+        SavedPlaylist.add_my_playlists(current_user, add_playlists) if add_playlists.present?
+        SavedPlaylist.delete_from_my_playlists(current_user, delete_playlists) if delete_playlists.present?
+        @saved_playlists = current_user.saved_playlists.includes(:playlist)
+      else
+        flash[:danger] = '保存しているプレイリストを正常に取得できませんでした'
+      end
+    end
   end
 
   def new

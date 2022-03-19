@@ -28,16 +28,18 @@ class SavedPlaylist < ApplicationRecord
 
   scope :my_playlists, ->(playlist_ids, user_id) { where(playlist_id: playlist_ids).where(user_id: user_id) }
 
-  def self.add_my_playlists(playlist_ids, user_id)
+  def self.add_my_playlists(user, playlist_ids)
     saved_playlists = playlist_ids.map do |id|
-                        {user_id: user_id, playlist_id: id, created_at: Time.current, updated_at: Time.current}
+                        user.saved_playlists.new(playlist_id: id, created_at: Time.current, updated_at: Time.current)
                       end
-    SavedPlaylist.insert_all(saved_playlists)
+    SavedPlaylist.import!(saved_playlists, ignore: true)
   end
 
-  def self.delete_from_my_playlists(playlist_ids, user_id)
-    delete_playlists = SavedPlaylist.my_playlists(playlist_ids, user_id)
-    delete_playlists.delete_all
+  def self.delete_from_my_playlists(user, playlist_ids)
+    delete_saved_playlists = user.saved_playlists.includes(:playlist).where(playlist_id: playlist_ids)
+    own_playlist_ids = delete_saved_playlists.select { |p| user.own?(p.playlist) }.map{ |p| p.playlist.spotify_id }
+    Playlist.delete_owned(own_playlist_ids, user.spotify_id) if own_playlist_ids.present?
+    delete_saved_playlists.delete_all
   end
 
   def create_querys
