@@ -9,19 +9,21 @@ class Users::FollowArtistUnfollower < SpotifyService
   end
 
   def unfollow
-    if @user.guest_user?
-      @follow_artist.destroy!
+    if user.guest_user?
+      follow_artist.destroy!
     else
       response = request_artist_unfollow
       if response == 204
-        @follow_artist.destroy!
+        follow_artist.destroy!
       end
     end
   end
 
   private
 
+  attr_reader :user, :follow_artist
+
   def request_artist_unfollow
-    conn_request.delete("me/following?type=artist&ids=#{@follow_artist.artist_id}").status
+    conn_request.delete("me/following?type=artist&ids=#{follow_artist.artist_id}").status
   end
 end

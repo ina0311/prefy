@@ -14,7 +14,9 @@ class Players::TrackPause < SpotifyService
 
   private
 
+  attr_reader :user, :device
+
   def request_player_pause
-    conn_request.put("me/player/pause?device_id=#{@device}")
+    conn_request.put("me/player/pause?device_id=#{device}")
   end
 end

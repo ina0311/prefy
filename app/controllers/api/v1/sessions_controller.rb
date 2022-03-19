@@ -1,5 +1,5 @@
 class Api::V1::SessionsController < ApplicationController
-  skip_before_action :require_login, :access_token_changed?, only: %i(create failure guest_login)
+  skip_before_action :require_login
 
   def create
     rspotify_user = RSpotify::User.new(request.env['omniauth.auth'])

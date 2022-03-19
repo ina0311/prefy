@@ -15,9 +15,11 @@ class Players::TrackStarter < SpotifyService
 
   private
 
+  attr_reader :user, :device, :request_body
+
   def request_player_start
-    conn_request.put("me/player/play?device_id=#{@device}") do |req|
-      req.body = @request_body.to_json
+    conn_request.put("me/player/play?device_id=#{device}") do |req|
+      req.body = request_body.to_json
     end
   end
 end

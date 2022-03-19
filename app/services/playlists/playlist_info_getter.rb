@@ -12,9 +12,9 @@ class Playlists::PlaylistInfoGetter < SpotifyService
   def get
     response = request_get_playlist
 
-    @playlist.update!(name: response[:name], image: response.dig(:images, 0, :url))
+    playlist.update!(name: response[:name], image: response.dig(:images, 0, :url))
 
-    default = @playlist.playlist_of_tracks.pluck(:track_id, :position)
+    default = playlist.playlist_of_tracks.pluck(:track_id, :position)
     now = response_convert_track_id_and_position(response)
 
     new_track_id_and_position = now - default
@@ -23,16 +23,18 @@ class Playlists::PlaylistInfoGetter < SpotifyService
     ActiveRecord::Base.transaction do
       if new_track_id_and_position.present?
         playlist_of_tracks = new_track_id_and_position.map do |ary|
-          @playlist.playlist_of_tracks.new(track_id: ary.first, position: ary.second)
+          playlist.playlist_of_tracks.new(track_id: ary.first, position: ary.second)
         end
         Tracks::TrackInfoGetter.call(playlist_of_tracks.pluck(:track_id))
         PlaylistOfTrack.import!(playlist_of_tracks)
       end
-      PlaylistOfTrack.specific(@playlist.spotify_id, delete_track_id_and_position.map(&:second)).delete_all if delete_track_id_and_position.present?
+      PlaylistOfTrack.specific(playlist.spotify_id, delete_track_id_and_position.map(&:second)).delete_all if delete_track_id_and_position.present?
     end
   end
 
   private
+
+  attr_reader :user, :playlist
 
   def response_convert_track_id_and_position(response)
     track_ids = response[:tracks][:items].pluck(:track).pluck(:id)
@@ -40,6 +42,6 @@ class Playlists::PlaylistInfoGetter < SpotifyService
   end
 
   def request_get_playlist
-    conn_request.get("playlists/#{@playlist.spotify_id}").body
+    conn_request.get("playlists/#{playlist.spotify_id}").body
   end
 end

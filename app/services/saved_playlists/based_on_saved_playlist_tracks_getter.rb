@@ -9,11 +9,11 @@ class SavedPlaylists::BasedOnSavedPlaylistTracksGetter < SpotifyService
   end
   
   def get
-    querys, target_querys = @saved_playlist.create_querys
+    querys, target_querys = saved_playlist.create_querys
     @tracks = search_tracks(querys).flatten!
     @target_tracks = search_tracks(target_querys) if target_querys.present?
     check_tracks
-    @saved_playlist.refine_tracks(@tracks, @target_tracks)
+    saved_playlist.refine_tracks(@tracks, @target_tracks)
   end
 
   private

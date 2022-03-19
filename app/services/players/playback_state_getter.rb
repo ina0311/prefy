@@ -20,6 +20,8 @@ class Players::PlaybackStateGetter < SpotifyService
 
   private
 
+  attr_reader :user
+  
   def request_playback_state
     conn_request.get('me/player')
   end

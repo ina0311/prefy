@@ -16,8 +16,10 @@ class Albums::AlbumRegistrar < SpotifyService
 
   private
 
+  attr_reader :tracks
+
   def uniq_album_ids
-    @tracks.pluck(:album_id).uniq
+    tracks.pluck(:album_id).uniq
   end
 
   def request_album_info(ids)

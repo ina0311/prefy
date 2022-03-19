@@ -9,7 +9,7 @@ class Users::ArtistFollower < SpotifyService
   end
 
   def follow
-    if @user.guest_user?
+    if user.guest_user?
       create_follow_artist!
     else
       response = request_artist_follow
@@ -21,12 +21,14 @@ class Users::ArtistFollower < SpotifyService
 
   private
 
+  attr_reader :user, :artist_id
+
   def create_follow_artist!
-    Artists::ArtistRegistrar.call([@artist_id]) unless Artist.find_by(spotify_id: @artist_id)
-    FollowArtist.create!(user_id: @user.spotify_id, artist_id: @artist_id)
+    Artists::ArtistRegistrar.call([artist_id]) unless Artist.find_by(spotify_id: artist_id)
+    FollowArtist.create!(user_id: user.spotify_id, artist_id: artist_id)
   end
 
   def request_artist_follow
-    conn_request.put("me/following?type=artist&ids=#{@artist_id}").status
+    conn_request.put("me/following?type=artist&ids=#{artist_id}").status
   end
 end

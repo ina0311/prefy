@@ -13,7 +13,7 @@ class SpotifySearcher < SpotifyService
     @tracks = Array.new
     type = 'artist,album,track'
 
-    response = request_search(@word, type)
+    response = request_search(word, type)
 
     response.each do |res|
       case res.type
@@ -31,11 +31,13 @@ class SpotifySearcher < SpotifyService
 
   def artists
     type = 'artist'
-    response = request_search(@word, type)
+    response = request_search(word, type)
     response.map { |res| convert_artist(res) }
   end
 
   private
+
+  attr_reader :word
 
   def convert_artist(response)
     Artist.new(
@@ -66,7 +68,7 @@ class SpotifySearcher < SpotifyService
     )
   end
 
-  def request_search(word, type)
+  def request_search(type)
     RSpotify::Base.search(word, type)
   end
 end

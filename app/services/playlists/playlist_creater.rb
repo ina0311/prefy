@@ -9,8 +9,8 @@ class Playlists::PlaylistCreater < SpotifyService
   end
 
   def create
-    if @user.guest_user?
-      Playlist.create_by_guest(@user, @playlist_name)
+    if user.guest_user?
+      Playlist.create_by_guest(user, playlist_name)
     else
       response = request_create_playlist
       Playlist.create_by_response(response.body)
@@ -19,9 +19,11 @@ class Playlists::PlaylistCreater < SpotifyService
 
   private
 
+  attr_reader :user, :playlsit_name
+
   def request_create_playlist
-    response = conn_request.post("users/#{@user.spotify_id}/playlists") do |req|
-      req.body = @playlist_name.present? ? { name: @playlist_name }.to_json : { name: "new playlist" }.to_json
+    response = conn_request.post("users/#{user.spotify_id}/playlists") do |req|
+      req.body = playlist_name.present? ? { name: playlist_name }.to_json : { name: "new playlist" }.to_json
     end
   end
 end
