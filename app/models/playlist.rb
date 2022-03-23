@@ -24,7 +24,7 @@ class Playlist < ApplicationRecord
     end
   end
 
-  def self.create_by_response(response)
+  def self.create_by_response!(response)
     Playlist.create!(
       spotify_id: response[:id],
       name: response[:name],

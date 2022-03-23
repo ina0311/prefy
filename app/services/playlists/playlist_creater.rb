@@ -9,17 +9,17 @@ class Playlists::PlaylistCreater < SpotifyService
   end
 
   def create
-    if user.guest_user?
-      Playlist.create_by_guest(user, playlist_name)
+    response = request_create_playlist
+    if response.success?
+      response.body
     else
-      response = request_create_playlist
-      Playlist.create_by_response(response.body)
+      false
     end
   end
 
   private
 
-  attr_reader :user, :playlsit_name
+  attr_reader :user, :playlist_name
 
   def request_create_playlist
     response = conn_request.post("users/#{user.spotify_id}/playlists") do |req|

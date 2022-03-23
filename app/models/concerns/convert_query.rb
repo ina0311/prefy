@@ -13,12 +13,10 @@ module ConvertQuery
   private
 
   def add_artists(artists)
-    querys = []
-    artists.each do |artist|
+    artists.map do |artist|
       string = @query.dup
       string += " artist:#{artist[:name]}"
-      querys << { query: string, artist_spotify_id: artist[:spotify_id] }
+      { query: string, artist_spotify_id: artist[:spotify_id] }
     end
-    querys
   end
 end

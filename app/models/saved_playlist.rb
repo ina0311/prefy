@@ -1,7 +1,6 @@
 class SavedPlaylist < ApplicationRecord
-  include ConvertQuery
-  include TrackRefine
-
+  PERCENTAGE = 0.2
+  DEFAULT = 50
   JUNIOR_HIGH_SCHOOL = 15
   HIGH_SCHOOL = 18
   UNIVERSITY = 22
@@ -9,6 +8,8 @@ class SavedPlaylist < ApplicationRecord
   TWENTIES = 30
   THIRTIES = 40
   GENERATIONS = [JUNIOR_HIGH_SCHOOL, HIGH_SCHOOL, UNIVERSITY, TEENS, TWENTIES, THIRTIES]
+  TEN_MINUTES = 60000
+
   belongs_to :user
   belongs_to :playlist
 
@@ -42,17 +43,13 @@ class SavedPlaylist < ApplicationRecord
     delete_saved_playlists.delete_all
   end
 
-  def create_querys
-    fillter = self.convert_fillter
-    convert_querys(fillter)
-  end
-
+  # saved_playlistの属性をクエリを作るためのフィルターに変換する
   def convert_fillter
     artists = self.get_artists if self.only_follow_artist.present?
     targets = self.include_artists if self.include_artists.present?
     period = self.that_generation_preference? ? convert_generation_to_period : self.period
 
-    { artists: artists, period: period, targets: targets}
+    return { artists: artists, period: period, targets: targets}
   end
 
   # ジャンルが指定されていればフォローアーティストを絞り込み検索する
@@ -61,15 +58,6 @@ class SavedPlaylist < ApplicationRecord
       self.user.follow_artist_lists.includes(:artist_genre_lists).search_genre_names(self.genres.only_names)
     else
       self.user.follow_artist_lists
-    end
-  end
-
-  # saved_playlistのカラムによって絞り込み方法を変える
-  def refine_tracks(tracks, target_tracks)
-    if self.max_total_duration_ms.present?
-      self.refine_by_duration_ms(tracks, target_tracks)
-    else
-      self.refine_by_max_number_of_track(tracks, target_tracks)
     end
   end
 
@@ -98,5 +86,73 @@ class SavedPlaylist < ApplicationRecord
       since_year = this_year - (age - THIRTIES)
       "#{since_year - 10}-#{since_year}"
     end
+  end
+
+  # フィルターをクエリに変換する
+  def convert_querys(fillter)
+    string = String.new
+    string += "year:#{fillter[:period]}" if fillter[:period].present?
+    querys = fillter[:artists].present? ? add_artists(string, fillter[:artists]) : string
+    target_querys = add_artists(string, fillter[:targets]) if fillter[:targets].present?
+
+    return querys, target_querys
+  end
+
+  # クエリにアーティストを加える
+  def add_artists(string, artists)
+    artists.map do |artist|
+      copy_str = string.dup
+      copy_str += " artist:#{artist[:name]}"
+      {query: copy_str, artist_spotify_id: artist[:spotify_id]}
+    end
+  end
+
+  # 曲数で絞り込む
+  def refine_by_max_number_of_track(ramdom_tracks, target_tracks)
+    total = self.max_number_of_track.present? ? self.max_number_of_track : DEFAULT
+    if target_tracks.present?
+      refined_target_tracks = target_tracks.map { |tg_tracks| tg_tracks.sample(total * PERCENTAGE) }.flatten     
+      remaining = total - refined_target_tracks.size
+      refined_ramdom_tracks = ramdom_tracks.sample(remaining)
+      return {refined_ramdom_tracks: refined_ramdom_tracks, refined_target_tracks: refined_target_tracks}
+    else
+      return {refined_ramdom_tracks: ramdom_tracks.sample(total)}
+    end
+  end
+
+  # 再生時間で絞り込む
+  def refine_by_duration_ms(ramdom_tracks, target_tracks)
+    playlist_of_tracks = []
+    if target_tracks
+      limit = self.max_total_duration_ms * PERCENTAGE
+      refined_target_tracks = target_tracks.map { |tg_tracks| check_total_duration_and_add_tracks(limit, tg_tracks)}.flatten
+      remaining = self.max_total_duration_ms - refined_target_tracks.pluck(:duration_ms).sum
+      refine_ramdom_tracks = check_total_duration_and_add_tracks(remaining, ramdom_tracks)
+      return {refined_ramdom_tracks: refine_ramdom_tracks, refined_target_tracks: refined_target_tracks}
+    else
+      return {refined_ramdom_tracks: check_total_duration_and_add_tracks(limit, ramdom_tracks)}
+    end
+  end
+
+  # 再生時間を判定し、追加
+  def check_total_duration_and_add_tracks(limit, tracks)
+    playlist_of_tracks = []
+    tracks.shuffle!.each do |track|
+      playlist_of_tracks << track
+      limit -= track[:duration_ms]
+      break if limit <= 0
+    end
+
+    return playlist_of_tracks
+  end
+
+  def number_of_track_less_than_requirements?
+    return false unless self.max_number_of_track
+    self.max_number_of_track > self.playlist.included_tracks.size
+  end
+
+  def total_duration_more_than_ten_minutes_less_than_requirement?
+    return false unless self.max_total_duration_ms
+    TEN_MINUTES < (self.max_total_duration_ms - self.playlist.included_tracks.pluck(:duration_ms).sum)
   end
 end

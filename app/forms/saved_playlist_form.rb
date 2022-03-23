@@ -41,6 +41,11 @@ class SavedPlaylistForm
     validates :genre_ids
   end
 
+  with_options presence: true do
+    validates :user_id
+    validates :playlist_id
+  end
+
   before_validation :set_max_duration_ms, :set_period
 
   delegate :persisted?, to: :saved_playlist
