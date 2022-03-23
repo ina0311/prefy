@@ -18,6 +18,8 @@ class Players::DeviceGetter < SpotifyService
 
   private
 
+  attr_reader :user
+
   def request_device
     conn_request.get('me/player/devices')
   end

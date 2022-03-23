@@ -13,7 +13,7 @@ class SpotifySearcher < SpotifyService
     @tracks = Array.new
     type = 'artist,album,track'
 
-    response = request_search(word, type)
+    response = request_search(type)
 
     response.each do |res|
       case res.type
@@ -31,7 +31,7 @@ class SpotifySearcher < SpotifyService
 
   def artists
     type = 'artist'
-    response = request_search(word, type)
+    response = request_search(type)
     response.map { |res| convert_artist(res) }
   end
 

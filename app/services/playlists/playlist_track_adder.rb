@@ -33,7 +33,7 @@ class Playlists::PlaylistTrackAdder < SpotifyService
     album = Album.find_or_create_by_response!(track.album)
     Track.find_or_create_by_response!(track)
     Artists::ArtistRegistrar.call(track.artists.map(&:id), album)
-    PlaylistOfTrack.create!(playlist_id: playlist_id, track_id: track_id)
+    PlaylistOfTrack.create!(playlist_id: playlist_id, track_id: track_id, position: 0)
   end
 
   def request_playlist_add_track

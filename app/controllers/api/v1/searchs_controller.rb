@@ -11,7 +11,7 @@ class Api::V1::SearchsController < ApplicationController
 
   def artists
     @artists = SpotifySearcher.call(search_params).artists
-    @follow_artist_ids = @current_user.follow_artists.pluck(:artist_id)
+    @follow_artist_ids = current_user.follow_artists.pluck(:artist_id)
   end
 
   private
