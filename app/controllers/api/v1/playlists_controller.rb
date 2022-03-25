@@ -1,9 +1,8 @@
 class Api::V1::PlaylistsController < ApplicationController
   def show
-    @playlist = Playlist.includes(:playlist_of_tracks).find(playlist_params)
-
+    @playlist = Playlist.find(playlist_params)
     Playlists::PlaylistInfoGetter.call(current_user, @playlist) unless current_user.guest_user?
-    @tracks = @playlist.included_tracks.includes(album: :artists)
+    @tracks = @playlist.tracks.includes(album: :artists).position_asc
     @form = SavedPlaylistForm.new(saved_playlist: @playlist.saved_playlist)
     session[:playlist_id] = @playlist[:spotify_id]
   end

@@ -148,11 +148,11 @@ class SavedPlaylist < ApplicationRecord
 
   def number_of_track_less_than_requirements?
     return false unless self.max_number_of_track
-    self.max_number_of_track > self.playlist.included_tracks.size
+    self.max_number_of_track > self.playlist.tracks.size
   end
 
   def total_duration_more_than_ten_minutes_less_than_requirement?
     return false unless self.max_total_duration_ms
-    TEN_MINUTES < (self.max_total_duration_ms - self.playlist.included_tracks.pluck(:duration_ms).sum)
+    TEN_MINUTES < (self.max_total_duration_ms - self.playlist.tracks.pluck(:duration_ms).sum)
   end
 end

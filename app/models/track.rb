@@ -14,6 +14,8 @@ class Track < ApplicationRecord
   attribute :artist_names
   attribute :image, :string
 
+  scope :position_asc, -> { order('playlist_of_tracks.position asc') }
+
   class << self
     
     def all_import!(response)
