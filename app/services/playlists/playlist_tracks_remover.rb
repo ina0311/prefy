@@ -15,7 +15,7 @@ class Playlists::PlaylistTracksRemover < SpotifyService
 
   def remove
     unless user.guest_user?
-      request_bodys = track_ids.instance_of?(Array) ? create_request_body : {tracks: [{uri: "spotify:track:#{track_ids}"}]}
+      request_bodys = create_request_body 
       request_remove_playlist_tracks(request_bodys)
     end
     playlist.playlist_of_tracks.delete_all
@@ -43,15 +43,9 @@ class Playlists::PlaylistTracksRemover < SpotifyService
   end
 
   def request_remove_playlist_tracks(request_bodys)
-    if track_ids.instance_of?(Array)
-      request_bodys.each do |request_body|
-        conn_request.delete("playlists/#{playlist.spotify_id}/tracks") do |req|
-          req.body = request_body.to_json
-        end
-      end
-    else
+    request_bodys.each do |request_body|
       conn_request.delete("playlists/#{playlist.spotify_id}/tracks") do |req|
-        req.body = request_bodys.to_json
+        req.body = request_body.to_json
       end
     end
   end

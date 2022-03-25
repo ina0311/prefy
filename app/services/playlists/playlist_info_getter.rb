@@ -11,24 +11,22 @@ class Playlists::PlaylistInfoGetter < SpotifyService
 
   def get
     response = request_get_playlist
-
     playlist.update!(name: response[:name], image: response.dig(:images, 0, :url))
 
     default = playlist.playlist_of_tracks.pluck(:track_id, :position)
     now = response_convert_track_id_and_position(response)
 
-    new_track_id_and_position = now - default
-    delete_track_id_and_position = default - now
+    new_track_id_and_positions = now - default
+    delete_position_tracks = (default - now).map(&:second)
 
-    ActiveRecord::Base.transaction do
-      if new_track_id_and_position.present?
-        playlist_of_tracks = new_track_id_and_position.map do |ary|
-          playlist.playlist_of_tracks.new(track_id: ary.first, position: ary.second)
-        end
-        Tracks::TrackInfoGetter.call(playlist_of_tracks.pluck(:track_id))
-        PlaylistOfTrack.import!(playlist_of_tracks)
-      end
-      PlaylistOfTrack.specific(playlist.spotify_id, delete_track_id_and_position.map(&:second)).delete_all if delete_track_id_and_position.present?
+    if delete_position_tracks.present?
+      delete_playlist_of_tracks = PlaylistOfTrack.identify_by_positions(playlist.spotify_id, delete_position_tracks)
+      delete_playlist_of_tracks.delete_all
+    end
+
+    if new_track_id_and_positions.present?
+      Tracks::TrackInfoGetter.call(new_track_id_and_positions.map(&:first))
+      PlaylistOfTrack.insert_with_position(playlist, new_track_id_and_positions)
     end
   end
 
