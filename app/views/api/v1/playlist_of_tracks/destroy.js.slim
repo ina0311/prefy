@@ -1,2 +1,10 @@
-| $("#js-track-#{@playlist_of_track.id}, #js-delete-button-#{@playlist_of_track.id}").remove();
-| reload = true;
+| $('.js-flash-message').html("#{j(render 'shared/flash_message', flash: flash)}");
+| var ref = #{@playlist_of_track.position};
+| $(`.position-${ref}`).remove();
+| $('.track').each(function(){
+|   r = $(this).prop('className').match(/[0-9]+/);
+|   if(r[0] > ref) {
+|     $(this).removeClass(`position-${r[0]}`);
+|     $(this).addClass(`position-${r[0] - 1}`);
+|   }
+| });

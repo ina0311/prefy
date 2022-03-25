@@ -1,4 +1,4 @@
-.modal-header#js-edit-track.active
+d.modal-header#js-edit-track.active
   .modal-title
     h5
       | プレイリストの編集
@@ -6,5 +6,5 @@
     = button_tag '曲の追加', class: 'btn btn-info', id: 'js-switch-button'
     = button_tag '閉じる', class: 'btn btn-secondary', id: 'js-modal-close'
   .modal-body#js-edit-body
-    .row
-      = render partial: 'api/v1/playlists/modal_track_list', collection: playlist.playlist_of_tracks, as: :playlist_of_track
+    .js-flash-message
+    = render partial: 'api/v1/tracks/track', collection: @playlist.playlist_of_tracks.map(&:track), as: :track, locals: { playlist_id: @playlist.spotify_id }

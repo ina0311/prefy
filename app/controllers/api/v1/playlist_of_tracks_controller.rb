@@ -7,17 +7,21 @@ class Api::V1::PlaylistOfTracksController < ApplicationController
 
   def destroy
     @playlist_of_track = delete_playlist_of_track(playlist_of_track_params)
-    Playlists::PlaylistTracksRemover.call(current_user, @playlist_of_track.playlist_id, @playlist_of_track.track_id)
+    Playlists::PlaylistTrackRemover.call(current_user, @playlist_of_track)
+
+    respond_to do |format|
+      format.js { flash.now[:success] = "プレイリストから曲を削除しました" }
+    end
   end
 
   private
 
   def playlist_of_track_params
-    params.permit(:playlist_id, :id)
+    params.permit(:playlist_id, :id, :position)
   end
 
   def delete_playlist_of_track(playlist_of_track_params)
-    PlaylistOfTrack.find(playlist_of_track_params[:id])
+    PlaylistOfTrack.identify(playlist_of_track_params[:playlist_id], playlist_of_track_params[:position])
   end
 
   def add_playlist_id_and_track_id(playlist_of_track_params)
