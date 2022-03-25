@@ -10,14 +10,9 @@ class Playlists::PlaylistTrackAdder < SpotifyService
   end
 
   def add
-    if user.guest_user?
-      add_playlist_of_track!
-    else
-      response = request_playlist_add_track
-      if response == 201
-        add_playlist_of_track!
-      end
-    end
+    request_playlist_add_track unless user.guest_user?
+    @playlist_of_track = add_playlist_of_track!
+    return @playlist_of_track
   end
 
   private
@@ -30,10 +25,11 @@ class Playlists::PlaylistTrackAdder < SpotifyService
 
   def add_playlist_of_track!
     track = request_get_track
-    album = Album.find_or_create_by_response!(track.album)
+    Album.find_or_create_by_response!(track.album)
     Track.find_or_create_by_response!(track)
-    Artists::ArtistRegistrar.call(track.artists.map(&:id), album)
-    PlaylistOfTrack.create!(playlist_id: playlist_id, track_id: track_id, position: 0)
+    Artists::ArtistRegistrar.call(track.artists.map(&:id), track.album)
+    last = PlaylistOfTrack.where(playlist_id: playlist_id).count
+    PlaylistOfTrack.create!(playlist_id: playlist_id, track_id: track_id, position: last)
   end
 
   def request_playlist_add_track
