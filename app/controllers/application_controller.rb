@@ -14,4 +14,10 @@ class ApplicationController < ActionController::Base
     return if session[:playlist_id].nil?
     session.delete(:playlist_id)
   end
+
+  def js_format_flash_message(type, message)
+    respond_to do |format|
+      format.js { flash.now[type] = message }
+    end
+  end
 end

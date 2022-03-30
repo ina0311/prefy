@@ -17,10 +17,4 @@ class Api::V1::PlaylistOfTracksController < ApplicationController
   def playlist_of_track_params
     params.permit(:id, :playlist_id, :track_id)
   end
-
-  def js_format_flash_message(type, message)
-    respond_to do |format|
-      format.js { flash.now[type] = message }
-    end
-  end
 end

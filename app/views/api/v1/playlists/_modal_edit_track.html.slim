@@ -5,6 +5,7 @@ d.modal-header#js-edit-track.active
 
     = button_tag '曲の追加', class: 'btn btn-info', id: 'js-switch-button'
     = button_tag '閉じる', class: 'btn btn-secondary', id: 'js-modal-close'
-  .modal-body#js-edit-body
+  .modal-body
     .js-flash-message
-    = render partial: 'api/v1/playlists/playlist_of_track', collection: playlist_of_tracks
+    #js-edit-body
+      = render partial: 'api/v1/playlists/playlist_of_track', collection: playlist_of_tracks

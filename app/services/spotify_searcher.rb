@@ -14,6 +14,7 @@ class SpotifySearcher < SpotifyService
     type = 'artist,album,track'
 
     response = request_search(type)
+    return nil if response.empty?
 
     response.each do |res|
       case res.type
@@ -26,7 +27,7 @@ class SpotifySearcher < SpotifyService
       end
     end
 
-    {artists: @artists, albums: @albums, tracks: @tracks}
+    return {artists: @artists, albums: @albums, tracks: @tracks}
   end
 
   def artists
