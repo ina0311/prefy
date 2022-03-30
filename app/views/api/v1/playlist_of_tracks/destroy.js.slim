@@ -1,10 +1,3 @@
 | $('.js-flash-message').html("#{j(render 'shared/flash_message', flash: flash)}");
-| var ref = #{@playlist_of_track.position};
-| $(`.position-${ref}`).remove();
-| $('.track').each(function(){
-|   r = $(this).prop('className').match(/[0-9]+/);
-|   if(r[0] > ref) {
-|     $(this).removeClass(`position-${r[0]}`);
-|     $(this).addClass(`position-${r[0] - 1}`);
-|   }
-| });
+| $('#js-edit-body').html("#{j(render partial: 'api/v1/playlists/playlist_of_track', collection: @playlist_of_tracks)}");
+| $('#js-playlist-of-tracks').html("#{j(render partial: 'api/v1/playlists/playlist_of_track', collection: @playlist_of_tracks, locals: { action_name: 'show' })}");

@@ -11,7 +11,7 @@ class Playlists::PlaylistTrackRemover < SpotifyService
   def remove
     request_remove_playlist_of_track unless user.guest_user?
     playlist_of_track.delete
-    PlaylistOfTrack.greater_than_position(playlist_of_track.playlist_id, playlist_of_track.position).all_position_decrement
+    PlaylistOfTrack.greater_than_position(playlist_of_track).all_position_decrement
   end
 
   private
