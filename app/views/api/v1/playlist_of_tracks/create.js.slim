@@ -1,0 +1,3 @@
+| $('.js-flash-message').html("#{j(render 'shared/flash_message', flash: flash)}");
+| $('#js-edit-body').append("#{j(render 'api/v1/playlists/playlist_of_track', playlist_of_track: @playlist_of_track)}");
+| $('#js-playlist-of-tracks').append("#{j(render 'api/v1/playlists/playlist_of_track', playlist_of_track: @playlist_of_track, action_name: 'show')}");

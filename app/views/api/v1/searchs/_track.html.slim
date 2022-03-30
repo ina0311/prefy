@@ -1,0 +1,16 @@
+div class="track d-flex"
+  .col-1
+    = image_tag track.decorate.image, class: 'track-album-image', size: '40x40'
+  .col
+    .track-name
+      = track.name
+  .col
+    .track-artist-name
+      = track.decorate.artists
+  .col
+    .track-add-button
+      = link_to '追加する',
+        api_v1_playlist_playlist_of_tracks_path(playlist_id: @playlist_id, track_id: track.spotify_id),
+        method: :post, 
+        remote: true, 
+        class: 'btn btn-primary'

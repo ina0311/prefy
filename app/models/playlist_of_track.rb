@@ -7,9 +7,9 @@ class PlaylistOfTrack < ApplicationRecord
 
   scope :identify_by_positions, ->(playlist_id, positions) { where(playlist_id: playlist_id).where(position: positions) }
   scope :identify, ->(playlist_id, position) { find_by(playlist_id: playlist_id, position: position) }
-  scope :more_than_position, ->(playlist_id, position) { where(playlist_id: playlist_id).where("position >= ?", position) }
-  scope :greater_than_position, ->(playlist_id, position) { where(playlist_id: playlist_id).where("position > ?", position) }
+  scope :greater_than_position, ->(playlist_of_track) { where(playlist_id: playlist_of_track.playlist_id).where("position > ?", playlist_of_track.position) }
   scope :all_position_decrement, -> { update_all("position = position - 1")}
+  scope :position_asc, -> { order(position: :asc) }
 
   def self.all_update(playlist, track_ids)
     PlaylistOfTrack.transaction do

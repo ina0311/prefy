@@ -10,7 +10,7 @@ Rails.application.routes.draw do
 
       resources :myplaylists, controller: 'saved_playlists', as: 'saved_playlists'
       resources :playlists, only: %i[show edit] do
-        resources :tracks, controller: 'playlist_of_tracks', only: %i[update destroy]
+        resources :playlist_of_tracks, only: %i[create destroy]
       end
 
       resources :searchs, only: %i[index] do
