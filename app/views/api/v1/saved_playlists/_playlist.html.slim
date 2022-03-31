@@ -1,9 +1,7 @@
-= link_to api_v1_playlist_path(playlist.id), do
+= link_to api_v1_playlist_path(playlist.id) do
   .card.border-dark.mb-3
     .card-body.text-dark
-      - if playlist.image.present?
-        = image_tag playlist.image, size: '100x100', class: 'card-thumbnail'
-      - else
-        = image_tag 'default_image.png', size: '100x100', class: 'card-thumnail'
+      = image_tag playlist.decorate.image, size: '100x100', class: 'card-thumbnail'
+
       h5.card-title
         | "#{playlist.name}"

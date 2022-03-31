@@ -86,8 +86,8 @@ class Api::V1::SavedPlaylistsController < ApplicationController
       before_year: params[:saved_playlist][:before_year],
       duration_hour: params[:saved_playlist][:duration_hour].to_i,
       duration_minute: params[:saved_playlist][:duration_minute].to_i,
-      artist_ids: params[:artist_ids],
-      genre_ids: params[:genre_ids]&.map(&:to_i),
+      artist_ids: params[:artist_ids].reject(&:empty?),
+      genre_ids: params[:genre_ids].reject(&:empty?)&.map(&:to_i),
       user_id: current_user.id,
       playlist_id: @playlist&.id
     )

@@ -77,8 +77,8 @@ class SavedPlaylistForm
       SavedPlaylistIncludeArtist.specific(saved_playlist.id, delete_artist_ids).delete_all if delete_artist_ids.present?
 
       default_genre_ids = saved_playlist.saved_playlist_genres.pluck(:genre_id)
-      delete_genre_ids = !genre_ids.first.zero? ? default_genre_ids - genre_ids : default_genre_ids
-      SavedPlaylistGenre.all_import!(saved_playlist.id, genre_ids) unless genre_ids.first&.zero?
+      delete_genre_ids = genre_ids.present? ? default_genre_ids - genre_ids : default_genre_ids
+      SavedPlaylistGenre.all_import!(saved_playlist.id, genre_ids) if  genre_ids.present?
       SavedPlaylistGenre.specific(saved_playlist.id, delete_genre_ids).delete_all if delete_genre_ids.present?
     end
     saved_playlist.persisted?
