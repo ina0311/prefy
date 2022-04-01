@@ -24,7 +24,7 @@ class Users::ArtistFollower < SpotifyService
   attr_reader :user, :artist_id
 
   def create_follow_artist!
-    Artists::ArtistRegistrar.call([artist_id]) unless Artist.find_by(spotify_id: artist_id)
+    Artists::ArtistRegistrar.call(user, [artist_id]) unless Artist.find_by(spotify_id: artist_id)
     FollowArtist.create!(user_id: user.spotify_id, artist_id: artist_id)
   end
 

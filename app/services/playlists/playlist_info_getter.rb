@@ -25,7 +25,7 @@ class Playlists::PlaylistInfoGetter < SpotifyService
     end
 
     if new_track_id_and_positions.present?
-      Tracks::TrackInfoGetter.call(new_track_id_and_positions.map(&:first))
+      Tracks::TrackInfoGetter.call(user, new_track_id_and_positions.map(&:first))
       PlaylistOfTrack.insert_with_position(playlist, new_track_id_and_positions)
     end
   end

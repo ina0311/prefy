@@ -40,6 +40,7 @@ gem 'rspotify'
 
 gem 'html2slim'
 gem 'slim-rails'
+gem "rails-i18n"
 
 gem 'faraday'
 gem 'faraday_middleware'

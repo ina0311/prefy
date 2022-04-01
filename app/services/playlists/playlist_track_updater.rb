@@ -26,7 +26,7 @@ class Playlists::PlaylistTrackUpdater < SpotifyService
   attr_reader :user, :playlist, :track_ids
 
   def playlist_of_tracks_update!
-    Tracks::TrackInfoGetter.call(track_ids)
+    Tracks::TrackInfoGetter.call(user, track_ids)
     PlaylistOfTrack.all_update(playlist, track_ids)
   end
 

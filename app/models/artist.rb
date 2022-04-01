@@ -12,13 +12,13 @@ class Artist < ApplicationRecord
 
   scope :search_genre_names, ->(names) { where(artist_genre_lists: { name: names }) }
 
-  def self.all_update(response)
+  def self.all_import!(response)
     Artist.transaction do
       artists = response.map do |res|
                   Artist.new(
-                    spotify_id: res.id,
-                    name: res.name,
-                    image: res.images.dig(0, 'url')
+                    spotify_id: res[:id],
+                    name: res[:name],
+                    image: res.dig(:image, 0, :url)
                   )
                 end
       Artist.import!(artists, on_duplicate_key_update: %i[name image])

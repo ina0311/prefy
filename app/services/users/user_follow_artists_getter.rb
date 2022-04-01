@@ -16,7 +16,7 @@ class Users::UserFollowArtistsGetter < SpotifyService
     unfollow_artists = default_follow_artists - now_follow_artists
     new_follow_artists = now_follow_artists - default_follow_artists
 
-    Artists::ArtistRegistrar.call(new_follow_artists) if new_follow_artists.present?
+    Artists::ArtistRegistrar.call(user, new_follow_artists) if new_follow_artists.present?
     FollowArtist.follow_all(new_follow_artists, user) if new_follow_artists.present?
 
     FollowArtist.unfollow_all(unfollow_artists, user) if unfollow_artists.present?
