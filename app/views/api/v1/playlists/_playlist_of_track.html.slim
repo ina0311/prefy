@@ -17,9 +17,9 @@ div class="track d-flex position-#{playlist_of_track.position}"
   - else
     .col
       .track_delete_button
-        = link_to '削除',
+        = link_to t("default.delete"),
           api_v1_playlist_playlist_of_track_path(id: playlist_of_track, playlist_id: playlist_of_track.playlist_id),
-          data: { confirm: 'この曲を削除しますか？' },
+          data: { confirm: t("message.delete_confirm", item: playlist_of_track.track.name) },
           method: :delete,
           class: 'btn btn-danger',
           remote: true

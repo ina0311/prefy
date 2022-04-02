@@ -1,15 +1,15 @@
 .modal-header#js-add-track
   .modal-title
     h5
-      | 曲の追加
+      = t("modal.add_track.title")
     
-    = button_tag '編集', class: 'btn btn-success', id: 'js-switch-button'
-    = button_tag '閉じる', class: 'btn btn-secondary', id: 'js-modal-close'
+    = button_tag t("modal.edit.title"), class: 'btn btn-success', id: 'js-switch-button'
+    = button_tag t("modal.close"), class: 'btn btn-secondary', id: 'js-modal-close'
   .modal-body
     = form_with url: api_v1_search_path, local: false do |f|
-      = f.label '曲の検索'
+      = f.label t("modal.add_track.search_track")
       = f.text_field :search
-      = f.submit '検索', class: 'btn btn-secondary'
+      = f.submit t("modal.add_track.search"), class: 'btn btn-secondary'
 
     .js-flash-message
     .search-result

@@ -1,4 +1,4 @@
-= link_to 'フォロー中', api_v1_follow_artist_path(@current_user.spotify_id, artist_id: artist_id),
-                    method: :delete,
-                    class: 'btn btn-success',
-                    remote: true
+= link_to t("default.following"), api_v1_follow_artist_path(@current_user.spotify_id, artist_id: artist_id),
+                                  method: :delete,
+                                  class: 'btn btn-success',
+                                  remote: true

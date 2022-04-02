@@ -1,10 +1,10 @@
 d.modal-header#js-edit-track.active
   .modal-title
     h5
-      | プレイリストの編集
+      = t("modal.edit.title")
 
-    = button_tag '曲の追加', class: 'btn btn-info', id: 'js-switch-button'
-    = button_tag '閉じる', class: 'btn btn-secondary', id: 'js-modal-close'
+    = button_tag t("modal.add_track.title"), class: 'btn btn-info', id: 'js-switch-button'
+    = button_tag t("modal.close"), class: 'btn btn-secondary', id: 'js-modal-close'
   .modal-body
     .js-flash-message
     #js-edit-body
