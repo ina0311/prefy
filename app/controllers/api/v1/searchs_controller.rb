@@ -3,7 +3,7 @@ class Api::V1::SearchsController < ApplicationController
 
   def search
     response = SpotifySearcher.call(search_params).search
-    return js_format_flash_message(:danger, "検索ワードにヒットしませんでした") if response.nil?
+    return js_format_flash_message(:danger, t("message.not_get_for_search_word")) if response.nil?
     
     @artists = response[:artists]
     @albums = response[:albums]

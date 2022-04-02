@@ -6,8 +6,9 @@ class Api::V1::UsersController < ApplicationController
   def age
     @user = User.find(user_params)
     if @user.update!(age: user_age_params[:age])
-      redirect_to api_v1_user_path(@user)
+      redirect_to api_v1_user_path(@user), success: t(".success")
     else
+      flash.now[:danger] = t(".fail")
       render :show
     end
   end

@@ -6,14 +6,10 @@ class Api::V1::SavedPlaylistsController < ApplicationController
       @saved_playlists = current_user.saved_playlists.includes(:playlists)
     else
       response = Users::UserPlaylistsGetter.call(current_user)
-      if response
-        add_playlists, delete_playlists = response
-        SavedPlaylist.add_my_playlists(current_user, add_playlists) if add_playlists.present?
-        SavedPlaylist.delete_from_my_playlists(current_user, delete_playlists) if delete_playlists.present?
-        @saved_playlists = current_user.saved_playlists.includes(:playlist)
-      else
-        flash[:danger] = '保存しているプレイリストを正常に取得できませんでした'
-      end
+      add_playlists, delete_playlists = response
+      SavedPlaylist.add_my_playlists(current_user, add_playlists) if add_playlists.present?
+      SavedPlaylist.delete_from_my_playlists(current_user, delete_playlists) if delete_playlists.present?
+      @saved_playlists = current_user.saved_playlists.includes(:playlist)
     end
   end
 
@@ -35,14 +31,14 @@ class Api::V1::SavedPlaylistsController < ApplicationController
     if @form.save(@form.artist_ids, @form.genre_ids)
       @saved_playlist = SavedPlaylist.find_by(playlist_id: @form.playlist_id)
     else
-      flash.now[:danger] = 'プレイリストの条件が正常に作成されませんでした'
+      flash.now[:danger] = t("message.not_created", item: 'プレイリストの条件')
       render :new
     end
 
     tracks_response = SavedPlaylists::BasedOnSavedPlaylistTracksGetter.call(@saved_playlist)
 
     raise ErrorsHandler::UnableToGetPlaylistOfTracksError unless tracks_response
-    flash[:danger] = '指定されたアーティストの曲を取得できませんでした' if require_target_track?(@saved_playlist, tracks_response)
+    flash[:danger] = t("message.not_get", item: 'アーティストの曲') if require_target_track?(@saved_playlist, tracks_response)
 
     tracks_ids = connect_tracks_response(tracks_response)
     Playlists::PlaylistTrackUpdater.call(current_user, @playlist, tracks_ids)
@@ -61,7 +57,7 @@ class Api::V1::SavedPlaylistsController < ApplicationController
     tracks_response = SavedPlaylists::BasedOnSavedPlaylistTracksGetter.call(@saved_playlist)
 
     raise ErrorsHandler::UnableToGetPlaylistOfTracksError unless tracks_response
-    flash[:danger] = '指定されたアーティストの曲を取得できませんでした' if require_target_track?(@saved_playlist, tracks_response)
+    flash[:danger] = t("message.not_get", item: 'アーティストの曲') if require_target_track?(@saved_playlist, tracks_response)
 
     old_track_ids = @playlist.playlist_of_tracks.pluck(:track_id)
     Playlists::PlaylistTracksRemover.call(current_user, @playlist, old_track_ids) if old_track_ids.present?
@@ -116,9 +112,10 @@ class Api::V1::SavedPlaylistsController < ApplicationController
   def check_saved_playlist_requirements
     case 
     when @saved_playlist.number_of_track_less_than_requirements?
-      flash[:warning] = '指定された曲数を取得できませんでした'
+      flash[:warning] = t("message.not_get", item: '曲数')
     when @saved_playlist.total_duration_more_than_ten_minutes_less_than_requirement?
-      flash[:warning] = '条件に合う曲が少なく、指定された再生時間より10分以上再生時間が短くなりました'
+      flash[:warning] = t("message.few_track_fit_criteria")
+      flash[:warning] = t("message.duration_time_more_than_10_minutes_shorter")
     end
   end
 end
