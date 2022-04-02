@@ -1,0 +1,93 @@
+ja:
+  default:
+    login: 'ログイン'
+    guest_login: 'ゲストログイン'
+    logout: 'ログアウト'
+    register: '登録'
+    create: '作成'
+    search_word: '検索ワード'
+    show: '詳細'
+    edit: '編集'
+    delete: '削除'
+    play: '再生'
+    following: 'フォロー中'
+    follow: 'フォローする'
+  helpers:
+    submit:
+      create: '作成する'
+  message:
+    require_login: 'ログインしてください'
+    created: '%{item}を作成しました'
+    not_created: '%{item}を作成できませんでした'
+    updated: "%{item}を更新しました"
+    not_updated: "%{item}を更新できませんでした"
+    deleted: "%{item}を削除しました"
+    delete_confirm: '%{item}を削除しますか？'
+    add_track_to_playlist: 'プレイリストに曲を追加しました'
+    delete_track_from_playlist: 'プレイリストから曲を削除しました'
+    not_get: "指定された%{item}を取得できませんでした"
+    few_track_fit_criteria: '条件に合う曲が少数でした'
+    duration_time_more_than_10_minutes_shorter: '再生時間が条件より10分以上短くなりました'
+    not_get_for_search_word: '検索ワードにヒットしませんでした'
+  modal:
+    edit:
+      title: 'プレイリスト編集'
+    close: '閉じる'
+    edit_track:
+      title: 'プレイリストの編集'
+    add_track:
+      title: '曲の追加'
+      search_track: '曲の検索'
+      search: '検索する'
+  home:
+    top:
+      create_spotify_account: 'spotifyアカウントを作る'
+      password_forget: 'パスワードをお忘れの方はこちら'
+  form:
+    refine_follow_artist_genres: 'フォローアーティストのジャンルを選択してください'
+    refine_generation: '自分の年代で絞り込む'
+    refine_ad: '西暦で絞り込み'
+    specify_number_of_track: '曲数を指定'
+    specify_playback_time: '再生時間を指定'
+    specify_artists: '必須アーティスト選択'
+  api:
+    v1:
+      users:
+        show:
+          title: 'プロフィール'
+          follow_artists: 'フォローアーティスト一覧'
+        age:
+          success: 'ユーザーの年齢を登録しました'
+          fail: 'ユーザーの年齢の登録に失敗しました'
+      sessions:
+        create:
+          success: 'ログインしました'
+        destroy:
+          success: 'ログアウトしました'
+        guest_login:
+          success: 'ゲストユーザーとしてログインしました'
+        failure:
+          fail: '認可がキャンセルされたためログインできませんでした'
+      saved_playlists:
+        index:
+          title: 'プレイリスト一覧'
+          not_saved_playlist: '保存しているプレイリストはありません、早速プレイリストを作ってみましょう！'
+        create:
+          success: 'プレイリストを作成しました'
+          fail: 'プレイリストを作成できませんでした'
+        update:
+          success: 'プレイリストを更新しました'
+          fail: 'プレイリストを更新できませんでした'
+        new:
+          title: 'プレイリスト作成'
+      follow_artists:
+        index:
+          title: 'フォローアーティスト一覧'
+        create:
+          success: 'アーティストをフォローしました'
+        destroy:
+          success: 'アーティストのフォローを外しました'
+      searchs:
+        index:
+          title: '検索'
+          submit: '検索する'
