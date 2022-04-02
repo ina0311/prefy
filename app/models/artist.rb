@@ -18,7 +18,7 @@ class Artist < ApplicationRecord
                   Artist.new(
                     spotify_id: res[:id],
                     name: res[:name],
-                    image: res.dig(:image, 0, :url)
+                    image: res.dig(:images, 0, :url)
                   )
                 end
       Artist.import!(artists, on_duplicate_key_update: %i[name image])
