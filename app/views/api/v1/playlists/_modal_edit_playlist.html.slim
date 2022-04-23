@@ -1,0 +1,7 @@
+#modal-edit-playlist tabindex="-1" aria-hidden="true" role="dialog"
+    .modal-dialog.modal-dialog-scrollable.modal-xl
+      .modal-content
+        = render partial: 'modal_edit_track', locals: { playlist: @playlist }
+        = render partial: 'modal_add_track'
+        .modal-footer
+          = button_tag '閉じる', class: 'btn btn-secondary', id: 'js-modal-close', "aria-hidden": true

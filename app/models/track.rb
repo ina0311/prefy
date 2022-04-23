@@ -11,18 +11,54 @@ class Track < ApplicationRecord
     validates :duration_ms, numericality: { only_integer: true }
   end
 
-  def self.all_insert(track_attributes)
-    Track.transaction do
-      tracks = track_attributes.map do |track|
-        Track.new(
-          spotify_id: track[:spotify_id],
-          name: track[:name],
-          duration_ms: track[:duration_ms],
-          album_id: track[:album_spotify_id]
-        )
-      end
+  attribute :artist_names
+  attribute :image, :string
 
-      Track.import!(tracks, ignore: true)
+  class << self
+    
+    def all_import!(response)
+      Track.transaction do
+        tracks = response.map do |res|
+          Track.new(
+            spotify_id: res.id,
+            name: res.name,
+            duration_ms: res.duration_ms,
+            album_id: res.album.id
+          )
+        end
+  
+        Track.import!(tracks, ignore: true)
+      end
+    end
+  
+    def response_convert_tracks(response)
+      tracks = []
+      response.each do |res|
+        next if res.blank?
+        artist_tracks = []
+        res.each do |r|
+          next if artist_tracks.map { |t| t.name == r.name }.any?
+          track = Track.new(
+                            spotify_id: r.id, 
+                            name: r.name, 
+                            duration_ms: r.duration_ms, 
+                            album_id: r.album.id
+                            )
+  
+          artist_tracks << track
+        end
+        tracks << artist_tracks
+      end
+      tracks
+    end
+
+    def find_or_create_by_response!(response)
+      Track.find_or_create_by!(
+        spotify_id: response.id,
+        name: response.name,
+        duration_ms: response.duration_ms,
+        album_id: response.album.id
+      )
     end
   end
 end

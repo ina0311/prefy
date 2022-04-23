@@ -1,36 +1,27 @@
 class Artist < ApplicationRecord
-  has_many :albums, dependent: :destroy
+  has_many :artist_and_albums, dependent: :destroy
+  has_many :albums, through: :artist_and_albums
   has_many :tracks, through: :albums
   has_many :artist_genres, dependent: :destroy
   has_many :artist_genre_lists, through: :artist_genres, source: :genre
   has_many :saved_playlist_include_artists, dependent: :destroy
   has_many :follow_artists, dependent: :destroy
 
-  with_options presence: true do
-    validates :name
-    validates :image, format: { with: /\Ahttps:\/\/i.scdn.co\/image\/[a-z0-9]+\z/ }
-  end
+  validates :image, format: { with: /\Ahttps:\/\/i.scdn.co\/image\/[a-z0-9]+\z/, allow_nil: true }
+  validates :name, presence: true
 
   scope :search_genre_names, ->(names) { where(artist_genre_lists: { name: names }) }
 
-  def self.all_update(artist_attributes)
-    Genre.all_import(artist_attributes.pluck(:genres).flatten.uniq) if artist_attributes.pluck(:genres).present?
-
+  def self.all_update(response)
     Artist.transaction do
-      artists = artist_attributes.map do |artist|
+      artists = response.map do |res|
                   Artist.new(
-                    spotify_id: artist[:spotify_id],
-                    name: artist[:name],
-                    image: artist[:image]
+                    spotify_id: res.id,
+                    name: res.name,
+                    image: res.images.dig(0, 'url')
                   )
                 end
-
       Artist.import!(artists, on_duplicate_key_update: %i[name image])
     end
-
-    artist_genres = artist_attributes.map { |artist| artist.slice(:spotify_id, :genres) }
-
-    artist_genres.delete_if { |h| h[:genres].blank? }
-    ArtistGenre.all_import(artist_genres)
   end
 end

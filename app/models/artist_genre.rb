@@ -4,35 +4,44 @@ class ArtistGenre < ApplicationRecord
 
   validates :artist_id, uniqueness: { scope: :genre_id }
 
-  def self.all_import(artist_genres)
-    artist_genre_attributes = []
-    
-    artist_id_and_genre_id_lists = genre_name_convert_id(artist_genres)
+  def self.all_import!(response)
     ArtistGenre.transaction do
-      artist_id_and_genre_id_lists.each do |artist_genre|
-        attributes = ArtistGenre.new(
-                        artist_id: artist_genre[:artist_id],
-                        genre_id: artist_genre[:id]
-                      )
-        artist_genre_attributes << attributes
-      end
-
-      ArtistGenre.import!(artist_genre_attributes, ignore: true)
+      artist_and_genre_names = convert_artist_and_genre_names(response)
+      artist_genres = convert_artist_genres(artist_and_genre_names)
+      ArtistGenre.import!(artist_genres, ignore: true)
     end
   end
 
-  def self.genre_name_convert_id(artist_genres)
-    artist_id_and_genre_id_list = []
-    genres = Genre.search_by_names(artist_genres)
-    genre_id_and_name = genres.map { |h| h.attributes.symbolize_keys.slice(:id, :name) }
-    artist_genres.each do |hash|
-      genres_id_and_name = genre_id_and_name.select { |id_and_name| hash[:genres].include?(id_and_name[:name]) }
-      genres_id_and_name.each do |id_and_name|
-        genre_id = id_and_name.slice(:id)
-        artist_id_and_genre_id = genre_id.merge(artist_id: hash[:spotify_id])
-        artist_id_and_genre_id_list << artist_id_and_genre_id
-      end
+  private
+
+  def self.convert_artist_genres(artist_and_genre_names)
+    artist_genres = []
+    genres = Genre.search_by_names(artist_and_genre_names)
+
+    artist_and_genre_names.map do |hash|
+      match_genres = genres.select do |genre| 
+                       hash[:genre_names].include?(genre.name) 
+                     end
+      artist_genres.concat(
+        match_genres.map do |genre|
+          ArtistGenre.new(
+            artist_id: hash[:artist_id],
+            genre_id: genre[:id]
+          )
+        end
+      )
     end
-    artist_id_and_genre_id_list
+    artist_genres
+  end
+
+  def self.convert_artist_and_genre_names(response)
+    artist_and_genres = response.map do |res| 
+                          next if res.genres.blank?
+                          {
+                            artist_id: res.id, 
+                            genre_names: res.genres 
+                          }
+                        end
+    artist_and_genres.compact
   end
 end

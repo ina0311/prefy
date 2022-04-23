@@ -1,0 +1,5 @@
+= form_with model: user, url: age_api_v1_user_path, method: :post do |f|
+  .form-group
+    = f.label :age
+    = f.number_field :age, { in: 1..100, step: 1, include_blank: true,}
+  = f.submit '登録する', class: 'btn btn-primary'

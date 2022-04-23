@@ -1,4 +1,4 @@
-class Api::V1::UserDecorator < ApplicationDecorator
+class FollowArtistDecorator < ApplicationDecorator
   delegate_all
 
   # Define presentation-specific methods here. Helpers are accessed through

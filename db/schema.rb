@@ -10,16 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_10_055049) do
+ActiveRecord::Schema.define(version: 2022_03_16_133505) do
 
   create_table "albums", primary_key: "spotify_id", id: :string, charset: "utf8mb3", force: :cascade do |t|
     t.string "name", null: false
     t.string "image", null: false
     t.string "release_date", null: false
-    t.string "artist_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["artist_id"], name: "index_albums_on_artist_id"
+  end
+
+  create_table "artist_and_albums", charset: "utf8mb3", force: :cascade do |t|
+    t.string "artist_id", null: false
+    t.string "album_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["album_id"], name: "index_artist_and_albums_on_album_id"
+    t.index ["artist_id", "album_id"], name: "index_artist_and_albums_on_artist_id_and_album_id", unique: true
+    t.index ["artist_id"], name: "index_artist_and_albums_on_artist_id"
   end
 
   create_table "artist_genres", charset: "utf8mb3", force: :cascade do |t|
@@ -61,6 +69,7 @@ ActiveRecord::Schema.define(version: 2022_01_10_055049) do
     t.string "track_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "position", null: false
     t.index ["playlist_id"], name: "index_playlist_of_tracks_on_playlist_id"
     t.index ["track_id"], name: "index_playlist_of_tracks_on_track_id"
   end
@@ -106,8 +115,7 @@ ActiveRecord::Schema.define(version: 2022_01_10_055049) do
   create_table "saved_playlists", charset: "utf8mb3", force: :cascade do |t|
     t.boolean "only_follow_artist"
     t.integer "that_generation_preference"
-    t.integer "since_year"
-    t.integer "before_year"
+    t.string "period"
     t.integer "max_number_of_track"
     t.integer "max_total_duration_ms"
     t.string "user_id", null: false
@@ -141,7 +149,8 @@ ActiveRecord::Schema.define(version: 2022_01_10_055049) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  add_foreign_key "albums", "artists", primary_key: "spotify_id"
+  add_foreign_key "artist_and_albums", "albums", primary_key: "spotify_id"
+  add_foreign_key "artist_and_albums", "artists", primary_key: "spotify_id"
   add_foreign_key "artist_genres", "artists", primary_key: "spotify_id"
   add_foreign_key "artist_genres", "genres"
   add_foreign_key "follow_artists", "artists", primary_key: "spotify_id"
