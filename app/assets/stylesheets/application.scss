@@ -4,6 +4,7 @@
 @import 'card';
 @import 'modal';
 @import 'form';
+@import 'player';
 
 html, body {
   position: relative;
@@ -12,6 +13,13 @@ html, body {
   padding: 0%;
   margin: 0%;
   background-color: #fff;
+}
+
+.flash {
+  position: absolute;
+  top: 0px;
+  left: 210px;
+  width: auto;
 }
 
 ul {

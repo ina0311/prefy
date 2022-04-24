@@ -1,9 +1,7 @@
 class Playlist < ApplicationRecord
-  include RequestUrl
-
-  has_one :saved_playlist, dependent: :destroy
+  has_one :saved_playlist, dependent: :delete
   has_many :playlist_of_tracks, dependent: :destroy
-  has_many :included_tracks, through: :playlist_of_tracks, source: :track
+  has_many :tracks, through: :playlist_of_tracks
 
   with_options presence: true do
     validates :name, format: { with: /\A[ぁ-んァ-ン一-龥\w]+/}
@@ -26,7 +24,7 @@ class Playlist < ApplicationRecord
     end
   end
 
-  def self.create_by_response(response)
+  def self.create_by_response!(response)
     Playlist.create!(
       spotify_id: response[:id],
       name: response[:name],
@@ -41,5 +39,9 @@ class Playlist < ApplicationRecord
       name: playlist_name.present? ? playlist_name : 'new_playlist',
       owner: user.spotify_id
     )
+  end
+
+  def self.delete_owned(playlist_ids, user_id)
+    Playlist.my_playlists(playlist_ids, user_id).destroy_all
   end
 end

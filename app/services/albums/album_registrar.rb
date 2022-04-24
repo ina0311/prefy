@@ -16,7 +16,20 @@ class Albums::AlbumRegistrar < SpotifyService
 
   private
 
+  attr_reader :tracks
+
   def uniq_album_ids
-    @tracks.pluck(:album_id).uniq
+    tracks.pluck(:album_id).uniq
+  end
+
+  def request_album_info(ids)
+    offset = 0
+    response = []
+    while true
+      response.concat(RSpotify::Album.find(ids[offset, 20]))
+      offset += 20
+      break if response.size != offset
+    end
+    response
   end
 end

@@ -30,27 +30,6 @@ class Track < ApplicationRecord
         Track.import!(tracks, ignore: true)
       end
     end
-  
-    def response_convert_tracks(response)
-      tracks = []
-      response.each do |res|
-        next if res.blank?
-        artist_tracks = []
-        res.each do |r|
-          next if artist_tracks.map { |t| t.name == r.name }.any?
-          track = Track.new(
-                            spotify_id: r.id, 
-                            name: r.name, 
-                            duration_ms: r.duration_ms, 
-                            album_id: r.album.id
-                            )
-  
-          artist_tracks << track
-        end
-        tracks << artist_tracks
-      end
-      tracks
-    end
 
     def find_or_create_by_response!(response)
       Track.find_or_create_by!(

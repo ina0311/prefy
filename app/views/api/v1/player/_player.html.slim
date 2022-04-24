@@ -1,0 +1,11 @@
+div class="fixed-bottom #{player_status}" id="player"
+  ul.nav.text-white
+    - if current_track.present?
+      = render 'api/v1/player/play_track'
+    li.nav-item#js-play-control-button
+      - if now_playing?
+        = render 'api/v1/player/pause_button'
+      - else
+        = render 'api/v1/player/start_button'
+    li.nav-item
+      = link_to '閉じる', api_v1_close_path, class: 'btn btn-secondary', id: 'js-player-close', remote: true

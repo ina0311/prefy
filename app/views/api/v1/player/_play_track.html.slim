@@ -1,0 +1,10 @@
+li.nav-item
+  li.track-image
+    = image_tag current_track.decorate.image, size: '80x80'
+  li.flex-column
+    .track-name
+      = current_track.name
+    .track-album
+      = current_track.album.name
+  li.track-artists
+    = current_track.decorate.artists

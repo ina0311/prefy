@@ -1,46 +1,45 @@
 class Playlists::PlaylistInfoGetter < SpotifyService
   # プレイリストのトラック、名前、画像の取得、保存、更新
-  def self.call(playlist)
-    new(playlist).get
+  def self.call(user, playlist)
+    new(user,playlist).get
   end
 
-  def initialize(playlist)
+  def initialize(user, playlist)
+    @user = user
     @playlist = playlist
   end
 
   def get
-    @response = request_get_playlist(@playlist.spotify_id)
-    default_track_ids = @playlist.playlist_of_tracks.pluck(:track_id)
-    track_ids = response_convert_track_ids
-    new_track_ids = track_ids - default_track_ids
-    delete_track_ids = default_track_ids - track_ids
+    response = request_get_playlist
+    playlist.update!(name: response[:name], image: response.dig(:images, 0, :url))
 
-    ActiveRecord::Base.transaction do
-      new_tracks(new_track_ids) if new_track_ids.present?
-      delete_tracks(delete_track_ids) if delete_track_ids.present?
-      @playlist.update!(name: @response.name, image: @response.images.dig(0, 'url'))
+    default = playlist.playlist_of_tracks.pluck(:track_id, :position)
+    now = response_convert_track_id_and_position(response)
+
+    new_track_id_and_positions = now - default
+    delete_position_tracks = (default - now).map(&:second)
+
+    if delete_position_tracks.present?
+      delete_playlist_of_tracks = PlaylistOfTrack.identify_by_positions(playlist.spotify_id, delete_position_tracks)
+      delete_playlist_of_tracks.delete_all
+    end
+
+    if new_track_id_and_positions.present?
+      Tracks::TrackInfoGetter.call(new_track_id_and_positions.map(&:first))
+      PlaylistOfTrack.insert_with_position(playlist, new_track_id_and_positions)
     end
   end
 
   private
-  
-  attr_reader :playlist_id
 
-  # 市場的に聞けない曲がnilを返すのでcompact
-  def response_convert_track_ids
-    @response.tracks_added_at.map(&:first).compact
+  attr_reader :user, :playlist
+
+  def response_convert_track_id_and_position(response)
+    track_ids = response[:tracks][:items].pluck(:track).pluck(:id)
+    track_ids.map.with_index { |id, index| [id, index] }
   end
 
-  def track_convert_artist_ids(tracks)
-    tracks.map { |track| track.artists.map(&:id) }.flatten
-  end
-
-  def new_tracks(track_ids)
-    Tracks::TrackInfoGetter.call(track_ids)
-    PlaylistOfTrack.all_update(@playlist.spotify_id, track_ids)
-  end
-
-  def delete_tracks(track_ids)
-    PlaylistOfTrack.specific(@playlist.spotify_id, track_ids).delete_all
+  def request_get_playlist
+    conn_request.get("playlists/#{playlist.spotify_id}").body
   end
 end

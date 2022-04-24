@@ -8,12 +8,24 @@ class Users::UserAccessTokenChanger < SpotifyService
   end
 
   def change
-    response = conn_request_access_token(@user)
-    
-    binding.pry
-    
+    response = conn_request_access_token
     if response.status == 200
-      @user.update!(access_token: response[:access_token])
+      user.update!(access_token: response.body[:access_token])
+    end
+  end
+
+  private
+
+  attr_reader :user
+
+  def conn_request_access_token
+    body = {
+      grant_type: 'refresh_token',
+      refresh_token: user.refresh_token
+    }
+
+    conn_request_token.post do |request|
+      request.body = body
     end
   end
 end

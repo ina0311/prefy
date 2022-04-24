@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_11_060742) do
+ActiveRecord::Schema.define(version: 2022_03_16_133505) do
 
   create_table "albums", primary_key: "spotify_id", id: :string, charset: "utf8mb3", force: :cascade do |t|
     t.string "name", null: false
@@ -69,6 +69,7 @@ ActiveRecord::Schema.define(version: 2022_02_11_060742) do
     t.string "track_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "position", null: false
     t.index ["playlist_id"], name: "index_playlist_of_tracks_on_playlist_id"
     t.index ["track_id"], name: "index_playlist_of_tracks_on_track_id"
   end

@@ -1,1 +1,2 @@
-| $('.search-result').html("#{j render(partial: 'result', locals: { artists: @artists, albums: @albums, tracks: @tracks })}")
+| $('.js-flash-message').html("#{j(render 'shared/flash_message', flash: flash)}");
+| $('.search-result').html("#{j render(partial: 'result', locals: { artists: @artists, albums: @albums, tracks: @tracks })}");
