@@ -3,6 +3,8 @@ class Api::V1::SearchsController < ApplicationController
 
   def search
     response = SpotifySearcher.call(search_params).search
+    return js_format_flash_message(:danger, "検索ワードにヒットしませんでした") if response.nil?
+    
     @artists = response[:artists]
     @albums = response[:albums]
     @tracks = response[:tracks]
@@ -11,7 +13,7 @@ class Api::V1::SearchsController < ApplicationController
 
   def artists
     @artists = SpotifySearcher.call(search_params).artists
-    @follow_artist_ids = @current_user.follow_artists.pluck(:artist_id)
+    @follow_artist_ids = current_user.follow_artists.pluck(:artist_id)
   end
 
   private

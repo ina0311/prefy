@@ -1,5 +1,5 @@
 class Api::V1::SessionsController < ApplicationController
-  skip_before_action :verify_authenticity_token, :require_login, :access_token_changed?, only: %i(create failure guest_login)
+  skip_before_action :require_login
 
   def create
     rspotify_user = RSpotify::User.new(request.env['omniauth.auth'])
@@ -12,7 +12,7 @@ class Api::V1::SessionsController < ApplicationController
 
   def destroy
     reset_session
-    redirect_to root_path
+    redirect_to root_path, danger: "ログアウトしました"
   end
 
   def guest_login
@@ -26,6 +26,6 @@ class Api::V1::SessionsController < ApplicationController
   end
 
   def failure
-    redirect_to root_url, alert: "Authentication failed."
+    redirect_to root_url, danger: "認可がキャンセルされたためログインできませんでした"
   end
 end

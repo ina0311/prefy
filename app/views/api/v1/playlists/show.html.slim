@@ -2,17 +2,14 @@ main.col-md-9.ms-sm-auto.col-lg-10.px-md-4
   .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.md-3.border-bottom
     .section
       .playlist-heading.row
-        - if @playlist.image.present?
-          = image_tag @playlist.image, size: '100x100', class: 'card-thumbnail'
-        - else
-          = image_tag 'default_image.png', size: '100x100', class: 'card-thumnail'
+        = image_tag @playlist.decorate.image, size: '100x100', class: 'card-thumbnail'
       .h5.col.playlist-name
         | #{@playlist.name}
       - if current_user.own?(@playlist)
         = render partial: 'api/v1/saved_playlists/form', locals: { form: @form, url: api_v1_saved_playlist_path, method: :put }
         = link_to '編集', edit_api_v1_playlist_path(@playlist.spotify_id), data: { toggle: "modal", target: "#modal-container"}, remote: true, id: 'js-edit-playlist', class: 'btn btn-success'
-        = link_to '再生', api_v1_play_path(uri: "spotify:playlist:#{@playlist.spotify_id}"), remote: true, class: 'btn btn-success', id: 'js-player-open'
         = render partial: 'shared/modal'
+      = link_to '再生', api_v1_play_path(uri: "spotify:playlist:#{@playlist.spotify_id}"), remote: true, class: 'btn btn-success', id: 'js-player-open'
     .container
-      .tracks-lists.row
-        = render partial: 'api/v1/tracks/track', collection: @tracks
+      .track-lists.row#js-playlist-of-tracks
+        = render partial: 'api/v1/playlists/playlist_of_track', collection: @playlist_of_tracks

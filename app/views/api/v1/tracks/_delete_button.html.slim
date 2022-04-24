@@ -1,9 +1,0 @@
-.col
-  .destory-button
-    = link_to '削除',
-      api_v1_playlist_track_path(playlist_id: playlist_of_track.playlist_id, id: playlist_of_track.id),
-      data: { confirm: 'この曲を削除しますか？' },
-      id: "js-delete-button-#{playlist_of_track.id}",
-      method: :delete,
-      class: 'btn btn-danger',
-      remote: true

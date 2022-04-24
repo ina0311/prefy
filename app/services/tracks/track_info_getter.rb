@@ -28,8 +28,8 @@ class Tracks::TrackInfoGetter < SpotifyService
     offset = 0
     response = []
     while true
-      response.concat(RSpotify::Track.find(@track_ids[offset, 50]))
-      break if response.size == @track_ids.size
+      response.concat(RSpotify::Track.find(track_ids[offset, 50]))
+      break if response.size == track_ids.size
       offset += 50
     end
     response

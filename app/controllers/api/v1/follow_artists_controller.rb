@@ -5,7 +5,7 @@ class Api::V1::FollowArtistsController < ApplicationController
 
   def create
     @artist_id = follow_artist_params
-    Users::ArtistFollower.call(@current_user, @artist_id)
+    Users::ArtistFollower.call(current_user, @artist_id)
   end
 
   def destroy
