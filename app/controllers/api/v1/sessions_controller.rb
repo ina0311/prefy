@@ -7,12 +7,12 @@ class Api::V1::SessionsController < ApplicationController
     session[:user_id] = user[:spotify_id]
     
     Users::UserFollowArtistsGetter.call(rspotify_user, user)
-    redirect_to api_v1_saved_playlists_path, success: "ログインしました"
+    redirect_to api_v1_saved_playlists_path, success: t(".success")
   end
 
   def destroy
     reset_session
-    redirect_to root_path, danger: "ログアウトしました"
+    redirect_to root_path, danger: t(".success")
   end
 
   def guest_login
@@ -22,10 +22,10 @@ class Api::V1::SessionsController < ApplicationController
       user.update!(access_token: response.body[:access_token])
       session[:user_id] = user[:spotify_id]
     end
-    redirect_to api_v1_saved_playlists_path, success: "ゲストユーザーとしてログインしました"
+    redirect_to api_v1_saved_playlists_path, success: t(".success")
   end
 
   def failure
-    redirect_to root_url, danger: "認可がキャンセルされたためログインできませんでした"
+    redirect_to root_url, danger: t(".fail")
   end
 end

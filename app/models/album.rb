@@ -15,10 +15,10 @@ class Album < ApplicationRecord
     Album.transaction do
       albums = response.map do |res|
                 Album.new(
-                  spotify_id: res.id,
-                  name: res.name,
-                  image: res.images.dig(0, 'url'),
-                  release_date: res.release_date
+                  spotify_id: res[:id],
+                  name: res[:name],
+                  image: res.dig(:images, 0, :url),
+                  release_date: res[:release_date]
                 )
               end
       Album.import!(albums, ignore: true)

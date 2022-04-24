@@ -6,12 +6,12 @@ section.home-section.home-full-height
           | Prefy
     .link-container
       .top-login
-        = link_to "ログイン", '/auth/spotify', method: :post, class: 'btn btn-primary btn-lg'
+        = link_to t("default.login"), '/auth/spotify', method: :post, class: 'btn btn-primary btn-lg'
       .guest-login
-        = link_to "ゲストログイン", guest_login_path, method: :post, class: 'btn btn-success btn-lg'
+        = link_to t("default.guest_login"), guest_login_path, method: :post, class: 'btn btn-success btn-lg'
       .top-registration
         h3
-          = link_to 'spotifyアカウントを作る', "https://www.spotify.com/jp/signup", target: '_blank', rel: 'noopener noreferrer'
+          = link_to t(".create_spotify_account"), "https://www.spotify.com/jp/signup", target: '_blank', rel: 'noopener noreferrer'
       .top-password-reset
         h4
-          = link_to 'パスワードをお忘れですか？', "https://www.spotify.com/jp/password-reset/", target: '_blank', rel: 'noopener noreferrer'
+          = link_to t(".password_forget"), "https://www.spotify.com/jp/password-reset/", target: '_blank', rel: 'noopener noreferrer'

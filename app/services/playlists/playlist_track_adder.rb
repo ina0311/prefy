@@ -21,7 +21,7 @@ class Playlists::PlaylistTrackAdder < SpotifyService
     track = request_get_track
     Album.find_or_create_by_response!(track.album)
     Track.find_or_create_by_response!(track)
-    Artists::ArtistRegistrar.call(track.artists.map(&:id), track.album)
+    Artists::ArtistRegistrar.call(user, track.artists.map(&:id), track.album)
     playlist_of_track[:position] = PlaylistOfTrack.where(playlist_id: playlist_of_track.playlist_id).count
     playlist_of_track.save!
     return playlist_of_track

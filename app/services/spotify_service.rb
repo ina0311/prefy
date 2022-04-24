@@ -11,6 +11,7 @@ class SpotifyService
       builder.response :json, parser_options: { symbolize_names: true }
       builder.headers['Authorization'] = "Bearer #{user.access_token}"
       builder.headers['Content-Type'] = 'application/json'
+      builder.headers['Accept-Language'] = 'ja;q=1'
     end
   end
 
@@ -19,6 +20,7 @@ class SpotifyService
       builder.response :json, parser_options: { symbolize_names: true }
       builder.request :url_encoded
       builder.headers["Authorization"] = "Basic #{encode_spotify_id}"
+      builder.headers['Accept-Language'] = 'ja;q=1'
     end
   end
 

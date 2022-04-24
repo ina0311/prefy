@@ -1,17 +1,17 @@
 = form_with model: form, url: url, method: method, local: true do |f|
   = render 'shared/error_messages', object: f.object
   .form-group
-    = f.label :playlist_name
+    = f.label :playlist_name, SavedPlaylist.human_attribute_name(:playlist_name)
     = f.text_field :playlist_name, class: 'form-control'
   .form-group
     = f.label :only_follow_artist
     = f.check_box :only_follow_artist, { checked: true }, true, false
   .form-group
-    = f.label :genre_ids, 'フォローアーティストのジャンルを選択してください'
+    = f.label :genre_ids, t("form.refine_follow_artist_genres")
     = f.collection_select :genre_ids, form.decorate.follow_artist_genres(current_user), :id, :name, { }, { name: "genre_ids[]", class: 'js-select2', multiple: true }
   - if @current_user.age.present?
-    = button_tag '自分の年代で絞り込み', type: :button, class: 'btn btn-secondary', id: 'js-switch-generation'
-    = button_tag '西暦で絞り込む', type: :button, class: 'btn btn-secondary', id: 'js-switch-period'
+    = button_tag t("form.refine_genreration"), type: :button, class: 'btn btn-secondary', id: 'js-switch-generation'
+    = button_tag t("form.refine_ad"), type: :button, class: 'btn btn-secondary', id: 'js-switch-period'
     .form-group#js-generation.no-active
       = f.label :that_generation_preference
       = f.select :that_generation_preference, form.decorate.generations(current_user), { selected: form.decorate.set_that_generation_preference, include_blank: true }, { class: 'form-control', id: 'js-generation-select' }
@@ -19,8 +19,8 @@
     = f.label :period
     = f.select :since_year, form.decorate.years, { selected: form.decorate.selected_since_year, include_blank: true }, { class: 'form-control' }
     = f.select :before_year, form.decorate.years, { selected: form.decorate.selected_before_year, include_blank: true }, { class: 'form-control' }
-  = button_tag '曲数を指定する', type: :button, class: 'btn btn-secondary', id: 'js-switch-number'
-  = button_tag '再生時間を指定する', type: :button, class: 'btn btn-secondary', id: 'js-switch-duration-ms'
+  = button_tag t("form.specify_number_of_track"), type: :button, class: 'btn btn-secondary', id: 'js-switch-number'
+  = button_tag t("form.specify_playback_time"), type: :button, class: 'btn btn-secondary', id: 'js-switch-duration-ms'
   .form-group#js-max-number
     = f.label :max_number_of_track
     = f.number_field :max_number_of_track, { in: 1..50, step: 1, include_blank: true, class: 'form-control', value: form.max_number_of_track }
@@ -29,6 +29,6 @@
     = f.number_field :duration_hour, { in: 1..6, step: 1, include_blank: true, class: 'form-control', value: form.decorate.set_duration_hour }
     = f.number_field :duration_minute, { in: 10..50, step: 10, include_blank: true, class: 'form-control', value: form.decorate.set_duration_min }
   .form-group
-    = f.label :artist_ids, "アーティストを選択してください"
+    = f.label :artist_ids, t("form.specify_artists")
     = f.collection_select :artist_ids, current_user.follow_artist_lists, :spotify_id, :name, { }, { name: "artist_ids[]", class: 'js-select2', multiple: true }
-  = f.submit '作成する', class: 'btn btn-primary', id: 'js-form-button'
+  = f.submit class: 'btn btn-primary', id: 'js-form-button'

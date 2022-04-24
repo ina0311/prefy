@@ -1,0 +1,49 @@
+ja:
+  activerecord:
+    models:
+      user: 'ユーザー'
+      artist: 'アーティスト'
+      album: 'アルバム'
+      track: '曲'
+      playlist: 'プレイリスト'
+      saved_playlist: '保存済みプレイリスト'
+      follow_artist: 'フォローアーティスト'
+      genre: 'ジャンル'
+      playlist_of_track: 'プレイリストの曲'
+    attributes:
+      user:
+        name: 'ニックネーム'
+        country: '国'
+        age: '年齢'
+      artist:
+        name: 'アーティスト名'
+      album:
+        name: 'タイトル'
+        release_date: 'リリース日'
+      track:
+        duration_ms: '再生時間(ミリ秒)'
+      playlist:
+        owner: '作成者'
+      saved_playlist:
+        playlist_name: プレイリスト名
+        only_follow_artist: 'フォローアーティストのみ'
+        that_generation_preference: '選択した世代'
+        period: '期間'
+        max_number_of_track: '最大曲数'
+        max_total_duration_ms: '最大再生時間'
+      playlist_of_track:
+        position: '位置'
+  attributes:
+    spotify_id: 'ID'
+    image: '画像'
+    created_at: '作成日時'
+    updated_at: '更新日時'
+  enum:
+    saved_playlist:
+      that_generation_preference:
+        junior_high_school: '中学生時代'
+        high_school: '高校生時代'
+        university: '大学生時代'
+        teens: '10代'
+        twenties: '20代'
+        thirties: '30代'

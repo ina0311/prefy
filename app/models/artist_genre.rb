@@ -31,17 +31,17 @@ class ArtistGenre < ApplicationRecord
         end
       )
     end
-    artist_genres
+    return artist_genres
   end
 
   def self.convert_artist_and_genre_names(response)
     artist_and_genres = response.map do |res| 
-                          next if res.genres.blank?
+                          next if res[:genres].blank?
                           {
-                            artist_id: res.id, 
-                            genre_names: res.genres 
+                            artist_id: res[:id],
+                            genre_names: res[:genres]
                           }
                         end
-    artist_and_genres.compact
+    return artist_and_genres.compact
   end
 end

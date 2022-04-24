@@ -1,5 +1,5 @@
 main.col-md-9.ms-sm-auto.col-lg-10.px-md-4
   .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.md-3.border-bottom
     h2.page-title
-      | プレイリスト作成
+      = t(".title")
     = render 'form', form: @form, url: api_v1_saved_playlists_path, method: :post

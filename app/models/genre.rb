@@ -10,7 +10,7 @@ class Genre < ApplicationRecord
   
   def self.all_import!(response)
     Genre.transaction do
-      genres_names = response.map { |res| res.genres }.flatten.uniq
+      genres_names = response.map { |res| res[:genres] }.flatten.uniq
       genres = genres_names.map { |name| Genre.new(name: name) }
       Genre.import!(genres, ignore: true)
     end

@@ -7,10 +7,10 @@ class ArtistAndAlbum < ApplicationRecord
   def self.all_import!(albums)
     ArtistAndAlbum.transaction do
       objects = albums.map do |album|
-                  album.artists.map(&:id).map do |artist_id|
+                  album[:artists].map do |artist|
                     ArtistAndAlbum.new(
-                      artist_id: artist_id,
-                      album_id: album.id
+                      artist_id: artist[:id],
+                      album_id: album[:id]
                     )
                   end
                 end

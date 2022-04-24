@@ -70,6 +70,6 @@ class SpotifySearcher < SpotifyService
   end
 
   def request_search(type)
-    RSpotify::Base.search(word, type)
+    RSpotify::Base.search(word, type, market: 'JP')
   end
 end

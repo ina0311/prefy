@@ -23,7 +23,7 @@ module ErrorsHandler
     redirect_to api_v1_playlist_path(@playlist)
   end
 
-  def render_400(exception = nil, messages = nil)
+  def render_404(exception = nil, messages = nil)
     render_error(400, 'Bad Request', exception&.message, *messages)
   end
 end

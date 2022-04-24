@@ -20,10 +20,10 @@ class Track < ApplicationRecord
       Track.transaction do
         tracks = response.map do |res|
           Track.new(
-            spotify_id: res.id,
-            name: res.name,
-            duration_ms: res.duration_ms,
-            album_id: res.album.id
+            spotify_id: res[:id],
+            name: res[:name],
+            duration_ms: res[:duration_ms],
+            album_id: res[:album][:id]
           )
         end
   

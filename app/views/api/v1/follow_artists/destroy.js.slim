@@ -1,2 +1,3 @@
+| $('.js-flash-message').html("#{j(render 'shared/flash_message', flash: flash)}");
 | $("#js-follow-artist-#{@artist_id}").remove();
 | $("#js-follow-button-#{@artist_id}").html("#{j(render 'shared/follow_button', artist_id: @artist_id)}");
