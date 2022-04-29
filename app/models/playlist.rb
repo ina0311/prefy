@@ -1,5 +1,5 @@
 class Playlist < ApplicationRecord
-  has_one :saved_playlist, dependent: :delete
+  has_one :saved_playlist, dependent: :destroy
   has_many :playlist_of_tracks, dependent: :destroy
   has_many :tracks, through: :playlist_of_tracks
 
@@ -8,7 +8,7 @@ class Playlist < ApplicationRecord
     validates :owner, format: { with: /\w+/ }
   end
 
-  scope :my_playlists, ->(ids, user_id) { where(spotify_id: ids).where(owner: user_id) }
+  scope :own_playlists, ->(ids, user_id) { where(spotify_id: ids).where(owner: user_id) }
 
   def self.all_update(response)
     Playlist.transaction do
@@ -39,9 +39,5 @@ class Playlist < ApplicationRecord
       name: playlist_name.present? ? playlist_name : 'new_playlist',
       owner: user.spotify_id
     )
-  end
-
-  def self.delete_owned(playlist_ids, user_id)
-    Playlist.my_playlists(playlist_ids, user_id).destroy_all
   end
 end

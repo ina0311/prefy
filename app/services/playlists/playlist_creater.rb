@@ -9,12 +9,13 @@ class Playlists::PlaylistCreater < SpotifyService
   end
 
   def create
-    response = request_create_playlist
-    if response.success?
-      response.body
+    if user.guest_user?
+      playlist = Playlist.create_by_guest(user, playlist_name)
     else
-      false
+      response = request_create_playlist.body
+      playlist = Playlist.create_by_response!(response)
     end
+    return playlist
   end
 
   private

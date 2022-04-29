@@ -27,8 +27,6 @@ class SavedPlaylist < ApplicationRecord
 
   enum that_generation_preference: %i(junior_high_school high_school university teens twenties thirties)
 
-  scope :my_playlists, ->(playlist_ids, user_id) { where(playlist_id: playlist_ids).where(user_id: user_id) }
-
   def self.add_my_playlists(user, playlist_ids)
     saved_playlists = playlist_ids.map do |id|
                         user.saved_playlists.new(playlist_id: id, created_at: Time.current, updated_at: Time.current)
@@ -37,9 +35,9 @@ class SavedPlaylist < ApplicationRecord
   end
 
   def self.delete_from_my_playlists(user, playlist_ids)
-    delete_saved_playlists = user.saved_playlists.includes(:playlist).where(playlist_id: playlist_ids)
-    own_playlist_ids = delete_saved_playlists.select { |p| user.own?(p.playlist) }.map{ |p| p.playlist.spotify_id }
-    Playlist.delete_owned(own_playlist_ids, user.spotify_id) if own_playlist_ids.present?
+    destroy_own_playlists = user.my_playlists.own_playlists(playlist_ids, user.spotify_id)
+    destroy_own_playlists.destroy_all if destroy_own_playlists
+    delete_saved_playlists = user.saved_playlists.where(playlist_id: playlist_ids)
     delete_saved_playlists.delete_all
   end
 
@@ -104,7 +102,6 @@ class SavedPlaylist < ApplicationRecord
     if target_tracks.present?
       refined_target_tracks = target_tracks.map { |tg_tracks| tg_tracks.sample(total * PERCENTAGE) }
       remaining = total - refined_target_tracks.flatten.size
-      binding.pry
       refined_ramdom_tracks = ramdom_tracks.sample(remaining)
       return refined_ramdom_tracks, refined_target_tracks
     else
