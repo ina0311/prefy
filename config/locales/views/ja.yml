@@ -25,7 +25,8 @@ ja:
     delete_confirm: '%{item}を削除しますか？'
     add_track_to_playlist: 'プレイリストに曲を追加しました'
     delete_track_from_playlist: 'プレイリストから曲を削除しました'
-    not_get: "指定された%{item}を取得できませんでした"
+    not_get: "%{item}を取得できませんでした"
+    not_get_track: "%{item}の曲を取得できませんでした"
     few_track_fit_criteria: '条件に合う曲が少数でした'
     duration_time_more_than_10_minutes_shorter: '再生時間が条件より10分以上短くなりました'
     not_get_for_search_word: '検索ワードにヒットしませんでした'
