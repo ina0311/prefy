@@ -1,4 +1,7 @@
 class SpotifyService
+  INITIAL_VALUE = 0
+  INCREASE = 1
+  PLUS_FIFTY = 50
 
   protected
 
@@ -12,6 +15,7 @@ class SpotifyService
       builder.headers['Authorization'] = "Bearer #{user.access_token}"
       builder.headers['Content-Type'] = 'application/json'
       builder.headers['Accept-Language'] = 'ja;q=1'
+      builder.request :url_encoded
     end
   end
 

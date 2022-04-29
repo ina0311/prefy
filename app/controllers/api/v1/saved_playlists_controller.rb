@@ -35,13 +35,19 @@ class Api::V1::SavedPlaylistsController < ApplicationController
       render :new
     end
 
-    tracks_response = SavedPlaylists::BasedOnSavedPlaylistTracksGetter.call(@saved_playlist)
+    ramdom_tracks, target_tracks = SavedPlaylists::BasedOnSavedPlaylistTracksGetter.call(@saved_playlist, current_user)
 
-    raise ErrorsHandler::UnableToGetPlaylistOfTracksError unless tracks_response
-    flash[:danger] = t("message.not_get", item: 'アーティストの曲') if require_target_track?(@saved_playlist, tracks_response)
+    raise ErrorsHandler::UnableToGetPlaylistOfTracksError unless ramdom_tracks && target_tracks
 
-    tracks_ids = connect_tracks_response(tracks_response)
+    if @saved_playlist.include_artists
+      not_get_artists = @saved_playlist.has_track_by_require_artists(target_tracks)
+      return if not_get_artists.blank?
+      flash[:danger] = t("message.not_get_track", item: not_get_artists.join('と'))
+    end
+
+    track_ids = ramdom_tracks.concat(target_tracks.flatten).shuffle.pluck(:spotify_id)
     Playlists::PlaylistTrackUpdater.call(current_user, @playlist, tracks_ids)
+    check_saved_playlist_requirements
     redirect_to api_v1_playlist_path(@playlist.spotify_id)
   end
 
@@ -54,15 +60,20 @@ class Api::V1::SavedPlaylistsController < ApplicationController
     @form.save(@form.artist_ids, @form.genre_ids)
     @saved_playlist = SavedPlaylist.find_by(playlist_id: @form.playlist_id)
 
-    tracks_response = SavedPlaylists::BasedOnSavedPlaylistTracksGetter.call(@saved_playlist)
+    ramdom_tracks, target_tracks = SavedPlaylists::BasedOnSavedPlaylistTracksGetter.call(@saved_playlist)
 
-    raise ErrorsHandler::UnableToGetPlaylistOfTracksError unless tracks_response
-    flash[:danger] = t("message.not_get", item: 'アーティストの曲') if require_target_track?(@saved_playlist, tracks_response)
+    raise ErrorsHandler::UnableToGetPlaylistOfTracksError unless ramdom_tracks && target_tracks
+    
+    if @saved_playlist.include_artists
+      not_get_artists = @saved_playlist.has_track_by_require_artists(target_tracks)
+      return if not_get_artists.blank?
+      flash[:danger] = t("message.not_get_track", item: not_get_artists.join('と'))
+    end
 
     old_track_ids = @playlist.playlist_of_tracks.pluck(:track_id)
     Playlists::PlaylistTracksRemover.call(current_user, @playlist, old_track_ids) if old_track_ids.present?
 
-    new_tracks_ids = connect_tracks_response(tracks_response)
+    new_tracks_ids = ramdom_tracks.concat(target_tracks.flatten).shuffle.pluck(:spotify_id)
     Playlists::PlaylistTrackUpdater.call(current_user, @playlist, new_tracks_ids)
     check_saved_playlist_requirements
     redirect_to api_v1_playlist_path(@playlist.spotify_id)
@@ -95,18 +106,6 @@ class Api::V1::SavedPlaylistsController < ApplicationController
 
   def playlist_params
     params.require(:id)
-  end
-
-  def require_target_track?(saved_playlist, tracks_response)
-    saved_playlist.include_artists.present? && tracks_response[:refined_target_tracks].nil?
-  end
-
-  def connect_tracks_response(tracks_response)
-    if tracks_response[:refined_target_tracks].nil?
-      tracks_response[:refined_ramdom_tracks].shuffle.pluck(:track_id)
-    else
-      (tracks_response[:refined_ramdom_tracks] + tracks_response[:refined_target_tracks]).shuffle.pluck(:track_id)
-    end
   end
 
   def check_saved_playlist_requirements
