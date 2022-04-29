@@ -88,6 +88,11 @@ class SavedPlaylistForm
     saved_playlist
   end
 
+  def is_only_error_to_playlist_id?
+    self.valid?
+    return self.errors.errors.map { |e| e.attribute == :playlist_id }.all?
+  end
+
   private
 
   attr_reader :saved_playlist
