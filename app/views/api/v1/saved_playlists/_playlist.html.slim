@@ -1,7 +1,7 @@
-= link_to api_v1_playlist_path(playlist.id) do
+= link_to api_v1_saved_playlist_path(saved_playlist.id) do
   .card.border-dark.mb-3
     .card-body.text-dark
-      = image_tag playlist.decorate.image, size: '100x100', class: 'card-thumbnail'
+      = image_tag saved_playlist.playlist.decorate.image, size: '100x100', class: 'card-thumbnail'
 
       h5.card-title
-        | "#{playlist.name}"
+        | "#{saved_playlist.playlist.name}"

@@ -1,0 +1,6 @@
+| $("#modal-container").html("#{j(render 'modal_edit_saved_playlist', form: @form)}");
+| $("#modal-container").modal('show');
+
+| $('[id="js-modal-close"]').click(function() {
+|   $("#modal-container").modal('hide');
+| });

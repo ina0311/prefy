@@ -103,9 +103,9 @@ class SavedPlaylist < ApplicationRecord
       refined_target_tracks = target_tracks.map { |tg_tracks| tg_tracks.sample(total * PERCENTAGE) }
       remaining = total - refined_target_tracks.flatten.size
       refined_ramdom_tracks = ramdom_tracks.sample(remaining)
-      return refined_ramdom_tracks, refined_target_tracks
+      return {ramdom_tracks: refined_ramdom_tracks, target_tracks: refined_target_tracks}
     else
-      return ramdom_tracks.sample(total)
+      return {ramdom_tracks: ramdom_tracks.sample(total)}
     end
   end
 
@@ -116,9 +116,9 @@ class SavedPlaylist < ApplicationRecord
       refined_target_tracks = target_tracks.map { |tg_tracks| refine_total_duration_and_add_tracks(limit, tg_tracks)}.flatten
       remaining = self.max_total_duration_ms - refined_target_tracks.pluck(:duration_ms).sum
       refine_ramdom_tracks = refine_total_duration_and_add_tracks(remaining, ramdom_tracks)
-      return refine_ramdom_tracks, refined_target_tracks
+      return {ramdom_tracks: refine_ramdom_tracks, target_tracks: refined_target_tracks}
     else
-      return refine_total_duration_and_add_tracks(limit, ramdom_tracks)
+      return {ramdom_tracks: refine_total_duration_and_add_tracks(limit, ramdom_tracks)}
     end
   end
 
@@ -133,22 +133,28 @@ class SavedPlaylist < ApplicationRecord
     return refine_tracks
   end
 
-  def has_track_by_require_artists(tracks)
+  def not_has_track_by_require_artists(tracks)
     track_artist_ids = tracks.flatten.map { |track| track[:artist_id] }.uniq.flatten
     not_get_artist = self.include_artists.map do |artist|
-                       next if track_artist_ids.include?(artist.spotify_id)
-                       Artist.find_by(spotify_id: artist.spotify_id).name
+                       next if track_artist_ids.include?(artist[:spotify_id])
+                       Artist.find_by(spotify_id: artist[:spotify_id]).name
                      end
     return not_get_artist.compact
   end
 
+  def check_saved_playlist_requirements
+    self.number_of_track_less_than_requirements? if self.max_number_of_track
+    self.total_duration_more_than_ten_minutes_less_than_requirement? if self.max_total_duration_ms
+  end
+
   def number_of_track_less_than_requirements?
-    return false unless self.max_number_of_track
-    self.max_number_of_track > self.playlist.tracks.size
+    binding.pry
+    return if self.max_number_of_track == self.playlist.tracks.size
+    ErrorsHandler::NotEnoughTrackInPlaylist
   end
 
   def total_duration_more_than_ten_minutes_less_than_requirement?
-    return false unless self.max_total_duration_ms
-    TEN_MINUTES < (self.max_total_duration_ms - self.playlist.tracks.pluck(:duration_ms).sum)
+    return if TEN_MINUTES > (self.max_total_duration_ms - self.playlist.tracks.pluck(:duration_ms).sum)
+    ErrorsHandler::NotEnoughPlaybackTimeForPlaylist
   end
 end

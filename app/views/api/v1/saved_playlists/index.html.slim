@@ -6,6 +6,6 @@ main.col-md-9.ms-sm-auto.col-lg-10.px-md-4
     .card-deck
       .card-columns
         - if @saved_playlists.present?
-          = render partial: 'playlist', collection: @saved_playlists.map(&:playlist), as: :playlist
+          = render partial: 'playlist', collection: @saved_playlists, as: :saved_playlist
         - else
           = t(".not_saved_playlist")
