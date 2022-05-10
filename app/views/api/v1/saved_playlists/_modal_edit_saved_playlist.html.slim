@@ -1,0 +1,8 @@
+#modal-edit-saved-playlist tabindex="-1" aria-hidden="true" role="dialog" 
+  .modal-dialog.modal-dialog-scollable.modal-xl
+    .modal-content
+      .modal-header
+        .modal-title
+          h2 プレイリストの条件の編集
+      .modal-body
+        = render partial: 'api/v1/saved_playlists/form', locals: { form: @form, url: api_v1_saved_playlist_path, method: :put }

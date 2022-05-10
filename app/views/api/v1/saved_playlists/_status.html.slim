@@ -1,0 +1,34 @@
+h2 プレイリストの条件
+- if saved_playlist.only_follow_artist
+  .status
+    = 'フォローアーティストのみ'
+- if saved_playlist.that_generation_preference 
+  .label
+    = t("that_generation_preference")
+  .status
+    = saved_playlist.that_generation_preference
+- if saved_playlist.period
+  .label
+    = t("that_generation_prefenrece")
+  .status
+    = saved_playlist.period
+- if saved_playlist.max_number_of_track
+  .label 
+    = t("max_number_of_track")
+  .status 
+    = saved_playlist.max_number_of_track
+- if saved_playlist.max_total_duration_ms
+  .label
+    = t("max_total_duration_ms")
+  .status
+    = saved_playlist.max_total_duration_ms
+- if saved_playlist.genres
+  .label 
+    = 'ジャンル'
+  .staus
+    = saved_playlist.decorate.genre_names
+- if saved_playlist.include_artists
+  .label
+    = 'アーティスト'
+  .status
+    = saved_playlist.decorate.artist_names

@@ -1,0 +1,6 @@
+#js-ad
+  = button_tag t("form.refine_genreration"), type: :button, class: 'btn btn-secondary', id: 'js-switch-generation'
+  .form-group
+    = f.label :period
+    = f.select :since_year, form.decorate.years, { selected: form.decorate.selected_since_year, include_blank: true }, { class: 'form-control' }
+    = f.select :before_year, form.decorate.years, { selected: form.decorate.selected_before_year, include_blank: true }, { class: 'form-control' }
