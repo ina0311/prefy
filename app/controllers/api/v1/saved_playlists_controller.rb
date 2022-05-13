@@ -35,16 +35,11 @@ class Api::V1::SavedPlaylistsController < ApplicationController
 
       Playlists::PlaylistTrackUpdater.call(current_user, @playlist, refined_tracks_response)
       @saved_playlist.check_saved_playlist_requirements
-      redirect_to api_v1_saved_playlist_path(@playlist.spotify_id)
+      redirect_to api_v1_saved_playlist_path(@saved_playlist)
     else
       flash.now[:danger] = t("message.not_created", item: 'プレイリストの条件')
       render :new
     end
-  end
-
-  def edit
-    @saved_playlist = SavedPlaylist.includes(:include_artists, :genres).find(params[:id])
-    @form = SavedPlaylistForm.new(saved_playlist: @saved_playlist)
   end
 
   def update
@@ -62,9 +57,9 @@ class Api::V1::SavedPlaylistsController < ApplicationController
         flash[:danger] = t("message.not_get_track", item: not_get_artists.join('と')) if not_get_artists.present?
       end
 
-      Playlists::PlaylistTrackUpdater.call(current_user, @playlist, refined_tracks_response)
+      Playlists::PlaylistTrackUpdater.call(current_user, @saved_playlist.playlist, refined_tracks_response)
       @saved_playlist.check_saved_playlist_requirements
-      redirect_to api_v1_saved_playlist_path(@playlist.spotify_id)
+      redirect_to api_v1_saved_playlist_path(@saved_playlist)
     else
       flash.now[:danger] = t("message.not_created", item: 'プレイリストの条件')
       render :new
@@ -73,6 +68,7 @@ class Api::V1::SavedPlaylistsController < ApplicationController
 
   def show
     @saved_playlist = SavedPlaylist.includes(:playlist).find(params[:id])
+    @form = SavedPlaylistForm.new(saved_playlist: @saved_playlist)
     Playlists::PlaylistInfoGetter.call(current_user, @saved_playlist.playlist) unless current_user.guest_user?
     @playlist_of_tracks = @saved_playlist.playlist.playlist_of_tracks.includes([track: [album: :artists]]).position_asc
     session[:playlist_id] = @saved_playlist.playlist_id

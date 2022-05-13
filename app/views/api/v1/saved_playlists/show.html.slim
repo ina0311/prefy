@@ -6,9 +6,8 @@ main.col-md-9.ms-sm-auto.col-lg-10.px-md-4
       .h5.col.playlist-name
         | #{@saved_playlist.playlist.name}
       - if current_user.own?(@saved_playlist.playlist)
-        = link_to 'プレイリストの条件の編集', edit_api_v1_saved_playlist_path(@saved_playlist), data: { toggle: 'modal', target: '#modal-container'}, remote: true, id: 'js-edit-saved-playlist', class: 'btn btn-success'
+        = render 'modal_edit_saved_playlist', saved_playlist: @saved_playlist, form: @form
         = render 'status', saved_playlist: @saved_playlist
-        / todo: 現在の条件を表示する
         = link_to t("default.edit"), edit_api_v1_playlist_path(@saved_playlist.playlist_id), data: { toggle: "modal", target: "#modal-container"}, remote: true, id: 'js-edit-playlist', class: 'btn btn-success'
         = render 'shared/modal'
       = link_to t("default.play"), api_v1_play_path(uri: "spotify:playlist:#{@saved_playlist.playlist_id}"), remote: true, class: 'btn btn-success', id: 'js-player-open'

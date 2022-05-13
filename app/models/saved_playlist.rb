@@ -148,7 +148,6 @@ class SavedPlaylist < ApplicationRecord
   end
 
   def number_of_track_less_than_requirements?
-    binding.pry
     return if self.max_number_of_track == self.playlist.tracks.size
     ErrorsHandler::NotEnoughTrackInPlaylist
   end

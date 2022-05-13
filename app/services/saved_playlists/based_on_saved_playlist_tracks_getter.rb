@@ -21,7 +21,7 @@ class SavedPlaylists::BasedOnSavedPlaylistTracksGetter < SpotifyService
       target_tracks = search_tracks(target_ids, year)
     end
     
-    return false if ramdom_tracks.nil? && target_tracks.nil?
+    return false if ramdom_tracks.blank? && target_tracks.blank?
 
     refined_ramdom_and_target_tracks = saved_playlist.refine_tracks(ramdom_tracks, target_tracks)
     return refined_ramdom_and_target_tracks

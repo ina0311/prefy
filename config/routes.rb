@@ -8,7 +8,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       delete '/logout', to: 'sessions#destroy'
 
-      resources :myplaylists, controller: 'saved_playlists', as: 'saved_playlists'
+      resources :myplaylists, controller: 'saved_playlists', as: 'saved_playlists', except: %i[edit]
       resources :playlists, only: %i[edit] do
         resources :playlist_of_tracks, only: %i[create destroy]
       end
