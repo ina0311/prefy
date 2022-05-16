@@ -8,7 +8,7 @@
     = f.check_box :only_follow_artist, { checked: true }, true, false
   .form-group#js-genres
     = f.label :genre_ids, t("form.refine_follow_artist_genres")
-    = f.collection_select :genre_ids, form.decorate.follow_artist_genres(current_user), :id, :name, { }, { name: "genre_ids[]", class: 'js-select2-genres', multiple: true }
+    = f.collection_select :genre_ids, form.decorate.follow_artist_genres(current_user), :id, :name, { }, { name: "genre_ids[]", id: 'js-select2-genres', multiple: true }
   / = render 'switch_form_generation_or_ad', locals: { user: current_user, form: form, f: f }
   - if @current_user.age.present?
     = button_tag t("form.refine_genreration"), type: :button, class: 'btn btn-secondary', id: 'js-switch-generation'
@@ -31,5 +31,5 @@
     = f.number_field :duration_minute, { in: 10..50, step: 10, include_blank: true, class: 'form-control', value: form.decorate.set_duration_min }
   .form-group#js-artists
     = f.label :artist_ids, t("form.specify_artists")
-    = f.collection_select :artist_ids, current_user.follow_artist_lists, :spotify_id, :name, { }, { name: "artist_ids[]", class: 'js-select2-artists', multiple: true }
+    = f.collection_select :artist_ids, current_user.follow_artist_lists, :spotify_id, :name, { }, { name: "artist_ids[]", id: 'js-select2-artists', multiple: true }
   = f.submit class: 'btn btn-primary', id: 'js-form-button'

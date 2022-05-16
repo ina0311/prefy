@@ -2,18 +2,28 @@ import $ from "jquery"
 import "select2/dist/js/select2"
 
 $(document).on("turbolinks:load", function() {
-  $('[class^="js-select2"]').each(function() {
+  $('[id^="js-select2"]').each(function() {
     const $this = $(this)
-    const $parent = $this.attr('class').match(/js-select2-(\w+)/)[1]
+    const $parent = $this.attr('id').match(/js-select2-(\w+)/)[1]
     let ops = {
+      placeholder: '        ',
       allowClear: true,
       multiple: true,
+      closeOnSelect: false,
       maximumSelectionLength: 3,
       dropdownAutoWidth: true,
       dropdownParent: $(`#js-${$parent}`),
-      width: 'resolve'
+      width: 'resolve',
+      language: {
+        maximumSelected: function (args) {
+        var message = args.maximum + ' 件しか選べません';
+        return message;
+        },
+        noResults: function() {
+          return '対象が見つかりません';
+        }
+      }
     }
-
     $this.select2(ops)
   });
 
