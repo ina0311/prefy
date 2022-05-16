@@ -81,6 +81,14 @@ ja:
           fail: 'プレイリストを更新できませんでした'
         new:
           title: 'プレイリスト作成'
+        status:
+          only_follow_artists: 'フォローアーティストのみ'
+          that_generation_preference: '指定した世代'
+          period: '期間'
+          max_number_of_track: '最大曲数'
+          max_total_duration_ms: '最大再生時間'
+          specify_genres: '指定したジャンル'
+          specify_artists: '指定したアーティスト'
       follow_artists:
         index:
           title: 'フォローアーティスト一覧'
