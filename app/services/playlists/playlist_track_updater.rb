@@ -8,7 +8,7 @@ class Playlists::PlaylistTrackUpdater < SpotifyService
     @playlist = playlist
     ramdom_track_ids = track_response[:ramdom_tracks].map { |h| h[:spotify_id] }
     target_track_ids = track_response[:target_tracks].flatten.map { |h| h[:spotify_id] } if track_response[:target_tracks]
-    @track_ids = defined?(target_track_ids) ? ramdom_track_ids.concat(target_track_ids).shuffle : ramdom_track_ids.shuffle
+    @track_ids = target_track_ids ? ramdom_track_ids.concat(target_track_ids).shuffle : ramdom_track_ids.shuffle
   end
 
   def update

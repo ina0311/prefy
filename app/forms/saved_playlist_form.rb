@@ -4,9 +4,6 @@ class SavedPlaylistForm
   include ActiveModel::Validations::Callbacks
   include Draper::Decoratable
 
-  HOUR_TO_MS = 3600000
-  MINUTE_TO_MS = 60000
-
   attribute :playlist_name, :string
   attribute :only_follow_artist, :boolean
   attribute :that_generation_preference, :integer
@@ -113,8 +110,8 @@ class SavedPlaylistForm
   end
 
   def set_max_duration_ms
-    duration_hour_to_ms = duration_hour * HOUR_TO_MS
-    duration_minute_to_ms = duration_minute * MINUTE_TO_MS
+    duration_hour_to_ms = duration_hour * SavedPlaylist::HOUR_TO_MS
+    duration_minute_to_ms = duration_minute * SavedPlaylist::MINUTE_TO_MS
     total = duration_hour_to_ms + duration_minute_to_ms
     self.max_total_duration_ms = total > 0 ? total : nil
   end

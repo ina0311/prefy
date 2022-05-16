@@ -9,6 +9,8 @@ class SavedPlaylist < ApplicationRecord
   THIRTIES = 40
   GENERATIONS = [JUNIOR_HIGH_SCHOOL, HIGH_SCHOOL, UNIVERSITY, TEENS, TWENTIES, THIRTIES]
   TEN_MINUTES = 60000
+  HOUR_TO_MS = 3600000
+  MINUTE_TO_MS = 60000
 
   belongs_to :user
   belongs_to :playlist
@@ -124,11 +126,12 @@ class SavedPlaylist < ApplicationRecord
 
   # 再生時間を判定し、追加
   def refine_total_duration_and_add_tracks(limit, tracks)
-    refine_tracks = tracks.shuffle!.map do |track|
-                      playlist_of_tracks << track
-                      limit -= track[:duration_ms]
-                      break if limit <= 0
-                    end
+    refine_tracks = Array.new
+    tracks.shuffle.each do |track|
+      refine_tracks.push(track)
+      limit -= track[:duration_ms]
+      break if limit <= 0
+    end
 
     return refine_tracks
   end

@@ -21,7 +21,7 @@ h2 プレイリストの条件
   .label
     = t("max_total_duration_ms")
   .status
-    = saved_playlist.max_total_duration_ms
+    = saved_playlist.decorate.max_total_duration_hour_and_min
 - if saved_playlist.genres
   .label 
     = 'ジャンル'
