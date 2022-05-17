@@ -116,6 +116,8 @@ GEM
       request_store (>= 1.0)
       ruby2_keywords
     encryptor (3.0.0)
+    enum_help (0.0.19)
+      activesupport (>= 3.0.0)
     erubi (1.10.0)
     erubis (2.7.0)
     factory_bot (6.2.0)
@@ -398,6 +400,7 @@ DEPENDENCIES
   capybara
   dotenv-rails
   draper
+  enum_help
   factory_bot_rails
   faraday
   faraday_middleware
