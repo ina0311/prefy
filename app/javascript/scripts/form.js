@@ -32,14 +32,9 @@ $(document).on("turbolinks:load", function() {
     $("#js-ad").toggleClass("no-active");
   });
 
-  $('#js-switch-number').on("click", function() {
-    $("#js-max-number").removeClass("no-active");
-    $("#js-max-duration-ms").addClass("no-active");
-  });
-
-  $('#js-switch-duration-ms').on("click", function() {
-    $("#js-max-number").addClass("no-active");
-    $("#js-max-duration-ms").removeClass("no-active");
+  $('#js-switch-number, #js-switch-duration-ms').on("click", function() {
+    $("#js-max-number").toggleClass("no-active");
+    $("#js-max-duration-ms").toggleClass("no-active");
   });
 
   $('#js-form-button').on("click", function(){

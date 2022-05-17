@@ -1,0 +1,4 @@
+= button_tag t("form.specify_playback_time"), type: :button, class: 'btn btn-secondary', id: 'js-switch-duration-ms'  
+.form-group
+  = f.label :max_number_of_track
+  = f.number_field :max_number_of_track, { in: 1..50, step: 1, include_blank: true, class: 'form-control', value: form.max_number_of_track }
