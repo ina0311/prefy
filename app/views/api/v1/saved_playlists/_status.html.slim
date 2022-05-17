@@ -6,7 +6,7 @@ h2 プレイリストの条件
   .label
     = t(".that_generation_preference")
   .status
-    = saved_playlist.that_generation_preference
+    = I18n.t("enum.saved_playlist.that_generation_preference.#{saved_playlist.that_generation_preference}")
 - if saved_playlist.period
   .label
     = t(".period")

@@ -10,8 +10,8 @@ class SavedPlaylistFormDecorator < ApplicationDecorator
 
   def generations(user)
     user_generations = []
-    array = SavedPlaylist.that_generation_preferences.keys.map { |key| [key.titleize, key] }
-    array.zip(SavedPlaylist::GENERATIONS).each do |gen|
+    all_generation = SavedPlaylist.that_generation_preferences.keys.map { |key| [I18n.t("enum.saved_playlist.that_generation_preference.#{key}"), key] }
+    all_generation.zip(SavedPlaylist::GENERATIONS).each do |gen|
       user_generations << gen[0] if user.age >= gen[1]
     end
     return user_generations
