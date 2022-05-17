@@ -11,7 +11,7 @@ class SavedPlaylistDecorator < ApplicationDecorator
 
   def max_total_duration_hour_and_min
     hour_and_ms = self.max_total_duration_ms.divmod(SavedPlaylist::HOUR_TO_MS)
-    case hour_and_ms
+    case 
     when hour_and_ms.first.zero?
       min = hour_and_ms.second.div(SavedPlaylist::MINUTE_TO_MS)
       return "#{min}分"
