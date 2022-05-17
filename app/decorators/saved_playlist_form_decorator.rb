@@ -52,6 +52,6 @@ class SavedPlaylistFormDecorator < ApplicationDecorator
   def set_that_generation_preference
     return nil unless self.that_generation_preference
     
-    return SavedPlaylist.that_generation_preferences.keys(self.that_generation_preference)
+    return SavedPlaylist.that_generation_preferences.keys[self.that_generation_preference]
   end
 end

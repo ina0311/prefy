@@ -27,14 +27,9 @@ $(document).on("turbolinks:load", function() {
     $this.select2(ops)
   });
 
-  $('#js-switch-generation').on("click", function() {
-    $("#js-generation").removeClass("no-active");
-    $("#js-ad").addClass("no-active");
-  });
-
-  $('#js-switch-period').on("click", function() {
-    $("#js-generation").addClass("no-active");
-    $("#js-ad").removeClass("no-active");
+  $('#js-switch-generation, #js-switch-period').on("click", function() {
+    $("#js-generation").toggleClass("no-active");
+    $("#js-ad").toggleClass("no-active");
   });
 
   $('#js-switch-number').on("click", function() {
