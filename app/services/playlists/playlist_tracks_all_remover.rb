@@ -11,6 +11,7 @@ class Playlists::PlaylistTracksAllRemover < SpotifyService
   end
 
   def remove
+    return if playlist.playlist_of_tracks.blank?
     unless user.guest_user?
       request_bodys = create_request_body 
       request_remove_playlist_tracks(request_bodys)

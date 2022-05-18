@@ -1,0 +1,10 @@
+= button_tag 'プレイリストの条件の編集', data: { 'bs-toggle': 'modal', 'bs-target': '#js-edit-saved-playlist-modal' }, class: 'btn btn-success'
+#js-edit-saved-playlist-modal.modal
+  .modal-dialog.modal-xl
+    .modal-content
+      .modal-header
+        h5#exampleModalLabel.modal-title
+          | プレイリストの条件の編集
+        = button_tag '', data: { 'bs-dismiss': 'modal' }, class: 'btn btn-close btn-secondary'
+      .modal-body
+        = render 'form', form: form, url: api_v1_saved_playlist_path(saved_playlist), method: :put 

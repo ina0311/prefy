@@ -1,0 +1,10 @@
+- if form.that_generation_preference
+  #js-generation
+    = render 'form_generation', { form: form, f: f }
+  #js-ad.no-active
+    = render 'form_ad', { form: form, f: f }
+- else
+  #js-generation.no-active
+    = render 'form_generation', { form: form, f: f }
+  #js-ad
+    = render 'form_ad', { form: form, f: f }
