@@ -1,4 +1,4 @@
 = button_tag t("form.refine_ad"), type: :button, class: 'btn btn-secondary', id: 'js-switch-period'
 .form-group
-  = f.label :that_generation_preference
+  = f.label :that_generation_preference, class: 'form-label'
   = f.select :that_generation_preference, form.decorate.generations(current_user), { selected: form.decorate.set_that_generation_preference, include_blank: true }, { class: 'form-control', id: 'js-generation-select' }

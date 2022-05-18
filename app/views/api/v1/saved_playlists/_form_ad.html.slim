@@ -1,5 +1,7 @@
 = button_tag t("form.refine_generation"), type: :button, class: 'btn btn-secondary', id: 'js-switch-generation' if current_user.age
 .form-group
-  = f.label :period
-  = f.select :since_year, form.decorate.years, { selected: form.decorate.selected_since_year, include_blank: true }, { class: 'form-control' }
-  = f.select :before_year, form.decorate.years, { selected: form.decorate.selected_before_year, include_blank: true }, { class: 'form-control' }
+  = f.label :period, class: 'form-label'
+  = f.select :since_year, form.decorate.years, { selected: form.decorate.selected_since_year, include_blank: true }, { class: 'select' }
+  | 年　〜　
+  = f.select :before_year, form.decorate.years, { selected: form.decorate.selected_before_year, include_blank: true }, { class: 'select' }
+  | 年
