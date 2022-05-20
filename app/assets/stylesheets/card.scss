@@ -1,3 +1,23 @@
 .card {
+  width: 20rem;
+  height: 27rem;
+  margin-bottom: 3rem;
+  background-color: hsl(0, 0, 15%) !important;
+  border-radius: 0.5rem !important;
+  
+  :hover {
+    background-color: hsl(0, 0, 20%) !important;
+  }
+}
+
+.card-thumbnail {
   width: 18rem;
+  height: 18rem;
+  background-color: $main-color;
+}
+
+.card-title {
+  font-size: 2rem;
+  margin-top: 1.5rem;
+  overflow-x: scroll;
 }
