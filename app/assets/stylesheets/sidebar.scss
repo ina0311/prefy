@@ -1,5 +1,30 @@
-#sidebarMenu {
+.sidebar {
   position: fixed;
-  width: 210px;
   height: 100%;
+  flex-direction: column;
+  margin: 0, auto;
+}
+
+.sidebar-items {
+  position: sticky;
+}
+
+.nav-item {
+  font-size: 1.8rem;
+  height: 3rem;
+  padding: 0.2rem;
+  margin-bottom: 1rem;
+
+  .nav-icon {
+    display: inline-block;
+    fill: #fff;
+    vertical-align: text-top;
+    width: 2.4rem;
+    height: 2.4rem;
+  }
+
+  .nav-label {
+    display: inline-block;
+    padding-left: 0.8rem;
+  }
 }

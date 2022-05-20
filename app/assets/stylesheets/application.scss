@@ -1,4 +1,5 @@
-@import '../../../node_modules/bootstrap/scss/bootstrap.scss';
+@import 'bootstrap/scss/bootstrap.scss';
+@import 'color';
 @import 'home';
 @import 'sidebar';
 @import 'card';
@@ -12,7 +13,9 @@ html, body {
   overflow-x: hidden;
   padding: 0%;
   margin: 0%;
-  background-color: #fff;
+  background-color: $main-color !important;
+  color: $accent-color !important;
+  font-size: 62.5% !important;
 }
 
 .flash {
@@ -24,7 +27,11 @@ html, body {
 
 ul {
   list-style: none;
-  padding: 20px;
+}
+
+a {
+  color: #fff !important;
+  text-decoration: none !important;
 }
 
 .active {
