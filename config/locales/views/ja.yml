@@ -96,7 +96,7 @@ ja:
           success: 'アーティストをフォローしました'
         destroy:
           success: 'アーティストのフォローを外しました'
-      searchs:
+      search:
         index:
           title: '検索'
           submit: '検索する'
