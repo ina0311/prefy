@@ -29,7 +29,7 @@ class Api::V1::SavedPlaylistsController < ApplicationController
       raise ErrorsHandler::UnableToGetPlaylistOfTracksError unless refined_tracks_response[:ramdom_tracks] && refined_tracks_response[:target_tracks]
   
       if @saved_playlist.include_artists
-        not_get_artists = @saved_playlist.has_track_by_require_artists(refined_tracks_response[:target_tracks])
+        not_get_artists = @saved_playlist.not_has_track_by_require_artists(refined_tracks_response[:target_tracks])
         flash[:danger] = t("message.not_get_track", item: not_get_artists.join('と')) if not_get_artists.present?
       end
 

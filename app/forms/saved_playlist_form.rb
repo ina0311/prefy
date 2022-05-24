@@ -23,7 +23,7 @@ class SavedPlaylistForm
   validates :max_number_of_track, numericality: { in: 1..50, allow_nil: true }
   validates :period, format: { with: /([0-9]{4})+(-[0-9]{4})*/ }, allow_blank: true
   validates :duration_hour, numericality: { in: 1..7, allow_nil: true }
-  validates :duration_minute, numericality: { in: 10..50, allow_nil: true }
+  validates :duration_minute, numericality: { in: 0..50, allow_nil: true }
   validates :max_total_duration_ms, numericality: { in: 600_000..25_200_000, allow_nil: true }
   validate :only_either_generation_or_period, unless: -> { that_generation_preference.nil? && period.nil? }
   validate :only_either_numver_of_track_or_duration_ms, unless: -> { max_number_of_track.nil? && max_total_duration_ms.nil?}
