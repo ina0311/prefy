@@ -54,4 +54,12 @@ class SavedPlaylistFormDecorator < ApplicationDecorator
     
     return SavedPlaylist.that_generation_preferences.keys[self.that_generation_preference]
   end
+
+  def btn_text(action)
+    if action == 'new'
+      return I18n.t("helpers.submit.create_item", item: I18n.t("default.playlist"))
+    else
+      return I18n.t("helpers.submit.update_item", item: I18n.t("default.playlist"))
+    end
+  end
 end

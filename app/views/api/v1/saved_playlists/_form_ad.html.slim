@@ -1,6 +1,9 @@
-= button_tag t("form.refine_generation"), type: :button, class: 'btn btn-secondary', id: 'js-switch-generation' if current_user.age
+.headline-content
+  .text
+    | リリース年を絞り込む
+  = button_tag t("form.refine_generation"), type: :button, class: 'btn btn-secondary btnx-main-light', id: 'js-switch-generation' if current_user.age
 .form-group
-  = f.label :period, class: 'form-label'
+  = f.label :period, t("form.ad"), class: 'form-label'
   = f.select :since_year, form.decorate.years, { selected: form.decorate.selected_since_year, include_blank: true }, { class: 'select' }
   | 年　〜　
   = f.select :before_year, form.decorate.years, { selected: form.decorate.selected_before_year, include_blank: true }, { class: 'select' }
