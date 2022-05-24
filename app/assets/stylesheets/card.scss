@@ -1,10 +1,12 @@
+@import 'color';
+
 .card {
   width: 20rem;
   height: 27rem;
   margin-bottom: 3rem;
   background-color: hsl(0, 0, 15%) !important;
   border-radius: 0.5rem !important;
-  
+
   :hover {
     background-color: hsl(0, 0, 20%) !important;
   }

@@ -12,9 +12,12 @@ ja:
     play: '再生'
     following: 'フォロー中'
     follow: 'フォローする'
+    playlist: 'プレイリスト'
   helpers:
     submit:
       create: '作成する'
+      create_item: "%{item}を作成する"
+      update_item: "%{item}を更新する" 
   message:
     require_login: 'ログインしてください'
     created: '%{item}を作成しました'
@@ -45,12 +48,13 @@ ja:
       create_spotify_account: 'spotifyアカウントを作る'
       password_forget: 'パスワードをお忘れの方はこちら'
   form:
-    refine_follow_artist_genres: 'フォローアーティストのジャンルを選択してください'
-    refine_generation: '自分の年代で絞り込む'
-    refine_ad: '西暦で絞り込み'
+    refine_follow_artist_genres: 'ジャンルを選択'
+    refine_generation: '世代で絞り込む'
+    refine_ad: '西暦で絞り込む'
+    ad: '西暦'
     specify_number_of_track: '曲数を指定'
     specify_playback_time: '再生時間を指定'
-    specify_artists: '必須アーティスト選択'
+    specify_artists: 'アーティストを選択'
   api:
     v1:
       users:
@@ -83,12 +87,12 @@ ja:
           title: 'プレイリスト作成'
         status:
           only_follow_artists: 'フォローアーティストのみ'
-          that_generation_preference: '指定した世代'
+          that_generation_preference: '選択した世代'
           period: '期間'
           max_number_of_track: '最大曲数'
           max_total_duration_ms: '最大再生時間'
-          specify_genres: '指定したジャンル'
-          specify_artists: '指定したアーティスト'
+          specify_genres: '選択したジャンル'
+          specify_artists: '選択したアーティスト'
       follow_artists:
         index:
           title: 'フォローアーティスト一覧'

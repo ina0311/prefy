@@ -8,18 +8,31 @@
 @import 'player';
 
 html, body {
-  position: relative;
   height: 100%;
   overflow-x: hidden;
   padding: 0%;
   margin: 0%;
   background-color: $main-color !important;
-  color: $accent-color !important;
+  color: #fff !important;
   font-size: 62.5% !important;
+}
+
+*:focus {
+  border-color: $sub-color !important;
+  box-shadow: none !important;
+  outline: none !important;
 }
 
 main {
   padding: 3rem !important;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.show {
+  display: block;
 }
 
 section {
@@ -42,12 +55,34 @@ a {
   text-decoration: none !important;
 }
 
-.active {
-  display: block !important;
-}
-
 .page-title {
   font-size: 3.5rem;
   margin-top: 2rem;
-  padding: 3.5rem 2rem;
+  padding: 3.5rem 2rem 1rem 2rem;
+}
+
+.btnx-main-light {
+  font-size: 1.3rem !important;
+  background: $main-light-color !important;
+  border: 2px solid $main-light-color !important;
+  
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.btnx-sub {
+  color:  #fff !important;
+  background: $sub-color !important;
+  border: 2px solid $sub-color !important;
+  
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.btn-xl {
+  font-size: 2rem !important;
+  width: 25rem !important;
+  height: 4rem !important;
 }
