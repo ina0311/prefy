@@ -1,28 +1,30 @@
-main.col-md-9.ms-sm-auto.col-lg-10.px-md-4
-  .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.md-3.border-bottom
-    .section
-      .playlist-heading.row
-        = image_tag @saved_playlist.playlist.decorate.image, size: '100x100', class: 'card-thumbnail'
-      .h5.col.playlist-name
-        | #{@saved_playlist.playlist.name}
+.playlist-wrapper
+  .playlist-head
+    .playlist-thumbnail-wrap
+      = image_tag @saved_playlist.playlist.decorate.image, class: 'playlist-thumbnail'
+    .playlist-info-wrap
+      .playlist-info
+        .playlist-title
+          | #{@saved_playlist.playlist.name}
+        .button-aria
+          = link_to t("default.edit"), edit_api_v1_playlist_path(@saved_playlist.playlist_id), data: { toggle: "modal", target: "#modal-container"}, remote: true, id: 'js-edit-playlist', class: 'btn btnx-sub' if current_user.own?(@saved_playlist.playlist)
+          = link_to t("default.play"), api_v1_play_path(uri: "spotify:playlist:#{@saved_playlist.playlist_id}"), remote: true, class: 'btn btnx-sub ms-3', id: 'js-player-open'
+          = render 'shared/modal'
       - if current_user.own?(@saved_playlist.playlist)
-        = render 'modal_edit_saved_playlist', saved_playlist: @saved_playlist, form: @form
-        = render 'status', saved_playlist: @saved_playlist
-        = link_to t("default.edit"), edit_api_v1_playlist_path(@saved_playlist.playlist_id), data: { toggle: "modal", target: "#modal-container"}, remote: true, id: 'js-edit-playlist', class: 'btn btn-success'
-        = render 'shared/modal'
-      = link_to t("default.play"), api_v1_play_path(uri: "spotify:playlist:#{@saved_playlist.playlist_id}"), remote: true, class: 'btn btn-success', id: 'js-player-open'
-    .container
-      .headline.row
-        .col-1
-          | #
-        .col-1
-        .col
-          | タイトル
-        .col-2
-          | アーティスト
-        .col-2
-          | アルバム
-        .col-2
-          | 再生時間
-      .track-lists.row#js-playlist-of-tracks
-        = render partial: 'api/v1/playlists/playlist_of_track', collection: @playlist_of_tracks
+        = render 'status', saved_playlist: @saved_playlist, form: @form
+          
+  section
+    .headline.row
+      .col-1
+        | #
+      .col-1
+      .col
+        | タイトル
+      .col-2
+        | アーティスト
+      .col-2
+        | アルバム
+      .col-2
+        | 再生時間
+    .track-lists.row#js-playlist-of-tracks
+      = render partial: 'api/v1/playlists/playlist_of_track', collection: @playlist_of_tracks

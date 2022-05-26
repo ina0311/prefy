@@ -1,34 +1,49 @@
-h2 プレイリストの条件
-- if saved_playlist.only_follow_artist
-  .status
-    = t(".only_follow_artists")
-- if saved_playlist.that_generation_preference 
-  .label
-    = t(".that_generation_preference")
-  .status
-    = I18n.t("enum.saved_playlist.that_generation_preference.#{saved_playlist.that_generation_preference}")
-- if saved_playlist.period
-  .label
-    = t(".period")
-  .status
-    = saved_playlist.period
-- if saved_playlist.max_number_of_track
-  .label 
-    = t(".max_number_of_track")
-  .status 
-    = saved_playlist.max_number_of_track
-- if saved_playlist.max_total_duration_ms
-  .label
-    = t(".max_total_duration_ms")
-  .status
-    = saved_playlist.decorate.max_total_duration_hour_and_min
-- if saved_playlist.genres
-  .label 
-    = t(".specify_genres")
-  .staus
-    = saved_playlist.decorate.genre_names
-- if saved_playlist.include_artists
-  .label
-    = t(".specify_artists")
-  .status
-    = saved_playlist.decorate.artist_names
+.status-wrap
+  .status-headline
+    .status-title
+      | 条件
+    = button_tag 'プレイリストの条件の編集', data: { 'bs-toggle': 'modal', 'bs-target': '#js-edit-saved-playlist-modal' }, class: 'btn btn-success'
+  = render 'modal_edit_saved_playlist', saved_playlist: saved_playlist, form: form
+  .status-list
+    - if saved_playlist.only_follow_artist
+      .status-item
+        .status-label
+          | アーティスト取得範囲
+        .status-text
+          = t(".only_follow_artists")
+    - if saved_playlist.that_generation_preference
+      .status-item
+        .status-label
+          = t(".that_generation_preference")
+        .status-text
+          = I18n.t("enum.saved_playlist.that_generation_preference.#{saved_playlist.that_generation_preference}")
+    - if saved_playlist.period
+      .status-item
+        .status-label
+          = t(".period")
+        .status-text
+          = saved_playlist.period
+    - if saved_playlist.max_number_of_track
+      .status-item
+        .status-label 
+          = t(".max_number_of_track")
+        .status-text
+          = saved_playlist.max_number_of_track
+    - if saved_playlist.max_total_duration_ms
+      .status-item
+        .status-label
+          = t(".max_total_duration_ms")
+        .status-text
+          = saved_playlist.decorate.max_total_duration_hour_and_min
+    - if saved_playlist.genres
+      .status-item
+        .status-label 
+          = t(".specify_genres")
+        .status-text
+          = saved_playlist.decorate.genre_names
+    - if saved_playlist.include_artists
+      .status-item
+        .status-label
+          = t(".specify_artists")
+        .status-text
+          = saved_playlist.decorate.artist_names
