@@ -1,15 +1,16 @@
-.modal-header#js-add-track
-  .modal-title
-    h5
+.modal-content#js-add-track
+  .modal-header
+    .modal-title
       = t("modal.add_track.title")
-    
-    = button_tag t("modal.edit.title"), class: 'btn btn-success', id: 'js-switch-button'
-    = button_tag t("modal.close"), class: 'btn btn-secondary', id: 'js-modal-close'
+      
+    .button-aria
+      = button_tag t("modal.edit.title"), class: 'btn btnx-sub btn-lg', id: 'js-switch-button'
+      = button_tag t("modal.close"), class: 'btn btn-secondary btn-lg', id: 'js-modal-close'
   .modal-body
-    = form_with url: api_v1_search_path, local: false do |f|
-      = f.label t("modal.add_track.search_track")
-      = f.text_field :search
-      = f.submit t("modal.add_track.search"), class: 'btn btn-secondary'
+    .search-wrap
+      = form_with url: api_v1_search_path, local: false, class: 'search' do |f|
+        = f.text_field :search, class: 'search-form'
+        = f.submit t("modal.add_track.search"), class: 'btn btn-secondary btn-lg'
 
-    .js-flash-message
-    .search-result
+      .js-flash-message
+      .search-result

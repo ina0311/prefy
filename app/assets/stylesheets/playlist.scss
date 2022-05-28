@@ -1,3 +1,5 @@
+@import 'color';
+
 .playlist-wrapper {
   padding: 3rem;
 }
@@ -5,10 +7,9 @@
 .playlist-head {
   display: flex;
   padding: 1rem;
-  height: 30rem;
 
   .playlist-thumbnail-wrap {
-    padding: 1rem;
+    padding: 0.5rem;
     
     .playlist-thumbnail {
       padding: 1rem;
@@ -19,13 +20,11 @@
 
   .playlist-info-wrap {
     display: flex;
-    margin-left: 1rem;
-    padding: 1rem;
+    padding: 0.5rem;
 
     .playlist-info {
       display: flex;
       flex-direction: column;
-      width: 30rem;
       overflow-x: scroll;
       overflow-wrap: break-word;
       justify-content: space-between;

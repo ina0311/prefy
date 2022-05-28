@@ -4,19 +4,19 @@ div class="playlist-of-track row position-#{playlist_of_track.position}"
   .track-item.track-image-outer.col-1
     = image_tag playlist_of_track.track.decorate.image, class: 'track-image'
   .track-item.track-title.col
-      = playlist_of_track.track.name
+    = playlist_of_track.track.name
   .track-item.track-artist-name.col-3
-      = playlist_of_track.track.decorate.artists
+    = playlist_of_track.track.decorate.artists
+  .track-item.track-album-title.col-2
+    = playlist_of_track.track.album.name
   - if action_name == 'show'
-    .track-item.track-album-title.col-2
-      = playlist_of_track.track.album.name
     .track-item.playback-time.col-1
       = playlist_of_track.track.decorate.convert_ms_to_min_and_sec
   - else
-    .track-delete-button.col-1
+    .track-item.track-delete-button.col-1
       = link_to t("default.delete"),
         api_v1_playlist_playlist_of_track_path(id: playlist_of_track, playlist_id: playlist_of_track.playlist_id),
         data: { confirm: t("message.delete_confirm", item: playlist_of_track.track.name) },
         method: :delete,
-        class: 'btn btn-danger',
+        class: 'btn btn-danger btn-lg',
         remote: true

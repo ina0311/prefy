@@ -1,5 +1,6 @@
-div class="artist d-flex" id="js-artist-#{artist.id}"
-  .col
-    = image_tag artist.decorate.image, class: 'artist-image', size: '30x30'
-  .col
-    = artist.name
+.col
+  div class="artist card" id="js-artist-#{artist.id}"
+    .card-body
+      = image_tag artist.decorate.image, class: 'card-thumbnail'
+      .card-title
+        = artist.name

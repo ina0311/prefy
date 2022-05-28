@@ -1,17 +1,17 @@
 .playlist-wrapper
-  .playlist-head
-    .playlist-thumbnail-wrap
+  .playlist-head.row
+    .playlist-thumbnail-wrap.col-4
       = image_tag @saved_playlist.playlist.decorate.image, class: 'playlist-thumbnail'
-    .playlist-info-wrap
-      .playlist-info
+    .playlist-info-wrap.col.row
+      .playlist-info.col
         .playlist-title
           | #{@saved_playlist.playlist.name}
         .button-aria
-          = link_to t("default.edit"), edit_api_v1_playlist_path(@saved_playlist.playlist_id), data: { toggle: "modal", target: "#modal-container"}, remote: true, id: 'js-edit-playlist', class: 'btn btnx-sub' if current_user.own?(@saved_playlist.playlist)
-          = link_to t("default.play"), api_v1_play_path(uri: "spotify:playlist:#{@saved_playlist.playlist_id}"), remote: true, class: 'btn btnx-sub ms-3', id: 'js-player-open'
+          = link_to t("default.edit"), edit_api_v1_playlist_path(@saved_playlist.playlist_id), data: { toggle: "modal", target: "#modal-container"}, remote: true, id: 'js-edit-playlist', class: 'btn btnx-sub btn-lg' if current_user.own?(@saved_playlist.playlist)
+          = link_to t("default.play"), api_v1_play_path(uri: "spotify:playlist:#{@saved_playlist.playlist_id}"), remote: true, class: 'btn btnx-sub btn-lg ms-3', id: 'js-player-open'
           = render 'shared/modal'
       - if current_user.own?(@saved_playlist.playlist)
-        = render 'status', saved_playlist: @saved_playlist, form: @form
+          = render 'status', saved_playlist: @saved_playlist, form: @form
   .track-list
     .track-headline-outer  
       .track-headline.row

@@ -6,6 +6,7 @@
 @import 'modal';
 @import 'form';
 @import 'playlist';
+@import 'search';
 @import 'player';
 
 html, body {
@@ -18,12 +19,6 @@ html, body {
   font-size: 62.5% !important;
 }
 
-*:focus {
-  border-color: $sub-color !important;
-  box-shadow: none !important;
-  outline: none !important;
-}
-
 main {
   padding: 3rem !important;
 }
@@ -33,7 +28,7 @@ main {
 }
 
 .show {
-  display: block;
+  display: block !important;
 }
 
 section {
@@ -75,7 +70,7 @@ a {
 .btnx-sub {
   color:  #fff !important;
   background: $sub-color !important;
-  border: 2px solid $sub-color !important;
+  border: 1rem thin $sub-color !important;
   
   &:hover {
     opacity: 0.8;

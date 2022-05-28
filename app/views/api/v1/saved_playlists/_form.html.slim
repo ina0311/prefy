@@ -13,9 +13,10 @@
         .tab-pane.form-section.active#form1 role="tabpanel" aria-labelledby="tab1"
           .title
             | 基本設定
-          .form-group
-            = f.label :playlist_name, SavedPlaylist.human_attribute_name(:playlist_name), class: 'form-label'
-            = f.text_field :playlist_name, class: 'form-control'
+          - if action_name == 'new'
+            .form-group
+              = f.label :playlist_name, SavedPlaylist.human_attribute_name(:playlist_name), class: 'form-label'
+              = f.text_field :playlist_name, class: 'form-control'
           .form-group
             = f.label :only_follow_artist, class: 'form-label'
             .form-check.form-switch

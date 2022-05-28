@@ -4,6 +4,12 @@
   height: 60rem;
   background: hsl(0, 0, 15%) !important;
   padding: 4rem 5rem;
+
+  *:focus {
+    border-color: $sub-color !important;
+    box-shadow: none !important;
+    outline: none !important;
+  }
 }
 
 .form-container {

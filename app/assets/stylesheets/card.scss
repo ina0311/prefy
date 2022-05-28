@@ -5,10 +5,11 @@
   height: 27rem;
   margin-bottom: 3rem;
   background-color: hsl(0, 0, 15%) !important;
-  border-radius: 0.5rem !important;
+  border-radius: 1rem !important;
 
-  :hover {
+  &:hover :not(.card-thumbnail) {
     background-color: hsl(0, 0, 20%) !important;
+    border-radius: 1rem !important;
   }
 }
 
@@ -22,4 +23,5 @@
   font-size: 2rem;
   margin-top: 1.5rem;
   overflow-x: scroll;
+  white-space: nowrap;
 }
