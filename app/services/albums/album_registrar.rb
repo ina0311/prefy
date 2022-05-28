@@ -26,7 +26,7 @@ class Albums::AlbumRegistrar < SpotifyService
     offset = 0
     response = []
     while true
-      response.concat(RSpotify::Album.find(ids[offset, 20]))
+      response.concar(conn_request.get("albums?ids=#{ids[offset, 20].join(',')}").body[:albums])
       offset += 20
       break if response.size != offset
     end
