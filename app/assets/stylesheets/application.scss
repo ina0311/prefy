@@ -36,10 +36,12 @@ section {
 }
 
 .flash {
-  position: absolute;
-  top: 0px;
-  left: 210px;
-  width: auto;
+  font-size: 1.6rem;
+  width: 100%;
+}
+
+.js-flash-message {
+  height: 4rem;
 }
 
 ul {
@@ -52,9 +54,9 @@ a {
 }
 
 .page-title {
+  margin-top: 0.5rem;
+  padding-left: 2rem;
   font-size: 3.5rem;
-  margin-top: 2rem;
-  padding: 3.5rem 2rem 1rem 2rem;
 }
 
 .btnx-main-light {

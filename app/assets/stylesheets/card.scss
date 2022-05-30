@@ -7,7 +7,7 @@
   background-color: hsl(0, 0, 15%) !important;
   border-radius: 1rem !important;
 
-  &:hover :not(.card-thumbnail) {
+  &:hover :not(.card-thumbnail, .btn) {
     background-color: hsl(0, 0, 20%) !important;
     border-radius: 1rem !important;
   }
