@@ -13,7 +13,7 @@ ul.nav.nav-tabs role="tablist"
   .tab-pane#result-artist role="tabpanel"aria-labelledby="tab2"
     .artist-group
       .artists.row.row-cols-5
-        = render partial: 'artist', collection: artists
+        = render partial: 'shared/artist', collection: artists, locals: { follow_artist_ids: follow_artist_ids }
   .tab-pane#result-album role="tabpanel"aria-labelledby="tab3"
     .album-group
       .albums.row.row-cols-5

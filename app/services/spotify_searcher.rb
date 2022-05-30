@@ -10,21 +10,19 @@ class SpotifySearcher < SpotifyService
 
   def search
     type = 'artist,album,track'
-
     response = request_search(type)
-    return nil if response.empty?
 
-    artists = convert_artists(response[:artists][:items])
-    albums = convert_albums(response[:albums][:items])
-    tracks = convert_tracks(response[:tracks][:items])
-
-    return {artists: artists, albums: albums, tracks: tracks}
+    artists = response[:artists][:items].present? ? convert_artists(response[:artists][:items]) : nil
+    albums = response[:albums][:items].present? ? convert_albums(response[:albums][:items]) : nil
+    tracks = response[:tracks][:items].present? ? convert_tracks(response[:tracks][:items]) : nil
+    return [artists, albums, tracks].any? ? {artists: artists, albums: albums, tracks: tracks} : nil
   end
 
   def artists
     type = 'artist'
     response = request_search(type)
     artists = convert_artists(response[:artists][:items])
+    return artists.present? ? artists : nil 
   end
 
   private

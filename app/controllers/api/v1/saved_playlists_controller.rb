@@ -1,5 +1,5 @@
 class Api::V1::SavedPlaylistsController < ApplicationController
-  before_action :delete_playlist_id, only: %i[index new]
+  before_action :delete_current_playlist, only: %i[index new]
 
   def index
     if current_user.guest_user?

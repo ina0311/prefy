@@ -1,8 +1,8 @@
 .page-title
   = t(".title")
 section
-  .search-form
-    = form_with url: artists_api_v1_searchs_path, local: false do |f|
-      = f.text_field :search
-      = f.submit t(".submit"), class: 'btn btn-secondary'
-  .search-result.row.row-cols-5
+  = form_with url: api_v1_search_path, local: false, class: 'search' do |f|
+    = f.text_field :search, class: 'search-form'
+    = f.submit t(".submit"), class: 'btn btn-secondary btn-lg'
+  .js-search-flash-message
+  .search-result
