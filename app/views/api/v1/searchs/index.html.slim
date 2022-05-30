@@ -1,15 +1,8 @@
-main.col-md-9.ms-sm-auto.col-lg-10.px-md-4
-  .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.md-3.border-bottom
-    .content
-      .page-title
-        h4
-        = t(".title")
-      .search-form
-        = form_with url: artists_api_v1_searchs_path, local: false do |f|
-          = f.text_field :search
-          = f.submit t(".submit"), class: 'btn btn-secondary'
-      .row
-        .col
-          .search-result
-        .col-2
-          .follow-buttons
+.page-title
+  = t(".title")
+section
+  .search-form
+    = form_with url: artists_api_v1_searchs_path, local: false do |f|
+      = f.text_field :search
+      = f.submit t(".submit"), class: 'btn btn-secondary'
+  .search-result.row.row-cols-5

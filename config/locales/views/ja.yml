@@ -97,10 +97,10 @@ ja:
         index:
           title: 'フォローアーティスト一覧'
         create:
-          success: 'アーティストをフォローしました'
+          success: '%{item}をフォローしました'
         destroy:
-          success: 'アーティストのフォローを外しました'
-      search:
+          success: '%{item}のフォローを外しました'
+      searchs:
         index:
           title: '検索'
           submit: '検索する'

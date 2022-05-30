@@ -4,3 +4,4 @@
       = image_tag artist.decorate.image, class: 'card-thumbnail'
       .card-title
         = artist.name
+      = render partial: 'shared/artist_follow_button', locals: { artist: artist, follow_artist_ids: @follow_artist_ids }

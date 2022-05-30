@@ -23,8 +23,8 @@ class SpotifySearcher < SpotifyService
 
   def artists
     type = 'artist'
-    response = request_search(type).body[:artists][:items]
-    response.map { |res| convert_artists(res) }
+    response = request_search(type)
+    artists = convert_artists(response[:artists][:items])
   end
 
   private
