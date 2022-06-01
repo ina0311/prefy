@@ -14,20 +14,32 @@
       font-size: 7rem;
       overflow-x: scroll;
       white-space: nowrap;
+      margin-bottom: 2.5rem;
     }
 
     .user-age-group {
+      display: flex;
+      align-items: flex-end;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
 
       .age-label {
         font-size: 2rem;
+        margin-right: 2rem;
       }
 
-      .user-age {
-        font-size: 3rem;
+      .age-form {
+        display: inline-block;
+        font-size: 1.5rem;
+        margin-right: 0.5rem;
       }
 
+      .btn {
+        margin: auto 1.5rem;
+      }
+      
       .note {
-        font-size: 2rem;
+        font-size: 0.5rem;
         opacity: 0.8;
       }
     }

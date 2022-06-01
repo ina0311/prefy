@@ -7,19 +7,15 @@ section
     .user-items.col-4
       .user-name
         = @user.name
-      .user-age-group
-        - if @user.age?
-          .age-label
-            = User.human_attribute_name(:age)
-          .user-age
-            = @user.age
-            | 歳
-        - else
-          .note
-            | 年齢を登録すると自分の中学時代、高校時代などの年代にリリースされた曲を指定してプレイリストを作成できるようになります。
-          .age-label
-            = User.human_attribute_name(:age)
-          = render partial: 'age_form', locals: { user: @user }
+      = form_with model: @user, url: age_api_v1_user_path, method: :post, class: 'user-age-group' do |f|
+        = render 'shared/error_messages', object: f.object
+        = f.label :age, class: 'age-label'
+        = f.number_field :age, { in: 1..100, step: 1, include_blank: true, class: 'age-form' }
+        | 歳
+        = f.submit class: 'btn btn-primary'
+      - unless @user.age?
+        .note
+          | *年齢を登録すると自分の中学時代、高校時代などの年代にリリースされた曲を指定してプレイリストを作成できるようになります。
     .user-follow-artist-genre.col-5
       .follow-artist-genre-title
         | フォローアーティストの上位５ジャンル

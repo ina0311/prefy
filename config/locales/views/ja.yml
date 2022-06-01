@@ -62,8 +62,8 @@ ja:
           title: 'プロフィール'
           follow_artists: 'フォローアーティスト一覧'
         age:
-          success: 'ユーザーの年齢を登録しました'
-          fail: 'ユーザーの年齢の登録に失敗しました'
+          success: 'ユーザーの年齢を更新しました'
+          fail: 'ユーザーの年齢の更新に失敗しました'
       sessions:
         create:
           success: 'ログインしました'
