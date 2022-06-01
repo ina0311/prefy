@@ -17,7 +17,6 @@ class User < ApplicationRecord
     validates :country, format: { with: /[A-Z]{2}/ }
   end
 
-
   def self.find_or_create_from_rspotify!(rspotify_user)
     user = User.find_or_initialize_by(spotify_id: rspotify_user.id)
     user.update!(

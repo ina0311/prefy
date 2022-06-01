@@ -57,7 +57,7 @@ class SavedPlaylist < ApplicationRecord
   # ジャンルが指定されていればフォローアーティストを絞り込み検索する
   def get_artist_ids
     if self.genres.present?
-      self.user.follow_artist_lists.includes(:artist_genre_lists).search_genre_names(self.genres.only_names).ids
+      self.user.follow_artist_lists.includes(:genres).search_genre_names(self.genres.only_names).ids
     else
       self.user.follow_artist_lists.ids
     end

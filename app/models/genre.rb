@@ -4,6 +4,8 @@ class Genre < ApplicationRecord
 
   validates :name, uniqueness: true, format: { with: /[\w\-& ]+/ }
 
+  attribute :count, :integer
+
   scope :only_names, -> { pluck(:name).map(&:downcase) }
   scope :search_by_names, ->(hash) { where(name: hash.pluck(:genre_names).flatten.uniq) }
   scope :order_by_ids_search, ->(ids) { where(id: ids).order([Arel.sql('field(id, ?)'), ids]) }
