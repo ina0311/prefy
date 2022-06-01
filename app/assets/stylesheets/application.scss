@@ -8,6 +8,7 @@
 @import 'playlist';
 @import 'search';
 @import 'player';
+@import 'profile';
 
 html, body {
   height: 100%;
@@ -20,7 +21,7 @@ html, body {
 }
 
 main {
-  padding: 3rem !important;
+  padding: 4rem !important;
 }
 
 .hidden {

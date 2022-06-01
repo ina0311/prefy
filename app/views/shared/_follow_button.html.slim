@@ -1,4 +1,4 @@
-= link_to t("default.follow"), api_v1_follow_artists_path(@current_user.spotify_id, artist_id: artist_id),
+= link_to t("default.follow"), api_v1_follow_artists_path(current_user.spotify_id, artist_id: artist_id),
                         method: :post,
                         class: 'btn btn-primary',
                         remote: true
