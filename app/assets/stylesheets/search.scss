@@ -6,10 +6,29 @@
 
 .search {
   display: flex;
+  align-items: center;
   margin-bottom: 1rem;
+
+  .label {
+    font-size: 1.7rem;
+    justify-self: center;
+    margin-right: 1rem;
+    margin-left: 2rem;
+  }
 
   .search-form {
     font-size: 1.7rem;
+
+    &:focus {
+      border-color: $sub-color !important;
+      box-shadow: none !important;
+      outline: none !important;
+    }
+  }
+
+  .search-select {
+    font-size: 1.7rem;
+    height: 3.1rem;
 
     &:focus {
       border-color: $sub-color !important;
@@ -60,6 +79,8 @@
       
       .track-name {
         font-size: 1.8rem;
+        overflow-x: scroll;
+        white-space: nowrap;
       }
 
       .track-album-image {
@@ -70,6 +91,8 @@
       .track-artist-name, .track-album-name {
         overflow: scroll;
         font-size: 1.5rem;
+        overflow-x: scroll;
+        white-space: nowrap;
         opacity: 0.7;
       }
 

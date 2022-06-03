@@ -1,6 +1,8 @@
 class Api::V1::FollowArtistsController < ApplicationController
   def index
-    @follow_artists = current_user.follow_artist_lists.all
+    @q =  Artist.joins(:users).where('users.spotify_id = ?', current_user).ransack(params[:q])
+    @genre = Genre.find(params[:q][:genres_id_eq])
+    @follow_artists = @q.result(distinct: true)
   end
 
   def create

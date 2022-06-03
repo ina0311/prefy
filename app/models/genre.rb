@@ -1,5 +1,6 @@
 class Genre < ApplicationRecord
   has_many :artist_genres, dependent: :destroy
+  has_many :artists, through: :artist_genres, source: :artist
   has_many :saved_playlist_genres, dependent: :destroy
 
   validates :name, uniqueness: true, format: { with: /[\w\-& ]+/ }
@@ -9,6 +10,7 @@ class Genre < ApplicationRecord
   scope :only_names, -> { pluck(:name).map(&:downcase) }
   scope :search_by_names, ->(hash) { where(name: hash.pluck(:genre_names).flatten.uniq) }
   scope :order_by_ids_search, ->(ids) { where(id: ids).order([Arel.sql('field(id, ?)'), ids]) }
+  scope :follow_artist_genres, ->(user) { joins(artists: :users).where('follow_artists.user_id = ?', user).distinct }
   
   def self.all_import!(response)
     Genre.transaction do

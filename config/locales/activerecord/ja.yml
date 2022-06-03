@@ -33,6 +33,8 @@ ja:
         max_total_duration_ms: '最大再生時間'
       playlist_of_track:
         position: '位置'
+      genre: 
+        name: 'ジャンル名'
   attributes:
     spotify_id: 'ID'
     image: '画像'

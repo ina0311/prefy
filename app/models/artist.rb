@@ -6,6 +6,7 @@ class Artist < ApplicationRecord
   has_many :genres, through: :artist_genres, source: :genre
   has_many :saved_playlist_include_artists, dependent: :destroy
   has_many :follow_artists, dependent: :destroy
+  has_many :users, through: :follow_artists, source: :user
 
   validates :image, format: { with: /\Ahttps:\/\/i.scdn.co\/image\/[a-z0-9]+\z/, allow_nil: true }
   validates :name, presence: true
