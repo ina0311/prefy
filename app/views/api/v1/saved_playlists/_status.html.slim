@@ -35,13 +35,13 @@
           = t(".max_total_duration_ms")
         .status-text
           = saved_playlist.decorate.max_total_duration_hour_and_min
-    - if saved_playlist.genres
+    - if saved_playlist.genres.present?
       .status-item
         .status-label 
           = t(".specify_genres")
         .status-text
           = saved_playlist.decorate.genre_names
-    - if saved_playlist.include_artists
+    - if saved_playlist.include_artists.present?
       .status-item
         .status-label
           = t(".specify_artists")

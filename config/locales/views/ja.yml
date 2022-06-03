@@ -25,9 +25,9 @@ ja:
     updated: "%{item}を更新しました"
     not_updated: "%{item}を更新できませんでした"
     deleted: "%{item}を削除しました"
-    delete_confirm: '%{item}を削除しますか？'
-    add_track_to_playlist: 'プレイリストに曲を追加しました'
-    delete_track_from_playlist: 'プレイリストから曲を削除しました'
+    delete_confirm: '%{item}をプレイリストから削除しますか？'
+    add_track_to_playlist: 'プレイリストに「%{item}」を追加しました'
+    delete_track_from_playlist: 'プレイリストから「%{item}」を削除しました'
     not_get: "%{item}を取得できませんでした"
     not_get_track: "%{item}の曲を取得できませんでした"
     few_track_fit_criteria: '条件に合う曲が少数でした'

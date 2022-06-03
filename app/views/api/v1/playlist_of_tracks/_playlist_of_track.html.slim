@@ -3,7 +3,7 @@ div class="playlist-of-track row position-#{playlist_of_track.position}"
     = "#{playlist_of_track.position + 1}"
   .track-item.track-image-outer.col-1
     = image_tag playlist_of_track.track.decorate.image, class: 'track-image'
-  .track-item.track-title.col
+  .track-item.track-title.col-4
     = playlist_of_track.track.name
   .track-item.track-artist-name.col-3
     = playlist_of_track.track.decorate.artists

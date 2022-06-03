@@ -35,6 +35,14 @@ class SavedPlaylistFormDecorator < ApplicationDecorator
     return before_year
   end
 
+  def hour
+    [1, 2, 3, 4, 5, 6, 7]
+  end
+
+  def minute
+    [0, 10, 20, 30, 40, 50]
+  end
+
   def set_duration_hour
     return unless self.max_total_duration_ms
     

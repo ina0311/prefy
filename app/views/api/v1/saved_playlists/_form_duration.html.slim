@@ -7,7 +7,7 @@
     = f.label :max_total_duration_ms, class: 'with-comment'
     .comment
       | (8時間未満 10分毎)
-  = f.number_field :duration_hour, { in: 1..7, step: 1, include_blank: true, class: 'select', value: form.decorate.set_duration_hour }
+  = f.select :duration_hour, form.decorate.hour, { include_blank: true, selected: form.decorate.set_duration_hour }, { class: 'select' }
   | 時間
-  = f.number_field :duration_minute, { in: 0..50, step: 10, include_blank: true, class: 'select', value: form.decorate.set_duration_min }
+  = f.select :duration_minute, form.decorate.minute, { include_blank: true, selected: form.decorate.set_duration_min }, { class: 'select' }
   | 分
