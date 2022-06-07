@@ -1,5 +1,4 @@
 header {
-  // headerを常時上に固定
   position: fixed;
   top: 0;
   left: 0;
@@ -12,6 +11,12 @@ header {
   top: 100px;
   left: 0px;
   width: 100%;
+}
+
+.home-container {
+  height: 100%;
+  width: 100%;
+  background-color: #fff;
 }
 
 .home-section {

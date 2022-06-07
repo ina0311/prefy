@@ -2,8 +2,9 @@
   .sidebar-items
     .mt-5
     ul.nav.nav-pills.flex-column
-      .mt-5
-      li.nav-item.mt-5.align-top
+      li.logo-item
+        = image_svg_tag 'logo-background.svg', class: 'logo'
+      li.nav-item.align-top
         = link_to new_api_v1_saved_playlist_path do
           = image_svg_tag 'plus.svg', class: 'nav-icon'
           .nav-label

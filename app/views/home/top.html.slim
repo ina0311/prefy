@@ -2,8 +2,7 @@ section.home-section.home-full-height
   .row.justify-content-center
     .chatches
       .main-catch
-        h1
-          | Prefy
+        = image_svg_tag 'logo-hz.svg', class: 'logo'
     .link-container
       .top-login
         = link_to t("default.login"), '/auth/spotify', method: :post, class: 'btn btn-primary btn-lg'
