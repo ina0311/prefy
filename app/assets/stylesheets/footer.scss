@@ -1,0 +1,17 @@
+@import 'color';
+
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  background: lighten($sub-color, 5%);
+  padding-top: auto;
+  padding-bottom: auto;
+  padding-left: 5rem;
+
+  .nav-item {
+    margin-bottom: 0;
+    margin-right: 3rem;
+  }
+}

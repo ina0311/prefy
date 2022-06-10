@@ -10,9 +10,11 @@ html
     = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
     = stylesheet_pack_tag 'application', 'data-turbolinks-track': 'reload'
   body
-    .home-container
+    .wrapper
       = render 'shared/header'
       .top-flash
         = render 'shared/flash_message'
 
       = yield
+
+      = render 'shared/footer'

@@ -1,5 +1,6 @@
 ja:
   default:
+    spotify_login: 'Spotifyでログインする'
     login: 'ログイン'
     guest_login: 'ゲストログイン'
     logout: 'ログアウト'
