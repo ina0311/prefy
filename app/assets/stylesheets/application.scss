@@ -14,9 +14,12 @@ html, body {
   height: 100%;
   overflow-x: hidden;
   margin: 0;
-  background-color: $main-color !important;
-  color: #fff !important;
   font-size: 62.5% !important;
+}
+
+.wrapper {
+  background-color: $main-color;
+  color: #fff;
 }
 
 main {
