@@ -1,11 +1,135 @@
-.no-active {
-  display: none !important;
+@import 'color';
+.form {
+  font-size: 1.8rem;
+  height: 60rem;
+  background: hsl(0, 0, 15%) !important;
+  padding: 4rem 5rem;
+
+  *:focus {
+    border-color: $sub-color !important;
+    box-shadow: none !important;
+    outline: none !important;
+  }
+}
+
+.form-container {
+  height: 85%;
+  margin-bottom: 3rem;
+}
+
+.nav-tabs {
+  border-color: $sub-color !important;
+
+  .nav-link:hover {
+    border-color: $sub-color !important;
+  }
+
+  .nav-item .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+    background-color: $sub-color !important;
+    border-color: $sub-color;
+    transition: 0.3s
+  }
+}
+
+.tab-content {
+  padding: 3rem 1rem;
+}
+
+.form-section {
+  margin-bottom: 3rem;
+  padding-bottom: 1.7rem;
+
+  .title {
+    display: inline-block;
+    font-size: 3rem;
+    margin-bottom: 3rem;
+    border-bottom: inset thick $accent-color;
+  }
+
+  .headline-content {
+    margin-bottom: 1.3rem;
+
+    .text {
+      padding-top: 1rem;
+      display: inline-block;
+      font-size: 2.3rem;
+      border-bottom: dashed thin $accent-color;
+    }
+
+    .btn {
+      margin-left: 3rem;
+    }
+  }
+}
+
+.form-group {
+  margin-bottom: 1.3rem;
+}
+
+.form-control {
+  width: 50% !important;
+  height: 3.5rem;
+  font-size: 1.8rem !important;
 }
 
 .form-label {
   display: block;
 }
 
+.with-comment {
+  display: inline-block !important;
+}
+
+.comment {
+  margin-left: 1.5rem;
+  font-size: 1.5rem;
+  opacity: 0.8;
+  display: inline;
+}
+
+#js-max-number, #js-max-duration-ms {
+  margin-top: 2.3rem;
+}
+
 .select {
   display: inline;
+  font-size: 2rem;
+  height: 3.5rem;
+  margin-right: 1.5rem;
+  width: 8rem;
+}
+
+.form-switch {
+  height: 3.5rem;
+  margin-bottom: 1rem;
+
+  .form-check-input {
+    margin-top: 0;
+    width: 6rem !important;
+    height: 3rem !important;
+  }
+}
+
+.form-check-input:checked {
+  background-color: $sub-color !important;
+  border-color: $sub-color !important;
+}
+
+#js-artists {
+  z-index: 10;
+}
+
+.select2-selection__rendered, .select2-results__options {
+  color: $main-color;
+}
+
+.select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
+  background-color: $accent-color !important;
+  color: black !important;
+}
+
+.annotation {
+  margin-top: 0.5rem;
+  font-size: 1.2rem ;
+  opacity: 0.8;
 }

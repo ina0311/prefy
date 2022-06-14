@@ -1,11 +1,14 @@
-d.modal-header#js-edit-track.active
-  .modal-title
-    h5
+.modal-content#js-edit-track.show
+  .modal-header
+    .modal-title
       = t("modal.edit.title")
 
-    = button_tag t("modal.add_track.title"), class: 'btn btn-info', id: 'js-switch-button'
-    = button_tag t("modal.close"), class: 'btn btn-secondary', id: 'js-modal-close'
+    .button-aria
+      = button_tag t("modal.add_track.title"), class: 'btn btn-secondary btnx-sub btn-lg', id: 'js-switch-button'
+      = button_tag t("modal.close"), class: 'btn btn-secondary btn-lg', id: 'js-modal-close'
   .modal-body
     .js-flash-message
-    #js-edit-body
-      = render partial: 'api/v1/playlists/playlist_of_track', collection: playlist_of_tracks
+    .track-list-body#js-edit-body
+      = render partial: 'api/v1/playlist_of_tracks/playlist_of_track', collection: playlist_of_tracks
+  .modal-footer
+    = button_tag t("modal.close"), class: 'btn btn-secondary btn-lg', id: 'js-modal-close', "aria-hidden": true

@@ -1,7 +1,8 @@
-div class="album d-flex" id="js-album-#{album.id}"
-  .col
-    = image_tag album.decorate.image, class: 'album-image', size: '30x30'
-  .col
-    = album.name
-  .col
-    = album.artist_names.join(',')
+.col
+  div class="album card" id="js-album-#{album.id}"
+    .card-body
+      = image_tag album.decorate.image, class: 'card-thumbnail'
+      .card-title
+        = album.name
+      .card-text
+        = album.artist_names.join(',')

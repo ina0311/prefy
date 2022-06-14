@@ -1,0 +1,91 @@
+@import 'color';
+
+.profile-wrap {
+  margin-bottom: 4rem;
+
+  .user-thumbnail {
+    width: 20rem;
+    height: 20rem;
+  }
+
+  .user-items {
+
+    .user-name {
+      font-size: 7rem;
+      overflow-x: scroll;
+      white-space: nowrap;
+      margin-bottom: 2.5rem;
+    }
+
+    .user-age-group {
+      display: flex;
+      align-items: flex-end;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+
+      .age-label {
+        font-size: 2rem;
+        margin-right: 2rem;
+      }
+
+      .age-form {
+        display: inline-block;
+        font-size: 1.5rem;
+        margin-right: 0.5rem;
+      }
+
+      .btn {
+        margin: auto 1.5rem;
+      }
+      
+      .note {
+        font-size: 0.5rem;
+        opacity: 0.8;
+      }
+    }
+  }
+
+  .user-follow-artist-genre {
+    padding: 0 3rem;
+    .follow-artist-genre-title {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .genre-table-headline {
+      font-size: 1.3rem;
+    }
+
+    .genre-table-body {
+      .genre {
+        font-size: 1.5rem;
+        overflow-x: scroll;
+        white-space: nowrap;
+        margin-bottom: 0.5rem;
+        border-bottom: inset thin $accent-color;
+      }
+    }
+  }
+}
+
+.user-follow-artist-group {
+  
+  .follow-artists-headline {
+    margin-bottom: 2rem;
+    padding-right: 2rem;
+
+    .follow-artists-title {
+      display: inline-block;
+      font-size: 2.5rem;
+      margin-right: 5rem;
+    }
+
+    .follow-artist-index-link {
+      opacity: 0.8;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+}

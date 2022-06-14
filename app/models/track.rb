@@ -11,6 +11,8 @@ class Track < ApplicationRecord
     validates :duration_ms, numericality: { only_integer: true }
   end
 
+  attribute :album_name, :string
+  attribute :artist_ids
   attribute :artist_names
   attribute :image, :string
 
@@ -18,26 +20,17 @@ class Track < ApplicationRecord
     
     def all_import!(response)
       Track.transaction do
-        tracks = response.map do |res|
-          Track.new(
-            spotify_id: res[:id],
-            name: res[:name],
-            duration_ms: res[:duration_ms],
-            album_id: res[:album][:id]
-          )
-        end
-  
+        tracks = response.map { |res| Track.find_or_create_by_response!(res) }
         Track.import!(tracks, ignore: true)
       end
     end
 
     def find_or_create_by_response!(response)
-      Track.find_or_create_by!(
-        spotify_id: response.id,
-        name: response.name,
-        duration_ms: response.duration_ms,
-        album_id: response.album.id
-      )
+      Track.find_or_create_by!(spotify_id: response[:id]) do |track|
+        track.name = response[:name]
+        track.duration_ms = response[:duration_ms]
+        track.album_id = response[:album][:id]
+      end
     end
   end
 end

@@ -28,17 +28,17 @@ $(document).on("turbolinks:load", function() {
   });
 
   $('#js-switch-generation, #js-switch-period').on("click", function() {
-    $("#js-generation").toggleClass("no-active");
-    $("#js-ad").toggleClass("no-active");
+    $("#js-generation").toggleClass("hidden");
+    $("#js-ad").toggleClass("hidden");
   });
 
   $('#js-switch-number, #js-switch-duration-ms').on("click", function() {
-    $("#js-max-number").toggleClass("no-active");
-    $("#js-max-duration-ms").toggleClass("no-active");
+    $("#js-max-number").toggleClass("hidden");
+    $("#js-max-duration-ms").toggleClass("hidden");
   });
 
   $('#js-form-button').on("click", function(){
-    $('.no-active').find('option').prop('selected', false);
-    $('.no-active').find('input').val(null);
+    $('.hidden').find('option').prop('selected', false);
+    $('.hidden').find('input').val(null);
   });
 });

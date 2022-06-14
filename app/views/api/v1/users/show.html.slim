@@ -1,20 +1,31 @@
-main.col-md-9.ms-sm-auto.col-lg-10.px-md-4
-  .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.md-3.border-bottom
-    .user-profile.row
-      .title.col
-        h3
-          = t(".title")
-      .container.row
-        .user-image.col
-          = image_tag @user.decorate.image, size: '100x100'
-        .user-name.col 
-          = @user.name
-        .user-age.col
-          - if @user.age?
-            = @user.age
-          - else
-            = render partial: 'age_form', locals: { user: @user }
+.page-title
+  = t(".title")
+section
+  .profile-wrap.row
+    .user-image-content.col-3
+      = image_tag @user.decorate.image, class: 'user-thumbnail'
+    .user-items.col-4
+      .user-name
+        = @user.name
+      = form_with model: @user, url: age_api_v1_user_path, method: :post, class: 'user-age-group' do |f|
+        = render 'shared/error_messages', object: f.object
+        = f.label :age, class: 'age-label'
+        = f.number_field :age, { in: 1..100, step: 1, include_blank: true, class: 'age-form' }
+        | 歳
+        = f.submit class: 'btn btn-primary'
+      - unless @user.age?
+        .note
+          | *年齢を登録すると自分の中学時代、高校時代などの年代にリリースされた曲を指定してプレイリストを作成できるようになります。
+    .user-follow-artist-genre.col-5
+      .follow-artist-genre-title
+        | フォローアーティストの上位５ジャンル
+      = render 'genre_table', genres: @genres
 
-        .user-follow-artist
-          = link_to t(".follow_artists"), api_v1_follow_artists_path(@user), class: 'btn btn-primary'
- 
+  .user-follow-artist-group
+    .follow-artists-headline
+      .follow-artists-title
+        = FollowArtist.model_name.human
+      = link_to 'すべてを表示する', api_v1_follow_artists_path(@user), class: 'follow-artist-index-link'
+    .five-follow-artists.row.row-cols-5d
+      = render partial: 'shared/artist', collection: @follow_artists, as: :artist
+    

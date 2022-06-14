@@ -35,6 +35,14 @@ class SavedPlaylistFormDecorator < ApplicationDecorator
     return before_year
   end
 
+  def hour
+    [1, 2, 3, 4, 5, 6, 7]
+  end
+
+  def minute
+    [0, 10, 20, 30, 40, 50]
+  end
+
   def set_duration_hour
     return unless self.max_total_duration_ms
     
@@ -53,5 +61,13 @@ class SavedPlaylistFormDecorator < ApplicationDecorator
     return nil unless self.that_generation_preference
     
     return SavedPlaylist.that_generation_preferences.keys[self.that_generation_preference]
+  end
+
+  def btn_text(action)
+    if action == 'new'
+      return I18n.t("helpers.submit.create_item", item: I18n.t("default.playlist"))
+    else
+      return I18n.t("helpers.submit.update_item", item: I18n.t("default.playlist"))
+    end
   end
 end

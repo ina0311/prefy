@@ -5,6 +5,7 @@ class FollowArtist < ApplicationRecord
   validates :user_id, uniqueness: { scope: :artist_id }
 
   scope :genres_id_order_desc, -> { joins(artist: [artist_genres: :genre]).group("genres.id").having('count(*) >= ?', 3).order("count_all DESC").count }
+  scope :genres_name_order_desc_take_five, -> { joins(artist: :genres).group("genres.name").order("count_all DESC").count.take(5) }
 
   def self.unfollow_all(unfollow_artists, user)
     FollowArtist.transaction do
