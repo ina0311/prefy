@@ -13,11 +13,13 @@
 html, body {
   height: 100%;
   overflow-x: hidden;
-  padding: 0%;
-  margin: 0%;
-  background-color: $main-color !important;
-  color: #fff !important;
+  margin: 0;
   font-size: 62.5% !important;
+}
+
+.wrapper {
+  background-color: $main-color;
+  color: #fff;
 }
 
 main {

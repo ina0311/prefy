@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   root 'home#top'
+  get '/privacy', to: 'home#privacy'
+  get '/terms', to: 'home#terms'
   get '/auth/:provider/callback', to: 'api/v1/sessions#create'
   get '/auth/failure', to: 'api/v1/sessions#failure'
   post '/guest_login', to: 'api/v1/sessions#guest_login'
