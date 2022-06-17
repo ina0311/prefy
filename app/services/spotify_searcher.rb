@@ -59,6 +59,7 @@ class SpotifySearcher < SpotifyService
                  spotify_id: item[:id],
                  name: item[:name],
                  duration_ms: item[:duration_ms],
+                 position: item[:track_number],
                  album_id: item[:album][:id],
                  album_name: item[:album][:name],
                  image: item[:album][:images].dig(0, :url),

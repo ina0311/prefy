@@ -1,1 +1,5 @@
-| window.open("https://open.spotify.com/#{@type}/#{@id}//", "_blank", "noreferrer");
+- if @type == 'playlist'
+  | window.open("https://open.spotify.com/#{@type}/#{@object.playlist_id}//", "_blank", "noreferrer");
+- elsif @type == 'album'
+  | window.open("https://open.spotify.com/#{@type}/#{@object.album_id}//", "_blank", "noreferrer");
+

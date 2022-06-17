@@ -10,6 +10,7 @@ class PlaylistOfTrack < ApplicationRecord
   scope :greater_than_position, ->(playlist_of_track) { where(playlist_id: playlist_of_track.playlist_id).where("position > ?", playlist_of_track.position) }
   scope :all_position_decrement, -> { update_all("position = position - 1")}
   scope :position_asc, -> { order(position: :asc) }
+  scope :position_first, -> { find_by(position: 0) }
 
   def self.all_update(playlist, track_ids)
     PlaylistOfTrack.transaction do

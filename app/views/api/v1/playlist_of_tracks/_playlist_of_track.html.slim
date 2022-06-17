@@ -1,4 +1,4 @@
-div class="playlist-of-track row position-#{playlist_of_track.position}"
+= link_to api_v1_play_path(id: playlist_of_track.id, type: 'playlist'), remote: true, class: "playlist-of-track row position-#{playlist_of_track.position}"
   .track-item.number.col-1
     = "#{playlist_of_track.position + 1}"
   .track-item.track-image-outer.col-1

@@ -1,4 +1,4 @@
-div class="track row"
+= link_to api_v1_play_path(id: track.album_id, type: 'album', position: track.position), remote: true, class: 'track row'
   .col-1
     = image_tag track.decorate.image, class: 'track-album-image'
   .col-3.track-name

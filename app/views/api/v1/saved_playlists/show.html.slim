@@ -8,12 +8,12 @@
           | #{@saved_playlist.playlist.name}
         .button-aria
           = link_to t("default.edit"), edit_api_v1_playlist_path(@saved_playlist.playlist_id), data: { toggle: "modal", target: "#modal-container"}, remote: true, id: 'js-edit-playlist', class: 'btn btnx-sub btn-lg' if current_user.own?(@saved_playlist.playlist)
-          = link_to t("default.play"), api_v1_play_path(id: @saved_playlist.playlist_id, type: 'playlist'), remote: true, class: 'btn btnx-sub btn-lg ms-3', id: 'js-player-open' unless current_user.guest_user?
+          = link_to t("default.play"), api_v1_play_path(id: @saved_playlist.playlist.playlist_of_tracks.position_first, type: 'playlist'), remote: true, class: 'btn btnx-sub btn-lg ms-3', id: 'js-player-open' unless current_user.guest_user?
           = render 'shared/modal'
       - if current_user.own?(@saved_playlist.playlist)
           = render 'status', saved_playlist: @saved_playlist, form: @form
   .track-list
-    .track-headline-outer  
+    .track-headline-outer   
       .track-headline.row
         .col-1.headline-item.number
           | #
