@@ -3,7 +3,7 @@ class Api::V1::SavedPlaylistsController < ApplicationController
 
   def index
     if current_user.guest_user?
-      @saved_playlists = current_user.saved_playlists.includes(:playlists)
+      @saved_playlists = current_user.saved_playlists.includes(:playlist)
     else
       response = Users::UserPlaylistsGetter.call(current_user)
       add_playlists, delete_playlists = response
@@ -25,10 +25,9 @@ class Api::V1::SavedPlaylistsController < ApplicationController
     if @form.save(@form.artist_ids, @form.genre_ids)
       @saved_playlist = SavedPlaylist.find_by(playlist_id: @form.playlist_id)
       refined_tracks_response = SavedPlaylists::BasedOnSavedPlaylistTracksGetter.call(@saved_playlist, current_user)
-
-      raise ErrorsHandler::UnableToGetPlaylistOfTracksError unless refined_tracks_response[:ramdom_tracks] && refined_tracks_response[:target_tracks]
+      raise ErrorsHandler::UnableToGetPlaylistOfTracksError unless refined_tracks_response
   
-      if @saved_playlist.include_artists
+      if @saved_playlist.include_artists.present?
         not_get_artists = @saved_playlist.not_has_track_by_require_artists(refined_tracks_response[:target_tracks])
         flash[:danger] = t("message.not_get_track", item: not_get_artists.join('と')) if not_get_artists.present?
       end
@@ -50,7 +49,7 @@ class Api::V1::SavedPlaylistsController < ApplicationController
       Playlists::PlaylistTracksAllRemover.call(current_user, @saved_playlist.playlist)
       refined_tracks_response = SavedPlaylists::BasedOnSavedPlaylistTracksGetter.call(@saved_playlist, current_user)
 
-      raise ErrorsHandler::UnableToGetPlaylistOfTracksError if refined_tracks_response[:ramdom_tracks].nil? && refined_tracks_response[:target_tracks].nil?
+      raise ErrorsHandler::UnableToGetPlaylistOfTracksError unless refined_tracks_response
       
       if @saved_playlist.include_artists
         not_get_artists = refined_tracks_response[:target_tracks].nil? ? @saved_playlist.include_artists.map(&:name) : @saved_playlist.not_has_track_by_require_artists(refined_tracks_response[:target_tracks])

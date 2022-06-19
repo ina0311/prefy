@@ -30,13 +30,17 @@
     height: 83%;
     overflow: scroll;
 
+    .track-list-wrap {
+      padding: 0 3rem;
+    }
+
     .js-flash-message {
       height: 5.5rem;
       margin-bottom: 0.5rem;
     }
 
     .form {
-      padding: 2rem 3rem;
+      padding: 0 3rem;
     }
   }
 }

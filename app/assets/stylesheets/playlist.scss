@@ -1,7 +1,7 @@
 @import 'color';
 
 .playlist-wrapper {
-  padding: 3rem;
+  padding: 2rem;
 }
 
 .playlist-head {
@@ -91,23 +91,26 @@
       opacity: 0.5;
       font-size: 1.3rem;
       justify-content: flex-start;
-      padding: 0 1.5rem;
-     
-      .headline-item {
-        padding: 0.5rem;
-      }
       
       .number {
         text-align: center;
         width: 4rem;
+        padding-left: 2rem;
+      }
+
+      .track-img{
+        width: 7rem;
+      }
+
+      .playback-time {
+        width: 7rem;
       }
     }
   }
 }
 
 .track-list-body{
-  padding: 0 1.5rem;
-  
+
   .playlist-of-track {
     height: 6rem;
     margin-bottom: 0.5rem;
@@ -126,11 +129,16 @@
       justify-content: flex-start;
       overflow-x: scroll;
       white-space: nowrap;
+
+      &:not(.track-image-outer, .delete-buttom) {
+        font-size: 1.4rem;
+        opacity: 0.7;
+      }
     }
 
     .number {
       justify-content: right;
-      padding-right: 1.5rem;
+      padding-right: 1rem;
       width: 4rem;
     }
 
@@ -138,6 +146,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      width: 7rem;
 
       .track-image {
         opacity: 1;
@@ -146,9 +155,11 @@
       }
     }
 
-    .number, .track-artist-name, .track-album-title, .playback-time {
-      font-size: 1.4rem;
-      opacity: 0.7;
+    .playback-time {
+      width: 7rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
   }
 }

@@ -4,7 +4,7 @@ section
   .d-flex.flex-row-reverse.pe-3
     = search_form_for @q, url: api_v1_follow_artists_path, class: 'search' do |f|
       = f.label :name_cont, Genre.human_attribute_name(:name), class: 'label'
-      = f.select :genres_id_eq, options_from_collection_for_select(Genre.follow_artist_genres(current_user), :id, :name, selected: @genre.id), { include_blank: true }, class: 'search-select'
+      = f.select :genres_id_eq, options_from_collection_for_select(Genre.follow_artist_genres(current_user), :id, :name, selected: @genre&.id), { include_blank: true }, class: 'search-select'
       = f.submit class: 'btn btn-secondary btn-lg'
   .row.row-cols-5
     = render partial: 'shared/artist', collection: @follow_artists, as: :artist

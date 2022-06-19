@@ -17,8 +17,7 @@ class PlaylistOfTrack < ApplicationRecord
       playlist_of_tracks = track_ids.map.with_index do |id, index|
                             playlist.playlist_of_tracks.new(track_id: id, position: index)
                           end
-
-      PlaylistOfTrack.import!(playlist_of_tracks, validate_uniqueness: true)
+      PlaylistOfTrack.import!(playlist_of_tracks)
     end
   end
 
