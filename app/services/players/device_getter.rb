@@ -11,8 +11,10 @@ class Players::DeviceGetter < SpotifyService
     response = request_device
     if response.status == 200
       devices = response.body[:devices]
-      device = devices.find { |d| d[:is_active] == true || d[:is_restricted] == false }
+      device = devices.find { |d| d[:is_active] || !d[:is_restricted] }[:id]
       return device
+    else
+      return nil
     end
   end
 

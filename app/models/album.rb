@@ -13,7 +13,14 @@ class Album < ApplicationRecord
 
   def self.all_import!(response)
     Album.transaction do
-      albums = response.map { |res| Album.find_or_create_by_response!(res) }
+      albums = response.map do |res| 
+        Album.new(
+          spotify_id: res[:id],
+          name: res[:name],
+          image: res.dig(:images, 0, :url),
+          release_date: res[:release_date]
+        )
+      end
       Album.import!(albums, ignore: true)
     end
   end

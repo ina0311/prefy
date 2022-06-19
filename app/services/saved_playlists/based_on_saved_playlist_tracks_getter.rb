@@ -16,7 +16,7 @@ class SavedPlaylists::BasedOnSavedPlaylistTracksGetter < SpotifyService
       ramdom_tracks = search_tracks(artist_ids, year).flatten
     end
 
-    if saved_playlist.include_artists
+    if saved_playlist.include_artists.present?
       target_ids = saved_playlist.include_artists.ids 
       target_tracks = search_tracks(target_ids, year)
     end
