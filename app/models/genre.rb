@@ -11,7 +11,7 @@ class Genre < ApplicationRecord
   scope :search_by_names, ->(hash) { where(name: hash.pluck(:genre_names).flatten.uniq) }
   scope :order_by_ids_search, ->(ids) { where(id: ids).order([Arel.sql('field(id, ?)'), ids]) }
   scope :follow_artist_genres, ->(user) { joins(artists: :users).where('follow_artists.user_id = ?', user).distinct }
-  
+
   def self.all_import!(response)
     Genre.transaction do
       genres_names = response.map { |res| res[:genres] }.flatten.uniq

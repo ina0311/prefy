@@ -5,7 +5,7 @@ class Album < ApplicationRecord
 
   with_options presence: true do
     validates :name
-    validates :image, format: { with: /\Ahttps:\/\/i.scdn.co\/image\/[a-z0-9]+\z/ }
+    validates :image, format: { with: %r(\Ahttps://i.scdn.co/image/[a-z0-9]+\z) }
     validates :release_date, format: { with: /\A\d{4}[-\d{2}]*[-\d{2}]*\z/ }
   end
 
@@ -13,7 +13,7 @@ class Album < ApplicationRecord
 
   def self.all_import!(response)
     Album.transaction do
-      albums = response.map do |res| 
+      albums = response.map do |res|
         Album.new(
           spotify_id: res[:id],
           name: res[:name],

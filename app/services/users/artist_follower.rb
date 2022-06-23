@@ -1,11 +1,6 @@
 class Users::ArtistFollower < SpotifyService
   def self.call(user, artist_id)
-    new(user, artist_id).follow
-  end
-  
-  def initialize(user, artist_id)
-    @user = user
-    @artist_id = artist_id
+    new(user: user, artist_id: artist_id).follow
   end
 
   def follow

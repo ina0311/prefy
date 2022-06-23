@@ -6,7 +6,7 @@ class CreateSavedPlaylistIncludeArtists < ActiveRecord::Migration[6.1]
 
       t.timestamps
     end
-    add_foreign_key :saved_playlist_include_artists, :artists, column: :artist_id , primary_key: :spotify_id
+    add_foreign_key :saved_playlist_include_artists, :artists, column: :artist_id, primary_key: :spotify_id
     add_index :saved_playlist_include_artists, [:saved_playlist_id, :artist_id], unique: true, name: 'saved_playlist_and_artist_index'
   end
 end

@@ -1,11 +1,6 @@
 class Playlists::PlaylistTrackRemover < SpotifyService
   def self.call(user, playlist_of_track)
-    new(user, playlist_of_track).remove
-  end
-
-  def initialize(user, playlist_of_track)
-    @user = user
-    @playlist_of_track = playlist_of_track
+    new(user: user, playlist_of_track: playlist_of_track).remove
   end
 
   def remove
@@ -20,7 +15,7 @@ class Playlists::PlaylistTrackRemover < SpotifyService
 
   def request_remove_playlist_of_track
     conn_request.delete("playlists/#{playlist_of_track.playlist_id}/tracks") do |req|
-      req.body = {tracks: [{uri: "spotify:track:#{playlist_of_track.track_id}"}]}.to_json
+      req.body = { tracks: [{ uri: "spotify:track:#{playlist_of_track.track_id}" }] }.to_json
     end
   end
 end

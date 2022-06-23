@@ -8,6 +8,6 @@ class CreateTracks < ActiveRecord::Migration[6.1]
 
       t.timestamps
     end
-    add_foreign_key :tracks, :albums, column: :album_id , primary_key: :spotify_id
+    add_foreign_key :tracks, :albums, column: :album_id, primary_key: :spotify_id
   end
 end

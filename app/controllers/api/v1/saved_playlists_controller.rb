@@ -2,15 +2,13 @@ class Api::V1::SavedPlaylistsController < ApplicationController
   before_action :delete_current_playlist, only: %i[index new]
 
   def index
-    if current_user.guest_user?
-      @saved_playlists = current_user.saved_playlists.includes(:playlist)
-    else
+    unless current_user.guest_user?
       response = Users::UserPlaylistsGetter.call(current_user)
       add_playlists, delete_playlists = response
       SavedPlaylist.add_my_playlists(current_user, add_playlists) if add_playlists.present?
       SavedPlaylist.delete_from_my_playlists(current_user, delete_playlists) if delete_playlists.present?
-      @saved_playlists = current_user.saved_playlists.includes(:playlist)
     end
+    @saved_playlists = current_user.saved_playlists.includes(:playlist)
   end
 
   def new
@@ -19,14 +17,13 @@ class Api::V1::SavedPlaylistsController < ApplicationController
 
   def create
     @form = SavedPlaylistForm.new(saved_playlist_params)
-    @playlist = Playlists::PlaylistCreater.call(current_user, playlist_name_params) if @form.is_only_error_to_playlist_id?
+    @playlist = Playlists::PlaylistCreater.call(current_user, playlist_name_params) if @form.only_error_to_playlist_id?
     @form.playlist_id = @playlist.spotify_id
-
     if @form.save(@form.artist_ids, @form.genre_ids)
       @saved_playlist = SavedPlaylist.find_by(playlist_id: @form.playlist_id)
       refined_tracks_response = SavedPlaylists::BasedOnSavedPlaylistTracksGetter.call(@saved_playlist, current_user)
       raise ErrorsHandler::UnableToGetPlaylistOfTracksError unless refined_tracks_response
-  
+
       if @saved_playlist.include_artists.present?
         not_get_artists = @saved_playlist.not_has_track_by_require_artists(refined_tracks_response[:target_tracks])
         flash[:danger] = t("message.not_get_track", item: not_get_artists.join('と')) if not_get_artists.present?
@@ -42,15 +39,15 @@ class Api::V1::SavedPlaylistsController < ApplicationController
   end
 
   def update
-    @saved_playlist = SavedPlaylist.includes(:playlist).find(params[:id])
     @form = SavedPlaylistForm.new(saved_playlist_params)
-
+    @form.playlist_id = SavedPlaylist.find(params[:id]).playlist_id if @form.only_error_to_playlist_id?
     if @form.save(@form.artist_ids, @form.genre_ids)
-      Playlists::PlaylistTracksAllRemover.call(current_user, @saved_playlist.playlist)
+      @saved_playlist = SavedPlaylist.includes(:playlist).find(params[:id])
+      Playlists::PlaylistTracksAllRemover.call(current_user, @saved_playlist.playlist) if @saved_playlist.playlist.playlist_of_tracks.present?
       refined_tracks_response = SavedPlaylists::BasedOnSavedPlaylistTracksGetter.call(@saved_playlist, current_user)
 
       raise ErrorsHandler::UnableToGetPlaylistOfTracksError unless refined_tracks_response
-      
+
       if @saved_playlist.include_artists
         not_get_artists = refined_tracks_response[:target_tracks].nil? ? @saved_playlist.include_artists.map(&:name) : @saved_playlist.not_has_track_by_require_artists(refined_tracks_response[:target_tracks])
         flash[:danger] = t("message.not_get_track", item: not_get_artists.join('と')) if not_get_artists.present?

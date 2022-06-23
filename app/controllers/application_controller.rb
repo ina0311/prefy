@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   include SessionsHelper
   include ErrorsHandler
-  
+
   before_action :require_login
 
   add_flash_types :success, :secondary, :info, :warning, :danger

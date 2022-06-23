@@ -6,16 +6,16 @@ class TrackDecorator < ApplicationDecorator
     convert_min_and_sec = convert_ms_to_sec.divmod(60)
     min = convert_min_and_sec[0]
     sec = format_two_digits(convert_min_and_sec[1])
-    return "#{min} :  #{sec}"
+    "#{min} :  #{sec}"
   end
 
   def artists
-    self.artist_names.present? ? self.artist_names.join(',') : self.album.artists.map(&:name).join(',')
+    artist_names.present? ? artist_names.join(',') : album.artists.map(&:name).join(',')
   end
 
   private
-  
+
   def format_two_digits(number)
-    return format("%02<number>d", number: number)
+    format("%02<number>d", number: number)
   end
 end

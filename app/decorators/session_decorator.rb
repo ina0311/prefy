@@ -1,3 +1,3 @@
- class SessionDecorator < ApplicationDecorator
+class SessionDecorator < ApplicationDecorator
   delegate_all
 end

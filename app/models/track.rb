@@ -6,9 +6,10 @@ class Track < ApplicationRecord
   has_many :saved_playlist_include_tracks, dependent: :destroy
   has_many :saved_playlists, through: :saved_playlist_include_tracks
 
-  with_options presence: true do 
+  with_options presence: true do
     validates :name
     validates :duration_ms, numericality: { only_integer: true }
+    validates :position, presence: true, numericality: { greater_than_or_equal_to: 0 }, uniqueness: { scope: :album_id }
   end
 
   attribute :album_name, :string
@@ -17,10 +18,9 @@ class Track < ApplicationRecord
   attribute :image, :string
 
   class << self
-    
     def all_import!(response)
       Track.transaction do
-        tracks = response.map do |res| 
+        tracks = response.map do |res|
           Track.new(
             spotify_id: res[:id],
             name: res[:name],

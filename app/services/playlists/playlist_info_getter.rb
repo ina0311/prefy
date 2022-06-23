@@ -1,12 +1,7 @@
 class Playlists::PlaylistInfoGetter < SpotifyService
   # プレイリストのトラック、名前、画像の取得、保存、更新
   def self.call(user, playlist)
-    new(user,playlist).get
-  end
-
-  def initialize(user, playlist)
-    @user = user
-    @playlist = playlist
+    new(user: user, playlist: playlist).get
   end
 
   def get
@@ -24,10 +19,10 @@ class Playlists::PlaylistInfoGetter < SpotifyService
       delete_playlist_of_tracks.delete_all
     end
 
-    if new_track_id_and_positions.present?
-      Tracks::TrackInfoGetter.call(user, new_track_id_and_positions.map(&:first))
-      PlaylistOfTrack.insert_with_position(playlist, new_track_id_and_positions)
-    end
+    return if new_track_id_and_positions.blank?
+
+    Tracks::TrackInfoGetter.call(user, new_track_id_and_positions.map(&:first))
+    PlaylistOfTrack.insert_with_position(playlist, new_track_id_and_positions)
   end
 
   private
