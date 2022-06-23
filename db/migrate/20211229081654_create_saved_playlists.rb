@@ -11,8 +11,8 @@ class CreateSavedPlaylists < ActiveRecord::Migration[6.1]
 
       t.timestamps
     end
-    add_foreign_key :saved_playlists, :users, column: :user_id , primary_key: :spotify_id
-    add_foreign_key :saved_playlists, :playlists, column: :playlist_id , primary_key: :spotify_id
+    add_foreign_key :saved_playlists, :users, column: :user_id, primary_key: :spotify_id
+    add_foreign_key :saved_playlists, :playlists, column: :playlist_id, primary_key: :spotify_id
     add_index :saved_playlists, [:user_id, :playlist_id], unique: true
   end
 end

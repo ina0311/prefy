@@ -4,9 +4,9 @@ class Api::V1::SearchsController < ApplicationController
   def index; end
 
   def search
-    response = SpotifySearcher.call(search_params, current_user).search
+    response = SpotifySearcher.call(URI.encode_www_form_component(search_params), current_user).search
     return js_format_flash_message(:danger, t("message.not_get_for_search_word")) if response.nil?
-  
+
     @artists = response[:artists]
     @albums = response[:albums]
     @tracks = response[:tracks]
@@ -14,8 +14,9 @@ class Api::V1::SearchsController < ApplicationController
   end
 
   def artists
-    @artists = SpotifySearcher.call(search_params, current_user).artists
+    @artists = SpotifySearcher.call(URI.encode_www_form_component(search_params), current_user).artists
     return js_format_flash_message(:danger, t("message.not_get_for_search_word")) if @artists.nil?
+
     @follow_artist_ids = current_user.follow_artists.pluck(:artist_id)
   end
 

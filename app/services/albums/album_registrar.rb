@@ -1,10 +1,6 @@
 class Albums::AlbumRegistrar < SpotifyService
   def self.call(tracks)
-    new(tracks).register
-  end
-
-  def initialize(tracks)
-    @tracks = tracks
+    new(tracks: tracks).register
   end
 
   def register
@@ -25,7 +21,7 @@ class Albums::AlbumRegistrar < SpotifyService
   def request_album_info(ids)
     offset = 0
     response = []
-    while true
+    loop do
       response.concar(conn_request.get("albums?ids=#{ids[offset, 20].join(',')}").body[:albums])
       offset += 20
       break if response.size != offset

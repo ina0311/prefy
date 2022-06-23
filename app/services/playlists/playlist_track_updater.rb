@@ -4,23 +4,18 @@ class Playlists::PlaylistTrackUpdater < SpotifyService
   end
 
   def initialize(user, playlist, track_response)
-    @user = user
-    @playlist = playlist
     ramdom_track_ids = track_response[:ramdom_tracks].map { |h| h[:spotify_id] }
     target_track_ids = track_response[:target_tracks].flatten.map { |h| h[:spotify_id] } if track_response[:target_tracks]
-    @track_ids = target_track_ids ? ramdom_track_ids.concat(target_track_ids).shuffle : ramdom_track_ids.shuffle
+    track_ids = target_track_ids ? ramdom_track_ids.concat(target_track_ids).shuffle : ramdom_track_ids.shuffle
+    super(user: user, playlist: playlist, track_ids: track_ids)
   end
 
   def update
-    if user.guest_user?
-      playlist_of_tracks_update!
-    else
+    unless user.guest_user?
       query = track_ids.join(',spotify:track:')
-      response = request_playlist_tracks_update(query)
-      if response == 201
-        playlist_of_tracks_update!
-      end
+      request_playlist_tracks_update(query)
     end
+    playlist_of_tracks_update!
   end
 
   private

@@ -9,6 +9,6 @@ class CreateAlbums < ActiveRecord::Migration[6.1]
 
       t.timestamps
     end
-    add_foreign_key :albums, :artists, column: :artist_id , primary_key: :spotify_id
+    add_foreign_key :albums, :artists, column: :artist_id, primary_key: :spotify_id
   end
 end

@@ -1,11 +1,6 @@
 class Users::FollowArtistUnfollower < SpotifyService
   def self.call(user, follow_artist)
-    new(user, follow_artist).unfollow
-  end
-
-  def initialize(user, follow_artist)
-    @user = user
-    @follow_artist = follow_artist
+    new(user: user, follow_artist: follow_artist).unfollow
   end
 
   def unfollow

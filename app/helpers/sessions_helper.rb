@@ -12,11 +12,12 @@ module SessionsHelper
   end
 
   def current_playlist
-    @playlist_id = session[:playlist_id]
+    @current_playlist ||= session[:playlist_id]
   end
 
   def delete_current_playlist
     return if session[:playlist_id].nil?
+
     session.delete(:playlist_id)
   end
 end

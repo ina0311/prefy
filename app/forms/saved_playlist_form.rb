@@ -26,7 +26,7 @@ class SavedPlaylistForm
   validates :duration_minute, numericality: { in: 0..50, allow_nil: true }
   validates :max_total_duration_ms, numericality: { in: 600_000..25_200_000, allow_nil: true }
   validate :only_either_generation_or_period, unless: -> { that_generation_preference.nil? && period.nil? }
-  validate :only_either_numver_of_track_or_duration_ms, unless: -> { max_number_of_track.nil? && max_total_duration_ms.nil?}
+  validate :only_either_numver_of_track_or_duration_ms, unless: -> { max_number_of_track.nil? && max_total_duration_ms.nil? }
 
   with_options numericality: { only_integer: true }, allow_blank: true, format: { with: /[0-9]{4}/ } do
     validates :since_year
@@ -75,7 +75,7 @@ class SavedPlaylistForm
 
       default_genre_ids = saved_playlist.saved_playlist_genres.pluck(:genre_id)
       delete_genre_ids = genre_ids.present? ? default_genre_ids - genre_ids : default_genre_ids
-      SavedPlaylistGenre.all_import!(saved_playlist.id, genre_ids) if  genre_ids.present?
+      SavedPlaylistGenre.all_import!(saved_playlist.id, genre_ids) if genre_ids.present?
       SavedPlaylistGenre.specific(saved_playlist.id, delete_genre_ids).delete_all if delete_genre_ids.present?
     end
     saved_playlist.persisted?
@@ -85,9 +85,9 @@ class SavedPlaylistForm
     saved_playlist
   end
 
-  def is_only_error_to_playlist_id?
-    self.valid?
-    return self.errors.errors.map { |e| e.attribute == :playlist_id }.all?
+  def only_error_to_playlist_id?
+    valid?
+    errors.errors.map { |e| e.attribute == :playlist_id }.all?
   end
 
   private
@@ -98,7 +98,7 @@ class SavedPlaylistForm
     {
       playlist_name: saved_playlist.playlist&.name,
       only_follow_artist: saved_playlist.only_follow_artist,
-      that_generation_preference: saved_playlist.that_generation_preference,
+      that_generation_preference: SavedPlaylist.that_generation_preferences[saved_playlist.that_generation_preference],
       period: saved_playlist.period,
       max_number_of_track: saved_playlist.max_number_of_track,
       max_total_duration_ms: saved_playlist.max_total_duration_ms,
@@ -110,36 +110,38 @@ class SavedPlaylistForm
   end
 
   def set_max_duration_ms
-    duration_hour_to_ms = duration_hour * SavedPlaylist::HOUR_TO_MS
-    duration_minute_to_ms = duration_minute * SavedPlaylist::MINUTE_TO_MS
-    total = duration_hour_to_ms + duration_minute_to_ms
-    self.max_total_duration_ms = total > 0 ? total : nil
+    if duration_hour.zero? && duration_minute.zero?
+      self.max_total_duration_ms = nil
+    else
+      duration_hour_to_ms = duration_hour * SavedPlaylist::HOUR_TO_MS
+      duration_minute_to_ms = duration_minute * SavedPlaylist::MINUTE_TO_MS
+      self.max_total_duration_ms = duration_hour_to_ms + duration_minute_to_ms
+    end
   end
 
   def set_period
-    self.period = case 
-                  when since_year.blank? && before_year.blank?
-                    nil
-                  when since_year.blank? && before_year.present?
-                    "#{before_year}"
-                  when since_year.present? && before_year.blank?
-                    "#{since_year}"
-                  when since_year < before_year
-                    "#{since_year}-#{before_year}"
-                  when since_year > before_year
-                    "#{before_year}-#{since_year}"
-                  end
+    if since_year.blank? && before_year.blank?
+      self.period = nil
+    elsif since_year.blank? && before_year.present?
+      self.period = before_year
+    elsif since_year.present? && before_year.blank?
+      self.period = since_year.to_s
+    elsif since_year < before_year
+      self.period = "#{since_year}-#{before_year}"
+    elsif since_year > before_year
+      self.period = "#{before_year}-#{since_year}"
+    end
   end
 
   def only_either_generation_or_period
     return if that_generation_preference.present? ^ period.present?
-    
+
     errors.add("西暦と年代はどちらかのみを選択してください")
   end
 
   def only_either_numver_of_track_or_duration_ms
     return if max_number_of_track.present? ^ max_total_duration_ms.present?
-    
+
     errors.add("曲数と再生時間はどちらかのみを選択してください")
   end
 end

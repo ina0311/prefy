@@ -21,7 +21,7 @@ Rails.application.routes.draw do
         end
       end
       post '/search', to: 'searchs#search'
-      
+
       resources :users, only: %i[show] do
         member do
           resources :follow_artists, only: %i[index create destroy]

@@ -1,12 +1,6 @@
 class Artists::ArtistRegistrar < SpotifyService
   def self.call(user, ids, *albums)
-    new(user, ids, *albums).register
-  end
-
-  def initialize(user, ids, *albums)
-    @user = user
-    @ids = ids.flatten
-    @albums = albums.flatten
+    new(user: user, ids: ids, albums: albums.flatten!).register
   end
 
   def register
@@ -24,9 +18,10 @@ class Artists::ArtistRegistrar < SpotifyService
   def request_artists_info
     response = []
     offset = 0
-    while true
+    loop do
       response.concat(conn_request.get("artists?ids=#{ids[offset, 50].join(',')}").body[:artists])
       break if response.size == ids.size
+
       offset += 50
     end
     response

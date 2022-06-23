@@ -1,6 +1,6 @@
 class Api::V1::FollowArtistsController < ApplicationController
   def index
-    @q =  Artist.joins(:users).where('users.spotify_id = ?', current_user).ransack(params[:q])
+    @q = Artist.joins(:users).where('users.spotify_id = ?', current_user).ransack(params[:q])
     @genre = Genre.find(params[:q][:genres_id_eq]) if params[:q]
     @follow_artists = @q.result(distinct: true)
   end

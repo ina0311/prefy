@@ -1,21 +1,14 @@
 class Players::DeviceGetter < SpotifyService
   def self.call(user)
-    new(user).request
-  end
-
-  def initialize(user)
-    @user = user
+    new(user: user).request
   end
 
   def request
     response = request_device
-    if response.status == 200
-      devices = response.body[:devices]
-      device = devices.find { |d| d[:is_active] || !d[:is_restricted] }[:id]
-      return device
-    else
-      return nil
-    end
+    return false unless response.success?
+
+    devices = response.body[:devices]
+    devices.find { |d| d[:is_active] || !d[:is_restricted] }[:id]
   end
 
   private

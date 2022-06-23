@@ -9,11 +9,11 @@ class SavedPlaylistIncludeArtist < ApplicationRecord
   def self.all_import!(artist_ids, saved_playlist_id)
     SavedPlaylistIncludeArtist.transaction do
       objects = artist_ids.map do |id|
-                SavedPlaylistIncludeArtist.new(
-                  saved_playlist_id: saved_playlist_id,
-                  artist_id: id
-                )
-               end
+        SavedPlaylistIncludeArtist.new(
+          saved_playlist_id: saved_playlist_id,
+          artist_id: id
+        )
+      end
 
       SavedPlaylistIncludeArtist.import!(objects, ignore: true)
     end

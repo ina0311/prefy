@@ -4,12 +4,11 @@ class User < ApplicationRecord
 
   has_many :saved_playlists, dependent: :destroy
   has_many :my_playlists, through: :saved_playlists, source: :playlist
-  
   has_many :follow_artists, dependent: :destroy
   has_many :follow_artist_lists, through: :follow_artists, source: :artist
 
   validates :age, numericality: { in: 1..100, allow_nil: true }
-  validates :image, format: { with: /\Ahttps:\/\/i.scdn.co\/image\/[a-z0-9]+\z/, allow_nil: true }
+  validates :image, format: { with: %r(\Ahttps://i.scdn.co/image/[a-z0-9]+\z), allow_nil: true }
 
   with_options presence: true do
     validates :name
@@ -24,7 +23,8 @@ class User < ApplicationRecord
       image: rspotify_user.images.dig(0, 'url'),
       country: rspotify_user.country,
       access_token: rspotify_user.credentials.token,
-      refresh_token: rspotify_user.credentials.refresh_token)
+      refresh_token: rspotify_user.credentials.refresh_token
+    )
     user
   end
 
@@ -33,6 +33,6 @@ class User < ApplicationRecord
   end
 
   def guest_user?
-    self.spotify_id == 'guest_user'
+    spotify_id == 'guest_user'
   end
 end

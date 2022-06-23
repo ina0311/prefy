@@ -2,18 +2,14 @@ class Playlists::PlaylistTracksAllRemover < SpotifyService
   MAX_NUMBER_OF_SENDS = 100
 
   def self.call(user, playlist)
-    new(user, playlist).remove
-  end
-
-  def initialize(user, playlist)
-    @user = user
-    @playlist = playlist
+    new(user: user, playlist: playlist).remove
   end
 
   def remove
     return if playlist.playlist_of_tracks.blank?
+
     unless user.guest_user?
-      request_bodys = create_request_body 
+      request_bodys = create_request_body
       request_remove_playlist_tracks(request_bodys)
     end
     playlist.playlist_of_tracks.delete_all
@@ -24,21 +20,24 @@ class Playlists::PlaylistTracksAllRemover < SpotifyService
   attr_reader :user, :playlist
 
   def create_request_body
-    request_bodys = Array.new
+    request_bodys = []
     offset = INITIAL_VALUE
     track_ids = playlist.playlist_of_tracks.pluck(:track_id)
-    track_uris = track_ids.map { |id| {uri: "spotify:track:#{id}"} }
-    while true
-      request_bodys.push({tracks: track_uris[offset, MAX_NUMBER_OF_SENDS]})
+    track_uris = track_ids.map { |id| { uri: "spotify:track:#{id}" } }
+    loop do
+      request_bodys.push({ tracks: track_uris[offset, MAX_NUMBER_OF_SENDS] })
       break if request_bodys.size == div_max_number_of_sends(track_uris)
+
       offset += MAX_NUMBER_OF_SENDS
     end
-    return request_bodys
+
+    request_bodys
   end
 
   def div_max_number_of_sends(track_uris)
     size, surplus = track_uris.size.divmod(MAX_NUMBER_OF_SENDS)
-    return surplus.zero? ? size : size += INCREASE
+    size += INCREASE unless surplus.zero?
+    size
   end
 
   def request_remove_playlist_tracks(request_bodys)

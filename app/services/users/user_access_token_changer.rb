@@ -1,17 +1,13 @@
 class Users::UserAccessTokenChanger < SpotifyService
   def self.call(user)
-    new(user).change
-  end
-
-  def initialize(user)
-    @user = user
+    new(user: user).change
   end
 
   def change
     response = conn_request_access_token
-    if response.status == 200
-      user.update!(access_token: response.body[:access_token])
-    end
+    return false unless response.success?
+
+    user.update!(access_token: response.body[:access_token])
   end
 
   private
