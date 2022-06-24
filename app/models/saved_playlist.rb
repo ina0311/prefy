@@ -138,7 +138,7 @@ class SavedPlaylist < ApplicationRecord
   def not_has_track_by_require_artists(tracks)
     return include_artists.pluck(:name) if tracks.nil?
 
-    track_artist_ids = tracks.flatten.map { |track| track[:artist_id] }.uniq.flatten
+    track_artist_ids = tracks.flatten.map { |track| track[:artist_ids] }.uniq.flatten
     not_get_artists = include_artists.map do |artist|
       next if track_artist_ids.include?(artist[:spotify_id])
 

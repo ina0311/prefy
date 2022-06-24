@@ -21,7 +21,7 @@ class Playlists::PlaylistInfoGetter < SpotifyService
 
     return if new_track_id_and_positions.blank?
 
-    Tracks::TrackInfoGetter.call(user, new_track_id_and_positions.map(&:first))
+    Tracks::TrackInfoGetter.call(user, new_track_id_and_positions.map(&:first).compact)
     PlaylistOfTrack.insert_with_position(playlist, new_track_id_and_positions)
   end
 
@@ -30,7 +30,7 @@ class Playlists::PlaylistInfoGetter < SpotifyService
   attr_reader :user, :playlist
 
   def response_convert_track_id_and_position(response)
-    track_ids = response[:tracks][:items].pluck(:track).pluck(:id)
+    track_ids = response[:tracks][:items].pluck(:track).pluck(:id).compact
     track_ids.map.with_index { |id, index| [id, index] }
   end
 
