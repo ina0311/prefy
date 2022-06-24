@@ -26,9 +26,26 @@ Layout/SpaceInsideArrayLiteralBrackets:
   Exclude:
     - 'config/environments/production.rb'
 
+Layout/EmptyLinesAroundBlockBody:
+  Exclude:
+    - 'db/schema.rb'
+
 Rails/FilePath:
   Exclude:
     - 'config/environments/development.rb'
+    - 'config/application.rb'
+
+Rails/BulkChangeTable:
+  Exclude:
+    - 'db/migrate/**'
+
+Rails/SkipsModelValidations:
+  Exclude:
+    - 'app/models/playlist_of_track.rb'
+
+Rails/OutputSafety:
+  Exclude:
+    - 'app/helpers/application_helper.rb'
 
 Style/BlockComments:
   Exclude:
@@ -44,3 +61,16 @@ Style/GlobalStdStream:
 Style/RedundantFetchBlock:
   Exclude:
     - 'config/puma.rb'
+
+Style/NumericLiterals:
+  Exclude:
+    - 'db/schema.rb'
+
+ClassAndModuleChildren:
+  EnforcedStyle: compact
+  Exclude:
+    - 'config/application.rb'
+
+Naming/VariableNumber:
+  Exclude:
+    - 'app/controllers/concerns/errors_handler.rb'

@@ -1,2 +1,2 @@
-| $('.search-result').html("#{j render(partial: 'artist', collection: @artists)}");
-| $('.follow-buttons').html("#{j render(partial: 'shared/artist_follow_button', collection: @artists, as: :artist, locals: { follow_artist_ids: @follow_artist_ids })}");
+| $('.search-result').html("#{j render(partial: 'shared/artist', collection: @artists, locals: { follow_artist_ids: @folow_artist_ids })}");
+

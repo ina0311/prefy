@@ -1,2 +1,5 @@
-| $("#player").addClass('active');
-| $("#js-play-control-button").html("#{j render('api/v1/player/pause_button')}");
+- if @type == 'playlist'
+  | window.open("https://open.spotify.com/#{@type}/#{@object.playlist_id}//", "_blank", "noreferrer");
+- elsif @type == 'album'
+  | window.open("https://open.spotify.com/#{@type}/#{@object.album_id}//", "_blank", "noreferrer");
+

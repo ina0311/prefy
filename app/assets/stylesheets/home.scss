@@ -1,28 +1,230 @@
-header {
-  // headerを常時上に固定
-  position: fixed;
-  top: 0;
-  left: 0;
+@import 'color';
+@import 'header';
+@import 'footer';
+
+.home-container {
+  height: auto;
   width: 100%;
-  z-index: 10;
+  color: #000;
 }
 
 .top-flash {
   position: absolute;
-  top: 100px;
-  left: 0px;
+  top: 66px;
+  left: 0;
   width: 100%;
 }
 
-.home-section {
-  position: absolute;
-  top: 170px;
-  left: 30px;
-  width: 100%;
-  height: 800px;
-  background-color: #fff;
+.top-container {
+  background-color: #d8dbd9;
+}
 
-  .main-chatche {
-    top: 200px;
+.section {
+  background-color: #fff;
+  margin-right: auto;
+  margin-left: auto;
+  padding-top: 5.5rem;
+  padding-bottom: 10rem;
+}
+
+.top-hero {
+  padding-top: 120px;
+  padding-bottom: 7rem;
+
+  .main-catch {
+    margin: 0 20rem;
+
+    .logo-group {
+      margin: 6rem 0 10rem 0;
+      padding: 0 2rem 0 3.5rem;
+  
+      .logo {
+        display: block;
+        height: 50%;
+        width: 100%;
+        margin-bottom: 1rem;
+      }
+  
+      .top-content {
+        font-size: 3rem;
+        line-height: 4rem;
+        padding: 0 1.1rem;
+        margin-bottom: 2rem;
+      }
+  
+      .link-group {
+        padding: 0 1.5rem;
+        display: flex;
+  
+        .btn {
+          font-size: 2rem;
+          white-space: nowrap;
+        }
+  
+        .top-login {
+          margin-right: 1.5rem;
+  
+          .spotify-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            margin-right: 0.3rem;
+          }
+        }
+      }  
+    }
+  }
+
+  .audio-catch {
+    padding-left: 7rem;
+
+    .main-catch-audio {
+      height: 100%;
+      width: 100%;
+    }
+  }
+}
+
+.recommend-wrap {
+  display: flex;
+	justify-content: center;
+	align-items: center;
+  margin-bottom: 9rem;
+
+  .recommend-content {
+    border-radius: 8px;
+    box-shadow:0px 0px 5px silver;
+    padding: 2rem;
+  }
+  
+  .recommend-headline {
+    text-align: center;
+    font-size: 3rem;
+    margin-bottom: 1rem;
+
+    span {
+      font-weight: bold;
+      position: relative;
+      z-index: 5;
+
+      &:after {
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 100%;
+        height: 1.5rem;
+        border-radius: 3rem;
+        background-color: $sub-color;
+        opacity: 0.5;
+        content: "";
+      }
+    }
+  }
+
+  .recommend-list {
+    font-size: 1.8rem;
+
+    ul {
+      padding-left: 8rem;
+      padding-right: 5rem;
+    }
+
+    li {
+      text-align: start;
+      position: relative;
+
+      &:before {
+        position: absolute;
+        top: -46px;
+        left: -60px;
+        font-size: 8rem;
+        color: $sub-color;
+        content: "・"
+      }
+    }
+  }
+}
+
+.step-wrap {
+  .step-title {
+    text-align: center;
+    font-size: 3rem;
+    margin-bottom: 2rem;
+  }
+
+  .step-list-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .step-list {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .step-list-item {
+        text-align: center;
+        margin-right: 2rem;
+        padding: 3rem;
+        border-radius: 8px;
+        box-shadow:0px 0px 5px silver;
+
+        .step {
+          font-size: 3rem;
+          margin-bottom: 1.5rem;
+          margin-left: auto;
+          margin-right: auto;
+          background: lighten($sub-color, 15%);
+          width: 18rem;
+          border-radius: 5rem;
+        }
+
+        .step-list-image {
+          margin: 3rem;
+          width: 20rem;
+          height: 25rem;
+        }
+
+        .step-list-content {
+          height: 5rem;
+          font-size: 1.5rem;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          margin-top: 1rem;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}
+
+.page {
+  margin-bottom: 5rem;
+  .page-headline {
+    text-align: center;
+    font-weight: bold;
+    margin-top: 120px;
+    margin-bottom: 50px;
+    font-size: 3rem;
+    font-weight: bold;
+  }
+
+  .content-wrap {
+    width: 80%;
+    margin: 0 auto;
+
+    .content-group {
+      margin-bottom: 4rem;
+    }
+  }
+
+  p {
+    font-size: 1.5rem;
+  }
+
+  a {
+    color: #000 !important;
+    text-decoration: underline !important;
   }
 }

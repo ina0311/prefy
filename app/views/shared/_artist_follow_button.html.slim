@@ -1,5 +1,5 @@
 div id="js-follow-button-#{artist.spotify_id}" 
-  - if follow_artist_ids.find { |id| id == artist.spotify_id }.present?
+  - if follow_artist_ids&.find { |id| id == artist.spotify_id }.present? || controller_name == 'users' || 'follow_artists'
     = render partial: 'shared/unfollow_button', locals: { artist_id: artist.spotify_id }
   - else
     = render partial: 'shared/follow_button', locals: { artist_id: artist.spotify_id }

@@ -2,43 +2,43 @@ import $ from "jquery"
 import "select2/dist/js/select2"
 
 $(document).on("turbolinks:load", function() {
-  $('.js-select2').each(function() {
+  $('[id^="js-select2"]').each(function() {
     const $this = $(this)
-
+    const $parent = $this.attr('id').match(/js-select2-(\w+)/)[1]
     let ops = {
+      placeholder: '        ',
       allowClear: true,
       multiple: true,
+      closeOnSelect: false,
       maximumSelectionLength: 3,
       dropdownAutoWidth: true,
-      theme: 'classic',
-      width: 'resolve'
+      dropdownParent: $(`#js-${$parent}`),
+      width: 'resolve',
+      language: {
+        maximumSelected: function (args) {
+        var message = args.maximum + ' 件しか選べません';
+        return message;
+        },
+        noResults: function() {
+          return '対象が見つかりません';
+        }
+      }
     }
-
     $this.select2(ops)
   });
 
-  $('#js-switch-generation').on("click", function() {
-    $("#js-generation").removeClass("no-active");
-    $("#js-ad").addClass("no-active");
+  $('#js-switch-generation, #js-switch-period').on("click", function() {
+    $("#js-generation").toggleClass("hidden");
+    $("#js-ad").toggleClass("hidden");
   });
 
-  $('#js-switch-period').on("click", function() {
-    $("#js-generation").addClass("no-active");
-    $("#js-ad").removeClass("no-active");
-  });
-
-  $('#js-switch-number').on("click", function() {
-    $("#js-max-number").removeClass("no-active");
-    $("#js-max-duration-ms").addClass("no-active");
-  });
-
-  $('#js-switch-duration-ms').on("click", function() {
-    $("#js-max-number").addClass("no-active");
-    $("#js-max-duration-ms").removeClass("no-active");
+  $('#js-switch-number, #js-switch-duration-ms').on("click", function() {
+    $("#js-max-number").toggleClass("hidden");
+    $("#js-max-duration-ms").toggleClass("hidden");
   });
 
   $('#js-form-button').on("click", function(){
-    $('.no-active').find('option').prop('selected', false);
-    $('.no-active').find('input').val(null);
+    $('.hidden').find('option').prop('selected', false);
+    $('.hidden').find('input').val(null);
   });
 });

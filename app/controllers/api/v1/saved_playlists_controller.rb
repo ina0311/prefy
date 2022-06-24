@@ -1,16 +1,14 @@
 class Api::V1::SavedPlaylistsController < ApplicationController
-  before_action :delete_playlist_id, only: %i[index new]
+  before_action :delete_current_playlist, only: %i[index new]
 
   def index
-    if current_user.guest_user?
-      @saved_playlists = current_user.saved_playlists.includes(:playlists)
-    else
+    unless current_user.guest_user?
       response = Users::UserPlaylistsGetter.call(current_user)
       add_playlists, delete_playlists = response
       SavedPlaylist.add_my_playlists(current_user, add_playlists) if add_playlists.present?
       SavedPlaylist.delete_from_my_playlists(current_user, delete_playlists) if delete_playlists.present?
-      @saved_playlists = current_user.saved_playlists.includes(:playlist)
     end
+    @saved_playlists = current_user.saved_playlists.includes(:playlist)
   end
 
   def new
@@ -19,53 +17,57 @@ class Api::V1::SavedPlaylistsController < ApplicationController
 
   def create
     @form = SavedPlaylistForm.new(saved_playlist_params)
-    if current_user.guest_user?
-      @playlist = Playlist.create_by_guest(current_user, playlist_name_params)
-    else
-      playlist_response = Playlists::PlaylistCreater.call(current_user, playlist_name_params)   
-      @playlist = Playlist.create_by_response!(playlist_response)
-    end
-
+    @playlist = Playlists::PlaylistCreater.call(current_user, playlist_name_params) if @form.only_error_to_playlist_id?
     @form.playlist_id = @playlist.spotify_id
-
     if @form.save(@form.artist_ids, @form.genre_ids)
       @saved_playlist = SavedPlaylist.find_by(playlist_id: @form.playlist_id)
+      refined_tracks_response = SavedPlaylists::BasedOnSavedPlaylistTracksGetter.call(@saved_playlist, current_user)
+      raise ErrorsHandler::UnableToGetPlaylistOfTracksError unless refined_tracks_response
+
+      if @saved_playlist.include_artists.present?
+        not_get_artists = @saved_playlist.not_has_track_by_require_artists(refined_tracks_response[:target_tracks])
+        flash[:danger] = t("message.not_get_track", item: not_get_artists.join('と')) if not_get_artists.present?
+      end
+
+      Playlists::PlaylistTrackUpdater.call(current_user, @playlist, refined_tracks_response)
+      @saved_playlist.check_saved_playlist_requirements
+      redirect_to api_v1_saved_playlist_path(@saved_playlist)
     else
       flash.now[:danger] = t("message.not_created", item: 'プレイリストの条件')
       render :new
     end
-
-    tracks_response = SavedPlaylists::BasedOnSavedPlaylistTracksGetter.call(@saved_playlist)
-
-    raise ErrorsHandler::UnableToGetPlaylistOfTracksError unless tracks_response
-    flash[:danger] = t("message.not_get", item: 'アーティストの曲') if require_target_track?(@saved_playlist, tracks_response)
-
-    tracks_ids = connect_tracks_response(tracks_response)
-    Playlists::PlaylistTrackUpdater.call(current_user, @playlist, tracks_ids)
-    redirect_to api_v1_playlist_path(@playlist.spotify_id)
   end
 
   def update
-    @playlist = Playlist.includes(:playlist_of_tracks).find(playlist_params)
     @form = SavedPlaylistForm.new(saved_playlist_params)
+    @form.playlist_id = SavedPlaylist.find(params[:id]).playlist_id if @form.only_error_to_playlist_id?
+    if @form.save(@form.artist_ids, @form.genre_ids)
+      @saved_playlist = SavedPlaylist.includes(:playlist).find(params[:id])
+      Playlists::PlaylistTracksAllRemover.call(current_user, @saved_playlist.playlist) if @saved_playlist.playlist.playlist_of_tracks.present?
+      refined_tracks_response = SavedPlaylists::BasedOnSavedPlaylistTracksGetter.call(@saved_playlist, current_user)
 
-    raise ErrorsHandler::NotUpdateSavedPlaylistError unless @form.valid?
+      raise ErrorsHandler::UnableToGetPlaylistOfTracksError unless refined_tracks_response
 
-    @form.save(@form.artist_ids, @form.genre_ids)
-    @saved_playlist = SavedPlaylist.find_by(playlist_id: @form.playlist_id)
+      if @saved_playlist.include_artists
+        not_get_artists = refined_tracks_response[:target_tracks].nil? ? @saved_playlist.include_artists.map(&:name) : @saved_playlist.not_has_track_by_require_artists(refined_tracks_response[:target_tracks])
+        flash[:danger] = t("message.not_get_track", item: not_get_artists.join('と')) if not_get_artists.present?
+      end
 
-    tracks_response = SavedPlaylists::BasedOnSavedPlaylistTracksGetter.call(@saved_playlist)
+      Playlists::PlaylistTrackUpdater.call(current_user, @saved_playlist.playlist, refined_tracks_response)
+      @saved_playlist.check_saved_playlist_requirements
+      redirect_to api_v1_saved_playlist_path(@saved_playlist)
+    else
+      flash.now[:danger] = t("message.not_created", item: 'プレイリストの条件')
+      render :new
+    end
+  end
 
-    raise ErrorsHandler::UnableToGetPlaylistOfTracksError unless tracks_response
-    flash[:danger] = t("message.not_get", item: 'アーティストの曲') if require_target_track?(@saved_playlist, tracks_response)
-
-    old_track_ids = @playlist.playlist_of_tracks.pluck(:track_id)
-    Playlists::PlaylistTracksRemover.call(current_user, @playlist, old_track_ids) if old_track_ids.present?
-
-    new_tracks_ids = connect_tracks_response(tracks_response)
-    Playlists::PlaylistTrackUpdater.call(current_user, @playlist, new_tracks_ids)
-    check_saved_playlist_requirements
-    redirect_to api_v1_playlist_path(@playlist.spotify_id)
+  def show
+    @saved_playlist = SavedPlaylist.includes(:playlist).find(params[:id])
+    @form = SavedPlaylistForm.new(saved_playlist: @saved_playlist)
+    Playlists::PlaylistInfoGetter.call(current_user, @saved_playlist.playlist) unless current_user.guest_user?
+    @playlist_of_tracks = @saved_playlist.playlist.playlist_of_tracks.includes([track: [album: :artists]]).position_asc
+    session[:playlist_id] = @saved_playlist.playlist_id
   end
 
   private
@@ -85,37 +87,11 @@ class Api::V1::SavedPlaylistsController < ApplicationController
       artist_ids: params[:artist_ids].reject(&:empty?),
       genre_ids: params[:genre_ids].reject(&:empty?)&.map(&:to_i),
       user_id: current_user.id,
-      playlist_id: @playlist&.id
+      playlist_id: @saved_playlist&.playlist_id
     )
   end
 
   def playlist_name_params
     params.require(:saved_playlist).permit(:playlist_name)[:playlist_name]
-  end
-
-  def playlist_params
-    params.require(:id)
-  end
-
-  def require_target_track?(saved_playlist, tracks_response)
-    saved_playlist.include_artists.present? && tracks_response[:refined_target_tracks].nil?
-  end
-
-  def connect_tracks_response(tracks_response)
-    if tracks_response[:refined_target_tracks].nil?
-      tracks_response[:refined_ramdom_tracks].shuffle.pluck(:track_id)
-    else
-      (tracks_response[:refined_ramdom_tracks] + tracks_response[:refined_target_tracks]).shuffle.pluck(:track_id)
-    end
-  end
-
-  def check_saved_playlist_requirements
-    case 
-    when @saved_playlist.number_of_track_less_than_requirements?
-      flash[:warning] = t("message.not_get", item: '曲数')
-    when @saved_playlist.total_duration_more_than_ten_minutes_less_than_requirement?
-      flash[:warning] = t("message.few_track_fit_criteria")
-      flash[:warning] = t("message.duration_time_more_than_10_minutes_shorter")
-    end
   end
 end

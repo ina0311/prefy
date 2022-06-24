@@ -27,12 +27,14 @@ ja:
       saved_playlist:
         playlist_name: プレイリスト名
         only_follow_artist: 'フォローアーティストのみ'
-        that_generation_preference: '選択した世代'
+        that_generation_preference: '世代'
         period: '期間'
         max_number_of_track: '最大曲数'
         max_total_duration_ms: '最大再生時間'
       playlist_of_track:
         position: '位置'
+      genre: 
+        name: 'ジャンル名'
   attributes:
     spotify_id: 'ID'
     image: '画像'

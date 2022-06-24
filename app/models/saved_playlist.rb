@@ -7,8 +7,10 @@ class SavedPlaylist < ApplicationRecord
   TEENS = 20
   TWENTIES = 30
   THIRTIES = 40
-  GENERATIONS = [JUNIOR_HIGH_SCHOOL, HIGH_SCHOOL, UNIVERSITY, TEENS, TWENTIES, THIRTIES]
-  TEN_MINUTES = 60000
+  GENERATIONS = [JUNIOR_HIGH_SCHOOL, HIGH_SCHOOL, UNIVERSITY, TEENS, TWENTIES, THIRTIES].freeze
+  TEN_MINUTES = 60_000
+  HOUR_TO_MS = 3_600_000
+  MINUTE_TO_MS = 60_000
 
   belongs_to :user
   belongs_to :playlist
@@ -25,48 +27,47 @@ class SavedPlaylist < ApplicationRecord
   has_many :saved_playlist_include_tracks, dependent: :destroy
   has_many :include_tracks, through: :saved_playlist_include_tracks
 
-  enum that_generation_preference: %i(junior_high_school high_school university teens twenties thirties)
-
-  scope :my_playlists, ->(playlist_ids, user_id) { where(playlist_id: playlist_ids).where(user_id: user_id) }
+  enum that_generation_preference: { junior_high_school: 0, high_school: 1, university: 2, teens: 3, twenties: 4, thirties: 5 }
 
   def self.add_my_playlists(user, playlist_ids)
     saved_playlists = playlist_ids.map do |id|
-                        user.saved_playlists.new(playlist_id: id, created_at: Time.current, updated_at: Time.current)
-                      end
+      user.saved_playlists.new(playlist_id: id, created_at: Time.current, updated_at: Time.current)
+    end
     SavedPlaylist.import!(saved_playlists, ignore: true)
   end
 
   def self.delete_from_my_playlists(user, playlist_ids)
-    delete_saved_playlists = user.saved_playlists.includes(:playlist).where(playlist_id: playlist_ids)
-    own_playlist_ids = delete_saved_playlists.select { |p| user.own?(p.playlist) }.map{ |p| p.playlist.spotify_id }
-    Playlist.delete_owned(own_playlist_ids, user.spotify_id) if own_playlist_ids.present?
+    destroy_own_playlists = user.my_playlists.own_playlists(playlist_ids, user.spotify_id)
+    destroy_own_playlists&.destroy_all
+    delete_saved_playlists = user.saved_playlists.where(playlist_id: playlist_ids)
     delete_saved_playlists.delete_all
   end
 
-  # saved_playlistの属性をクエリを作るためのフィルターに変換する
-  def convert_fillter
-    artists = self.get_artists if self.only_follow_artist.present?
-    targets = self.include_artists if self.include_artists.present?
-    period = self.that_generation_preference? ? convert_generation_to_period : self.period
-
-    return { artists: artists, period: period, targets: targets}
+  def convert_year
+    if that_generation_preference.present?
+      " year:#{convert_generation_to_period}"
+    elsif period.present?
+      " year:#{period}"
+    else
+      ''
+    end
   end
 
   # ジャンルが指定されていればフォローアーティストを絞り込み検索する
-  def get_artists
-    if self.genres.present?
-      self.user.follow_artist_lists.includes(:artist_genre_lists).search_genre_names(self.genres.only_names)
+  def call_artist_ids
+    if genres.present?
+      user.follow_artist_lists.includes(:genres).search_genre_names(genres.only_names).ids
     else
-      self.user.follow_artist_lists
+      user.follow_artist_lists.ids
     end
   end
 
   # that_generationsを西暦に変換する
   def convert_generation_to_period
-    this_year = Date.today.year
-    age = self.user.age
+    this_year = Time.zone.today.year
+    age = user.age
 
-    case self.that_generation_preference
+    case that_generation_preference
     when 'junior_high_school'
       since_year = this_year - (age - JUNIOR_HIGH_SCHOOL)
       "#{since_year - 3}-#{since_year}"
@@ -88,71 +89,81 @@ class SavedPlaylist < ApplicationRecord
     end
   end
 
-  # フィルターをクエリに変換する
-  def convert_querys(fillter)
-    string = String.new
-    string += "year:#{fillter[:period]}" if fillter[:period].present?
-    querys = fillter[:artists].present? ? add_artists(string, fillter[:artists]) : string
-    target_querys = add_artists(string, fillter[:targets]) if fillter[:targets].present?
-
-    return querys, target_querys
-  end
-
-  # クエリにアーティストを加える
-  def add_artists(string, artists)
-    artists.map do |artist|
-      copy_str = string.dup
-      copy_str += " artist:#{artist[:name]}"
-      {query: copy_str, artist_spotify_id: artist[:spotify_id]}
+  def refine_tracks(ramdom_tracks, target_tracks)
+    if max_total_duration_ms
+      refine_by_duration_ms(ramdom_tracks, target_tracks)
+    else
+      refine_by_max_number_of_track(ramdom_tracks, target_tracks)
     end
   end
 
   # 曲数で絞り込む
   def refine_by_max_number_of_track(ramdom_tracks, target_tracks)
-    total = self.max_number_of_track.present? ? self.max_number_of_track : DEFAULT
+    total = max_number_of_track.presence || DEFAULT
     if target_tracks.present?
-      refined_target_tracks = target_tracks.map { |tg_tracks| tg_tracks.sample(total * PERCENTAGE) }.flatten     
-      remaining = total - refined_target_tracks.size
+      refined_target_tracks = target_tracks.map { |tg_tracks| tg_tracks.sample(total * PERCENTAGE) }
+      remaining = total - refined_target_tracks.flatten.size
       refined_ramdom_tracks = ramdom_tracks.sample(remaining)
-      return {refined_ramdom_tracks: refined_ramdom_tracks, refined_target_tracks: refined_target_tracks}
+      { ramdom_tracks: refined_ramdom_tracks, target_tracks: refined_target_tracks }
     else
-      return {refined_ramdom_tracks: ramdom_tracks.sample(total)}
+      { ramdom_tracks: ramdom_tracks.sample(total) }
     end
   end
 
   # 再生時間で絞り込む
   def refine_by_duration_ms(ramdom_tracks, target_tracks)
-    playlist_of_tracks = []
     if target_tracks
-      limit = self.max_total_duration_ms * PERCENTAGE
-      refined_target_tracks = target_tracks.map { |tg_tracks| check_total_duration_and_add_tracks(limit, tg_tracks)}.flatten
-      remaining = self.max_total_duration_ms - refined_target_tracks.pluck(:duration_ms).sum
-      refine_ramdom_tracks = check_total_duration_and_add_tracks(remaining, ramdom_tracks)
-      return {refined_ramdom_tracks: refine_ramdom_tracks, refined_target_tracks: refined_target_tracks}
+      limit = max_total_duration_ms * PERCENTAGE
+      refined_target_tracks = target_tracks.map { |tg_tracks| refine_total_duration_and_add_tracks(limit, tg_tracks) }.flatten
+      remaining = max_total_duration_ms - refined_target_tracks.pluck(:duration_ms).sum
+      refine_ramdom_tracks = refine_total_duration_and_add_tracks(remaining, ramdom_tracks)
+      { ramdom_tracks: refine_ramdom_tracks, target_tracks: refined_target_tracks }
     else
-      return {refined_ramdom_tracks: check_total_duration_and_add_tracks(limit, ramdom_tracks)}
+      { ramdom_tracks: refine_total_duration_and_add_tracks(max_total_duration_ms, ramdom_tracks) }
     end
   end
 
   # 再生時間を判定し、追加
-  def check_total_duration_and_add_tracks(limit, tracks)
-    playlist_of_tracks = []
-    tracks.shuffle!.each do |track|
-      playlist_of_tracks << track
+  def refine_total_duration_and_add_tracks(limit, tracks)
+    refine_tracks = []
+    tracks.shuffle.each do |track|
+      refine_tracks.push(track)
       limit -= track[:duration_ms]
       break if limit <= 0
     end
 
-    return playlist_of_tracks
+    refine_tracks
+  end
+
+  def not_has_track_by_require_artists(tracks)
+    return include_artists.pluck(:name) if tracks.nil?
+
+    track_artist_ids = tracks.flatten.map { |track| track[:artist_id] }.uniq.flatten
+    not_get_artists = include_artists.map do |artist|
+      next if track_artist_ids.include?(artist[:spotify_id])
+
+      artist.name
+    end
+    not_get_artists.compact
+  end
+
+  def check_saved_playlist_requirements
+    if max_number_of_track
+      number_of_track_less_than_requirements?
+    else
+      total_duration_more_than_ten_minutes_less_than_requirement?
+    end
   end
 
   def number_of_track_less_than_requirements?
-    return false unless self.max_number_of_track
-    self.max_number_of_track > self.playlist.tracks.size
+    return if max_number_of_track == playlist.tracks.size
+
+    ErrorsHandler::NotEnoughTrackInPlaylist
   end
 
   def total_duration_more_than_ten_minutes_less_than_requirement?
-    return false unless self.max_total_duration_ms
-    TEN_MINUTES < (self.max_total_duration_ms - self.playlist.tracks.pluck(:duration_ms).sum)
+    return if TEN_MINUTES > (max_total_duration_ms - playlist.tracks.pluck(:duration_ms).sum)
+
+    ErrorsHandler::NotEnoughPlaybackTimeForPlaylist
   end
 end

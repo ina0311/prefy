@@ -5,7 +5,6 @@ import "channels"
 import "bootstrap"
 import "stylesheets/application"
 import "../scripts/form"
-import "../scripts/player"
 
 Rails.start()
 Turbolinks.start()

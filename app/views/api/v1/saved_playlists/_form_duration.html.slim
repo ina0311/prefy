@@ -1,0 +1,13 @@
+.headline-content
+  .text
+    | 最大の曲数、再生時間の設定
+  = button_tag t("form.specify_number_of_track"), type: :button, class: 'btn btn-secondary btnx-main-light', id: 'js-switch-number'
+.form-group
+  .form-label
+    = f.label :max_total_duration_ms, class: 'with-comment'
+    .comment
+      | (8時間未満 10分毎)
+  = f.select :duration_hour, form.decorate.hour, { include_blank: true, selected: form.decorate.set_duration_hour }, { class: 'select' }
+  | 時間
+  = f.select :duration_minute, form.decorate.minute, { include_blank: true, selected: form.decorate.set_duration_min }, { class: 'select' }
+  | 分

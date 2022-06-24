@@ -1,6 +1,10 @@
 class Api::V1::UsersController < ApplicationController
   def show
     @user = User.find(user_params)
+    @follow_artists = @user.follow_artist_lists.order("RAND()").limit(5)
+    follow_artist_genres_top_five = @user.follow_artists.genres_name_order_desc_take_five
+    @genres = Genre.where(name: follow_artist_genres_top_five.map(&:first))
+    @genres.zip(follow_artist_genres_top_five.map(&:second)).each { |genre, count| genre.count = count }
   end
 
   def age

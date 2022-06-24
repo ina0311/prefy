@@ -1,11 +1,8 @@
-main.col-md-9.ms-sm-auto.col-lg-10.px-md-4
-  h2.page-title.pt-5.pb-3
-    = t(".title")
-
-  .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.md-3.border-bottom
-    .card-deck
-      .card-columns
-        - if @saved_playlists.present?
-          = render partial: 'playlist', collection: @saved_playlists.map(&:playlist), as: :playlist
-        - else
-          = t(".not_saved_playlist")
+.page-title
+  = t(".title")
+section
+  .row.row-cols-5
+    - if @saved_playlists.present?
+      = render partial: 'playlist', collection: @saved_playlists, as: :saved_playlist
+    - else
+      = t(".not_saved_playlist")

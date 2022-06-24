@@ -5,6 +5,7 @@ class FollowArtist < ApplicationRecord
   validates :user_id, uniqueness: { scope: :artist_id }
 
   scope :genres_id_order_desc, -> { joins(artist: [artist_genres: :genre]).group("genres.id").having('count(*) >= ?', 3).order("count_all DESC").count }
+  scope :genres_name_order_desc_take_five, -> { joins(artist: :genres).group("genres.name").order("count_all DESC").count.take(5) }
 
   def self.unfollow_all(unfollow_artists, user)
     FollowArtist.transaction do
@@ -13,9 +14,9 @@ class FollowArtist < ApplicationRecord
   end
 
   def self.follow_all(new_follow_artists, user)
-    follow_artists = new_follow_artists.map do |id| 
-                       {user_id: user.spotify_id, artist_id: id, created_at: Time.current, updated_at: Time.current}
-                     end
-    FollowArtist.insert_all(follow_artists)
+    follow_artists = new_follow_artists.map do |id|
+      user.follow_artists.new(artist_id: id)
+    end
+    FollowArtist.import!(follow_artists, ignore: true)
   end
 end

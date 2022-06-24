@@ -1,32 +1,91 @@
-@import '../../../node_modules/bootstrap/scss/bootstrap.scss';
+@import 'bootstrap/scss/bootstrap.scss';
+@import 'color';
 @import 'home';
 @import 'sidebar';
 @import 'card';
 @import 'modal';
 @import 'form';
+@import 'playlist';
+@import 'search';
 @import 'player';
+@import 'profile';
 
 html, body {
-  position: relative;
   height: 100%;
+  min-height: auto;
   overflow-x: hidden;
-  padding: 0%;
-  margin: 0%;
-  background-color: #fff;
+  margin: 0;
+  font-size: 62.5% !important;
+}
+
+.wrapper {
+  min-height: 100%;
+  background-color: $main-color;
+  color: #fff;
+}
+
+main {
+  padding: 4rem !important;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.show {
+  display: block !important;
+}
+
+section {
+  padding: 2rem;
 }
 
 .flash {
-  position: absolute;
-  top: 0px;
-  left: 210px;
-  width: auto;
+  font-size: 1.6rem;
+  width: 100%;
+}
+
+.js-flash-message {
+  height: 4rem;
 }
 
 ul {
   list-style: none;
-  padding: 20px;
 }
 
-.active {
-  display: block !important;
+a {
+  color: #fff !important;
+  text-decoration: none !important;
+}
+
+.page-title {
+  margin-top: 0.5rem;
+  padding-left: 2rem;
+  font-size: 3.5rem;
+}
+
+.btnx-main-light {
+  font-size: 1.3rem !important;
+  background: $main-light-color !important;
+  border: 2px solid $main-light-color !important;
+  
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.btnx-sub {
+  color:  #fff !important;
+  background: $sub-color !important;
+  border: 1rem thin $sub-color !important;
+  
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.btn-xl {
+  font-size: 2rem !important;
+  width: 25rem !important;
+  height: 4rem !important;
 }

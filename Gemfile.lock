@@ -116,6 +116,8 @@ GEM
       request_store (>= 1.0)
       ruby2_keywords
     encryptor (3.0.0)
+    enum_help (0.0.19)
+      activesupport (>= 3.0.0)
     erubi (1.10.0)
     erubis (2.7.0)
     factory_bot (6.2.0)
@@ -263,6 +265,10 @@ GEM
       thor (~> 1.0)
     rainbow (3.0.0)
     rake (13.0.6)
+    ransack (3.1.0)
+      activerecord (>= 6.0.4)
+      activesupport (>= 6.0.4)
+      i18n
     rb-fsevent (0.11.0)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
@@ -398,6 +404,7 @@ DEPENDENCIES
   capybara
   dotenv-rails
   draper
+  enum_help
   factory_bot_rails
   faraday
   faraday_middleware
@@ -414,6 +421,7 @@ DEPENDENCIES
   rails (~> 6.1.4)
   rails-i18n
   rails_best_practices
+  ransack
   relaxed-rubocop
   rspec-rails
   rspotify

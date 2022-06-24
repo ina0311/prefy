@@ -10,13 +10,10 @@ html
     = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
     = stylesheet_pack_tag 'application', 'data-turbolinks-track': 'reload'
   body
-    .container-fluid 
-      .row
-        .js-flash-message
-        = render 'shared/flash_message'
-
+    .wrapper.row
+      .col-2.border-end.px-5
         = render 'shared/sidebar'
-
+      main.col-10
+        .js-flash-message
+          = render 'shared/flash_message'
         = yield
-
-        = render 'api/v1/player/player'

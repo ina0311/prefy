@@ -1,0 +1,10 @@
+- if form.max_total_duration_ms
+  #js-max-number.hidden
+    = render 'form_number_of_track', { form: form, f: f }
+  #js-max-duration-ms
+    = render 'form_duration', { form: form, f: f }
+- else
+  #js-max-number
+    = render 'form_number_of_track', { form: form, f: f }
+  #js-max-duration-ms.hidden
+    = render 'form_duration', { form: form, f: f }

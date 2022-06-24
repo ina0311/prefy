@@ -1,0 +1,9 @@
+.headline-content
+  .text
+    | 最大の曲数、再生時間の設定
+  = button_tag t("form.specify_playback_time"), type: :button, class: 'btn btn-secondary btnx-main-light', id: 'js-switch-duration-ms'  
+.form-group
+  = f.label :max_number_of_track, class: 'form-label with-comment'
+  .comment
+    | (1~50曲)
+  = f.number_field :max_number_of_track, { in: 1..50, step: 1, include_blank: true, class: 'form-control', value: form.max_number_of_track }

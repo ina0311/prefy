@@ -1,0 +1,9 @@
+.genre-table
+  .genre-table-headline.row
+    .col-1
+    .col-8
+      | ジャンル名
+    .col-3
+      | 合計組
+  .genre-table-body
+    = render partial: 'genre', collection: genres, as: :genre

@@ -1,0 +1,165 @@
+@import 'color';
+
+.playlist-wrapper {
+  padding: 2rem;
+}
+
+.playlist-head {
+  display: flex;
+  padding: 1rem;
+
+  .playlist-thumbnail-wrap {
+    padding: 0.5rem;
+    
+    .playlist-thumbnail {
+      padding: 1rem;
+      width: 26rem;
+      height: 26rem;
+    }
+  }
+
+  .playlist-info-wrap {
+    display: flex;
+    padding: 0.5rem;
+
+    .playlist-info {
+      display: flex;
+      flex-direction: column;
+      overflow-x: scroll;
+      overflow-wrap: break-word;
+      justify-content: space-between;
+
+
+      .playlist-title {
+        padding-top: 4rem;
+        font-size: 3rem;
+      }
+  
+      .button-aria {
+        margin-bottom: 1rem;
+      }
+    }
+  }
+}
+
+.status-wrap {
+  padding: 0 1rem;
+
+  .status-headline {
+    display: inline-flex;
+  
+    .status-title {
+      font-size: 2rem;
+      display: inline;
+    }
+  
+    .btn {
+      margin: auto 2rem;
+    }
+  }
+
+  .status-list {
+    padding: 0.5rem 2rem;
+    opacity: 0.8;
+
+    .status-item {
+      margin-bottom: 0.4rem;
+
+      .status-label {
+        display: inline;
+        border-bottom: inset thin $accent-color;
+        font-size: 1.2rem;
+      }
+
+      .status-text {
+        font-size: 1.5rem;
+        padding-left: 1.2rem;
+        overflow-x: scroll;
+        white-space: nowrap;
+        width: 28rem;
+      }
+    }
+  }
+}
+
+.track-list {
+  .track-headline-outer {
+    border-bottom: outset thin $accent-color;
+    margin-bottom: 1rem;
+
+    .track-headline {
+      opacity: 0.5;
+      font-size: 1.3rem;
+      justify-content: flex-start;
+      
+      .number {
+        text-align: center;
+        width: 4rem;
+        padding-left: 2rem;
+      }
+
+      .track-img{
+        width: 7rem;
+      }
+
+      .playback-time {
+        width: 7rem;
+      }
+    }
+  }
+}
+
+.track-list-body{
+
+  .playlist-of-track {
+    height: 6rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.8;
+    border-radius: 0.5rem;
+
+    &:hover {
+      background: hsl(0, 0, 30%);
+    }
+
+    .track-item {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.8rem;
+      justify-content: flex-start;
+      overflow-x: scroll;
+      white-space: nowrap;
+
+      &:not(.track-image-outer, .delete-buttom) {
+        font-size: 1.4rem;
+        opacity: 0.7;
+      }
+    }
+
+    .number {
+      justify-content: right;
+      padding-right: 1rem;
+      width: 4rem;
+    }
+
+    .track-image-outer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 7rem;
+
+      .track-image {
+        opacity: 1;
+        width: 4.5rem;
+        height: 4.5rem;
+      }
+    }
+
+    .playback-time {
+      width: 7rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+  }
+}

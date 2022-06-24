@@ -11,16 +11,13 @@ module SessionsHelper
     redirect_to root_path unless logged_in?
   end
 
-  def player_status
-    session[:player]
+  def current_playlist
+    @current_playlist ||= session[:playlist_id]
   end
 
-  def now_playing?
-    !!session[:playing]
-  end
-  
-  def current_track
-    return if session[:track_id].nil?
-    Track.includes(album: :artists).find(session[:track_id])
+  def delete_current_playlist
+    return if session[:playlist_id].nil?
+
+    session.delete(:playlist_id)
   end
 end

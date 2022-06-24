@@ -30,6 +30,7 @@ gem 'bootsnap', '>= 1.4.4', require: false
 
 gem 'draper'
 gem 'activerecord-import'
+gem 'ransack'
 
 gem 'dotenv-rails'
 gem "attr_encrypted", "~> 3.1.0"
@@ -41,6 +42,7 @@ gem 'rspotify'
 gem 'html2slim'
 gem 'slim-rails'
 gem "rails-i18n"
+gem 'enum_help'
 
 gem 'faraday'
 gem 'faraday_middleware'

@@ -4,10 +4,18 @@ class TrackDecorator < ApplicationDecorator
   def convert_ms_to_min_and_sec
     convert_ms_to_sec = object.duration_ms / 1000
     convert_min_and_sec = convert_ms_to_sec.divmod(60)
-    return "#{convert_min_and_sec[0]}分 #{convert_min_and_sec[1]}秒"
+    min = convert_min_and_sec[0]
+    sec = format_two_digits(convert_min_and_sec[1])
+    "#{min} :  #{sec}"
   end
 
   def artists
-    object.artist_names.present? ? object.artist_names.join(',') : album.artists.map(&:name).join(',')
+    artist_names.present? ? artist_names.join(',') : album.artists.map(&:name).join(',')
+  end
+
+  private
+
+  def format_two_digits(number)
+    format("%02<number>d", number: number)
   end
 end

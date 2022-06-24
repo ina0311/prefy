@@ -1,3 +1,3 @@
 | $('.js-flash-message').html("#{j(render 'shared/flash_message', flash: flash)}");
-| $('#js-edit-body').html("#{j(render partial: 'api/v1/playlists/playlist_of_track', collection: @playlist_of_tracks)}");
-| $('#js-playlist-of-tracks').html("#{j(render partial: 'api/v1/playlists/playlist_of_track', collection: @playlist_of_tracks, locals: { action_name: 'show' })}");
+| $('#js-edit-body').html("#{j(render partial: 'api/v1/playlist_of_tracks/playlist_of_track', collection: @playlist_of_tracks)}");
+| $('#js-playlist-of-tracks').html("#{j(render partial: 'api/v1/playlist_of_tracks/playlist_of_track', collection: @playlist_of_tracks, locals: { action_name: 'show' })}");

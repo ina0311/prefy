@@ -1,16 +1,17 @@
-div class="track d-flex"
-  .col-1
-    = image_tag track.decorate.image, class: 'track-album-image', size: '40x40'
-  .col
-    .track-name
+div class="track row"
+  = link_to api_v1_play_path(id: track.album_id, type: 'album', position: track.position), remote: true, class: 'row col'
+    .col-1.track-item
+      = image_tag track.decorate.image, class: 'track-album-image'
+    .col.track-item.track-name
       = track.name
-  .col
-    .track-artist-name
+    .col-3.track-item.track-artist-name
       = track.decorate.artists
-  .col
-    .track-add-button
-      = link_to '追加する',
-        api_v1_playlist_playlist_of_tracks_path(playlist_id: @playlist_id, track_id: track.spotify_id),
-        method: :post, 
-        remote: true, 
-        class: 'btn btn-primary'
+    .col-3.track-item.track-album-name
+      = track.album_name
+    - if current_playlist
+      .col-2.track-item.track-add-button.align-self-center
+        = link_to '追加する',
+          api_v1_playlist_playlist_of_tracks_path(playlist_id: current_playlist, track_id: track.spotify_id),
+          method: :post, 
+          remote: true, 
+          class: 'btn btn-primary btn-lg'

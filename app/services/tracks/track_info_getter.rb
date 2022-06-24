@@ -1,12 +1,7 @@
 class Tracks::TrackInfoGetter < SpotifyService
   # 曲の取得、保存
   def self.call(user, track_ids)
-    new(user, track_ids).get
-  end
-
-  def initialize(user, track_ids)
-    @user = user
-    @track_ids = track_ids
+    new(user: user, track_ids: track_ids).get
   end
 
   def get
@@ -28,9 +23,10 @@ class Tracks::TrackInfoGetter < SpotifyService
   def request_get_tracks
     offset = 0
     response = []
-    while true
+    loop do
       response.concat(conn_request.get("tracks?ids=#{track_ids[offset, 50].join(',')}").body[:tracks])
       break if response.size == track_ids.size
+
       offset += 50
     end
     response
