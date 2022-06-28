@@ -44,7 +44,7 @@ class SpotifyService
     if user.guest_user?
       return if (Time.current - user.updated_at) < ONE_HOUR_IN_MS
 
-      redirect_to root_path, danger: '1時間経過したのでログアウトしました'
+      raise ErrorsHandler::AccessTokenExpiration
     else
       return if (Time.current - user.updated_at) < FIFTY_MIN_IN_MS
 

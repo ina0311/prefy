@@ -4,7 +4,10 @@ class SpotifyGuestLogin < SpotifyService
   end
 
   def guest_login
-    request_guest_login
+    response = request_guest_login
+    user = User.find('guest_user')
+    user.update!(access_token: response.body[:access_token])
+    user
   end
 
   private
