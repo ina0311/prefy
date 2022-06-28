@@ -7,6 +7,7 @@ module ErrorsHandler
   class NotGetTracksByTargetArtists; end
   class NotEnoughTrackInPlaylist; end
   class NotEnoughPlaybackTimeForPlaylist; end
+  class AccessTokenExpiration < StandardError; end
 
   included do
     rescue_from ActiveRecord::RecordNotFound, with: :render_404
@@ -14,6 +15,7 @@ module ErrorsHandler
     rescue_from ErrorsHandler::NotUpdateSavedPlaylistError, with: :not_update_saved_playlist
     rescue_from ErrorsHandler::NotEnoughTrackInPlaylist, with: :not_enough_track_in_playlist
     rescue_from ErrorsHandler::NotEnoughPlaybackTimeForPlaylist, with: :not_enough_playback_time_for_playlist
+    rescue_from ErrorsHandler::AccessTokenExpiration, with: :access_token_expiration
   end
 
   private
@@ -39,5 +41,9 @@ module ErrorsHandler
 
   def render_404(exception = nil, messages = nil)
     render_error(400, 'Bad Request', exception&.message, *messages)
+  end
+
+  def access_token_expiration
+    redirect_to root_path, danger: '1時間経過したのでログアウトしました'
   end
 end

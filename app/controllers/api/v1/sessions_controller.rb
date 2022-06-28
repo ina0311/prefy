@@ -16,15 +16,9 @@ class Api::V1::SessionsController < ApplicationController
   end
 
   def guest_login
-    response = SpotifyGuestLogin.call
-    if response.status == 200
-      user = User.find('guest_user')
-      user.update!(access_token: response.body[:access_token])
-      session[:user_id] = user[:spotify_id]
-      redirect_to api_v1_saved_playlists_path, success: t(".success")
-    else
-      redirect_to root_path
-    end
+    guest_user = SpotifyGuestLogin.call
+    session[:user_id] = guest_user[:spotify_id]
+    redirect_to api_v1_saved_playlists_path, success: t(".success")
   end
 
   def failure

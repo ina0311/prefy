@@ -10,11 +10,10 @@ follow_artist_ids = []
 artist_genres = []
 
 CSV.foreach('db/guest_user/follow_artists.csv') do |row|
-  artist = Artist.find_or_create_by!(
-    spotify_id: row[0],
-    name: row[1],
-    image: row[2]
-  )
+  artist = Artist.find_or_create_by!(spotify_id: row[0]) do |a|
+    a.name = row[1]
+    a.image = row[2]
+  end
   follow_artist_ids << artist.spotify_id
 
   genres = row[3..].map { |name| Genre.new(name: name) }

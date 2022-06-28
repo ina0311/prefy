@@ -11,13 +11,13 @@
           .link-group
             .top-login
               = link_to '/auth/spotify', method: :post, class: 'btn btnx-sub' do 
-                = image_tag 'spotify-icon-b', class: 'spotify-icon'
+                = image_tag 'spotify-icon-b.png', class: 'spotify-icon'
                 = t("default.spotify_login")
             .guest-login
               = link_to guest_login_path, method: :post, class: 'btn btn-primary' do 
                 = t("default.guest_login")
         .audio-catch.col-6
-          = image_tag 'audio', class: 'main-catch-audio'
+          = image_tag 'audio.png', class: 'main-catch-audio'
   .section
     .recommend-wrap
       .recommend-content
@@ -42,7 +42,7 @@
           li.step-list-item
             .step
               | STEP1
-            = image_tag 'loving', class: 'step-list-image'
+            = image_tag 'loving.png', class: 'step-list-image'
             .step-list-content
               | Spotifyアカウントを作成して、
               br
@@ -50,19 +50,12 @@
           li.step-list-item
             .step
               p STEP2
-            = image_tag 'choose', class: 'step-list-image'
+            = image_tag 'choose.png', class: 'step-list-image'
             .step-list-content
               | 条件を指定してプレイリストを作る
           li.step-list-item
             .step 
               | STEP3
-            = image_tag 'fitness', class: 'step-list-image'
+            = image_tag 'fitness.png', class: 'step-list-image'
             .step-list-content
               | あとはSpotifyで聞くだけ！
-
-  /     / .top-registration
-  /     /   h3
-  /     /     = link_to t(".create_spotify_account"), "https://www.spotify.com/jp/signup", target: '_blank', rel: 'noopener noreferrer'
-  /     / .top-password-reset
-  /     /   h4
-  /     /     = link_to t(".password_forget"), "https://www.spotify.com/jp/password-reset/", target: '_blank', rel: 'noopener noreferrer'
