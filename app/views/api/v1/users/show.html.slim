@@ -26,6 +26,6 @@ section
       .follow-artists-title
         = FollowArtist.model_name.human
       = link_to 'すべてを表示する', api_v1_follow_artists_path(@user), class: 'follow-artist-index-link'
-    .five-follow-artists.row.row-cols-5d
-      = render partial: 'shared/artist', collection: @follow_artists, as: :artist
+    .five-follow-artists.row.row-cols-5
+      = render partial: 'shared/artist', collection: @follow_artists, as: :artist, locals: { follow_artist_ids: @follow_artists.pluck(:spotify_id) }
     

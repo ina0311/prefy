@@ -1,2 +1,2 @@
 | $('.js-search-flash-message').html("#{j(render 'shared/flash_message', flash: flash)}");
-| $('.search-result').html("#{j render(partial: 'result', locals: { artists: @artists, albums: @albums, tracks: @tracks, follow_artist_ids: @follow_artist_ids, playlist_id: @current_playlist })}");
+| $('.search-result').html("#{j render(partial: 'result', locals: { artists: @artists, albums: @albums, tracks: @tracks, playlist_id: @current_playlist, follow_artist_ids: current_user.follow_artists.pluck(:artist_id) })}");
