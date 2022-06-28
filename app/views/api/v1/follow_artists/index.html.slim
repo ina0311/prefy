@@ -7,4 +7,4 @@ section
       = f.select :genres_id_eq, options_from_collection_for_select(Genre.follow_artist_genres(current_user), :id, :name, selected: @genre&.id), { include_blank: true }, class: 'search-select'
       = f.submit class: 'btn btn-secondary btn-lg'
   .row.row-cols-5
-    = render partial: 'shared/artist', collection: @follow_artists, as: :artist
+    = render partial: 'shared/artist', collection: @follow_artists, as: :artist, locals: { follow_artist_ids: @follow_artists.pluck(:spotify_id) }
