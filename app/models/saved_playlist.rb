@@ -162,7 +162,7 @@ class SavedPlaylist < ApplicationRecord
   end
 
   def total_duration_more_than_ten_minutes_less_than_requirement?
-    return if TEN_MINUTES > (max_total_duration_ms - playlist.tracks.pluck(:duration_ms).sum)
+    return if max_total_duration_ms.nil? || TEN_MINUTES > (max_total_duration_ms - playlist.tracks.pluck(:duration_ms).sum)
 
     ErrorsHandler::NotEnoughPlaybackTimeForPlaylist
   end
