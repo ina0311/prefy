@@ -18,8 +18,8 @@ module ApplicationHelper
       canonical: request.original_url,   #優先するurlを指定する
       noindex: ! Rails.env.production?,
       icon: [                    #favicon、apple用アイコンを指定する
-        { href: image_url('icon.svg') },
-        { href: image_url('icon.svg'), rel: 'apple-touch-icon', sizes: '180x180', type: 'image/png' },
+        { href: image_url('icon.svg'), rel: 'icon', type: 'image/svg+xml' },
+        { href: image_url('icon.svg'), rel: 'apple-touch-icon', sizes: '180x180', type: 'image/svg+xml' },
       ],
       og: {
         site_name: 'Prefy',
