@@ -47,6 +47,6 @@
               .comment
                 | (3組まで)
           = f.collection_select :artist_ids, current_user.follow_artist_lists, :spotify_id, :name, { }, { name: "artist_ids[]", id: 'js-select2-artists', multiple: true }
-    = f.submit form.decorate.btn_text(action_name), class: 'btn btnx-sub btn-xl', id: 'js-form-button'
+    = f.submit form.decorate.btn_text(action_name), class: 'btn btnx-sub btn-xl', id: 'js-form-button', data: { turbolinks: false }
     .annotation
       | *プレイリストを作成するとPrefyからは削除ができません、削除する場合はSpotifyから削除してください
