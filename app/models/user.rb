@@ -28,6 +28,18 @@ class User < ApplicationRecord
     user
   end
 
+  def self.find_or_create_from_omniauth!(auth)
+    user = User.find_or_initialize_by(spotify_id: auth[:uid])
+    user.update!(
+      name: auth[:info][:name],
+      image: auth[:info][:image],
+      country: auth[:info][:country_code],
+      access_token: auth[:credentials][:token],
+      refresh_token: auth[:credentials][:token]
+    )
+    user
+  end
+
   def own?(playlist)
     spotify_id == playlist.owner
   end
