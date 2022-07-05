@@ -15,14 +15,14 @@ class SpotifyService
     end
   end
 
-  def conn_request
+  def conn_request(**language)
     access_token_changed?
 
     Faraday::Connection.new(Constants::BASEURL) do |builder|
       builder.response :json, parser_options: { symbolize_names: true }
       builder.headers['Authorization'] = "Bearer #{user.access_token}"
       builder.headers['Content-Type'] = 'application/json'
-      builder.headers['Accept-Language'] = 'ja;q=1'
+      builder.headers['Accept-Language'] = language.blank? ? 'ja;q=1' : 'en;q=1'
       builder.request :url_encoded
     end
   end
