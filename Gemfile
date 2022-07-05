@@ -38,7 +38,7 @@ gem "attr_encrypted", "~> 3.1.0"
 gem 'omniauth'
 gem 'omniauth-spotify'
 gem "omniauth-rails_csrf_protection"
-gem 'rspotify'
+# gem 'rspotify'
 
 gem 'html2slim'
 gem 'slim-rails'
