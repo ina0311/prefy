@@ -34,16 +34,16 @@ class SavedPlaylists::BasedOnSavedPlaylistTracksGetter < SpotifyService
     offset = INITIAL_VALUE
     response = []
     loop do
-      response.concat(RSpotify::Artist.find(ids[offset, 50]))
+      response.concat(conn_request(language: 'en').get("artists?ids=#{ids[offset, 50].join(',')}").body[:artists])
       break if ids.size == response.size
 
       offset += PLUS_FIFTY
     end
 
     response.map do |res|
-      string = "artist:#{res.name}"
+      string = "artist:#{res[:name]}"
       string += year if year
-      { id: res.id, params: URI.encode_www_form_component(string) }
+      { id: res[:id], params: URI.encode_www_form_component(string) }
     end
   end
 
