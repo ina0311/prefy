@@ -34,10 +34,6 @@ class Users::UserFollowArtistsGetter < SpotifyService
   end
 
   def after_last_id(last_id)
-    if last_id.nil?
-      return ''
-    else
-      return "&after=#{last_id}"
-    end
+    last_id.nil? ? '' : "&after=#{last_id}"
   end
 end
