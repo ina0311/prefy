@@ -40,5 +40,26 @@ $(document).on("turbolinks:load", function() {
   $('#js-form-button').on("click", function(){
     $('.hidden').find('option').prop('selected', false);
     $('.hidden').find('input').val(null);
+
+    showLoading();
   });
 });
+
+function showLoading() {
+  var loadingWrap = "<div class='loading-wrap'><div class='loading'></div></div>";
+
+  $("body").prepend(loadingWrap);
+
+  var classLoadingWrap = $('.loading-wrap')
+
+  //ページの読み込みが完了したらアニメーションを非表示
+  $(window).on('load',function(){
+    classLoadingWrap.remove();
+  });
+
+  //ページの読み込みが完了してなくても3秒後にアニメーションを非表示にする
+  setTimeout(function(){
+    classLoadingWrap.remove();
+  },25000);
+};
+
