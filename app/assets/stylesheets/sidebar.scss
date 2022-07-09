@@ -1,26 +1,15 @@
 .sidebar {
-  position: fixed;
-  height: 100%;
-  flex-direction: column;
-  margin: 0, auto;
-
-  .logo-item {
-    margin: 2rem 0 4rem 0;
-    .logo {
-      height: 6rem;
-      width: 18rem;
-    }
-  }
+  margin: 8rem auto;
+  width: fit-content;
 }
 
 .sidebar-items {
-  position: sticky;
+  width: fit-content;
 }
 
 .nav-item {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   height: 3rem;
-  padding: 0.2rem;
   margin-bottom: 1rem;
 
   .nav-icon {
@@ -33,6 +22,15 @@
 
   .nav-label {
     display: inline-block;
-    padding-left: 0.8rem;
+    vertical-align: bottom;
+    padding-left: 0.6rem;
+  }
+}
+
+@media screen and (max-width: 1199px) {
+  .col-xl-2 {
+    .pc-size {
+      display: none;
+    }
   }
 }

@@ -1,0 +1,48 @@
+@import 'color';
+.main-header {
+  position: static;
+  width: 185px;
+  margin: 4rem auto;
+}
+
+.nav-toggle {
+  display: none;
+}
+
+@media screen and (max-width: 1199px) {
+  .main-header {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 2rem 4vw;
+    margin: 0;
+  }
+
+  .nav-toggle{
+    display: block;
+    margin-left: auto;
+
+    .btn {
+      background: rgba(0,0,0,0);
+    }
+  }
+
+  .offcanvas {
+    background-color: $main-color !important;
+    width: 25rem !important;
+
+    .offcanvas-header {
+      height: fit-content;
+      justify-content: end;
+      padding-right: 3rem;
+    }
+
+    .btn-close {
+      height: fit-content;
+      width: fit-content;
+      font-size: 3rem;
+      color: #fff;
+    }
+  }
+}
