@@ -1,9 +1,14 @@
 @import 'color';
 
+.card-wrap {
+  margin-bottom: 3rem;
+  margin-right: 1vw;
+  width: min-content !important;
+}
+
 .card {
   width: 20rem;
   height: 27rem;
-  margin-bottom: 3rem;
   background-color: hsl(0, 0, 15%) !important;
   border-radius: 1rem !important;
 

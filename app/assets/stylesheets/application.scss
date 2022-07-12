@@ -27,7 +27,7 @@ html, body {
 }
 
 main {
-  padding: 4rem !important;
+  padding-left: 3rem !important;
 }
 
 .hidden {
@@ -36,10 +36,6 @@ main {
 
 .show {
   display: block !important;
-}
-
-section {
-  padding: 2rem;
 }
 
 .flash {
@@ -62,6 +58,7 @@ a {
 
 .page-title {
   margin-top: 0.5rem;
+  margin-bottom: 2rem;
   padding-left: 2rem;
   font-size: 3.5rem;
 }
