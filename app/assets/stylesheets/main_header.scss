@@ -1,8 +1,6 @@
 @import 'color';
-.main-header {
-  position: static;
-  width: 185px;
-  margin: 4rem auto;
+.main-header-wrap {
+  display: none;
 }
 
 .nav-toggle {
@@ -10,13 +8,20 @@
 }
 
 @media screen and (max-width: 1199px) {
+  .main-header-wrap {
+    display: block;
+  }
+
   .main-header {
     position: fixed;
     display: flex;
+    background-color: $main-color;
     align-items: center;
     width: 100%;
-    padding: 2rem 4vw;
+    padding: 1rem 4vw;
     margin: 0;
+    border-bottom: inset thin #fff;
+    z-index: 500;
   }
 
   .nav-toggle{
@@ -31,6 +36,7 @@
   .offcanvas {
     background-color: $main-color !important;
     width: 25rem !important;
+    z-index: 500;
 
     .offcanvas-header {
       height: fit-content;

@@ -91,3 +91,22 @@ a {
   width: 25rem !important;
   height: 4rem !important;
 }
+
+@media screen and (max-width: 1199px) {
+  main {
+    margin-top: 8rem !important;
+  }
+
+  .flash {
+    position: fixed;
+    top: 4rem;
+    left: 0;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  section {
+    width: 69%;
+    margin: 0 auto;
+  }
+}

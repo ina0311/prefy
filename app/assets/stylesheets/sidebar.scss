@@ -1,16 +1,26 @@
+.sidebar-wrap {
+  position: fixed;
+  margin-left: 1.8rem;
+}
+
 .sidebar {
-  margin: 8rem auto;
+  margin: 4rem auto;
   width: fit-content;
 }
 
 .sidebar-items {
   width: fit-content;
+
+  .logo-item {
+    margin-bottom: 5rem;
+  }
 }
 
 .nav-item {
   font-size: 1.6rem;
   height: 3rem;
   margin-bottom: 1rem;
+  margin-left: 1rem;
 
   .nav-icon {
     display: inline-block;
@@ -28,9 +38,7 @@
 }
 
 @media screen and (max-width: 1199px) {
-  .col-xl-2 {
-    .pc-size {
-      display: none;
-    }
+  .sidebar-wrap {
+    display: none;
   }
 }

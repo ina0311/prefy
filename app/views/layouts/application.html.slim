@@ -14,8 +14,9 @@ html
     .wrapper
       .row
         .col-xl-2.border-end
-          = render 'shared/main_header'
-          .pc-size
+          .main-header-wrap
+            = render 'shared/main_header'
+          .sidebar-wrap
             = render 'shared/sidebar'
         main.col-xl-10.col-lg-12
           .js-flash-message

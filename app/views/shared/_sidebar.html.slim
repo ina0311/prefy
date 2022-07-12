@@ -1,6 +1,8 @@
 .sidebar
   .sidebar-items
     ul.nav.nav-pills.flex-column
+      li.logo-item
+        = image_svg_tag 'logo-background.svg', class: 'logo'
       li.nav-item
         = link_to new_api_v1_saved_playlist_path do
           = image_svg_tag 'plus.svg', class: 'nav-icon'
