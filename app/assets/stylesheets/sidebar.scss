@@ -1,10 +1,18 @@
 .sidebar-wrap {
   position: fixed;
-  margin-left: 1.8rem;
+  top: 0;
+  left: 0;
+  width: 17vw;
+  overflow-y: auto;
+  height: 100%;
+  min-height: 100%;
+  border-right: inset thin #fff;
 }
 
 .sidebar {
-  margin: 4rem auto;
+  height: 100%;
+  margin: 0 auto;
+  padding-top: 4rem;
   width: fit-content;
 }
 

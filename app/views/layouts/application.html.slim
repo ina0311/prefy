@@ -12,13 +12,11 @@ html
       = render 'layouts/google_analytics'
   body
     .wrapper
-      .row
-        .col-xl-2.border-end
-          .main-header-wrap
-            = render 'shared/main_header'
-          .sidebar-wrap
-            = render 'shared/sidebar'
-        main.col-xl-10.col-lg-12
-          .js-flash-message
-            = render 'shared/flash_message'
-          = yield
+      .main-header-wrap
+        = render 'shared/main_header'
+      .sidebar-wrap
+        = render 'shared/sidebar'
+      main
+        .js-flash-message
+          = render 'shared/flash_message'
+        = yield
