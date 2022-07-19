@@ -10,6 +10,7 @@
   width: 20rem;
   height: 27rem;
   margin: 0 auto;
+  flex: 0 0 auto;
   background-color: hsl(0, 0, 15%) !important;
   border-radius: 1rem !important;
 
@@ -30,4 +31,9 @@
   margin-top: 1.5rem;
   overflow-x: scroll;
   white-space: nowrap;
+}
+
+.artist {
+  flex: 0 0 auto;
+  margin-right: 1rem;
 }
