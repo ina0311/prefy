@@ -11,9 +11,7 @@ ul.nav.nav-tabs role="tablist"
       = render partial: 'track', collection: tracks
   .tab-pane#result-artist role="tabpanel"aria-labelledby="tab2"
     .artist-group
-      .artists
-        = render partial: 'shared/artist', collection: artists, locals: { follow_artist_ids: follow_artist_ids }
+      = render partial: 'shared/artist', collection: artists, locals: { follow_artist_ids: follow_artist_ids }
   .tab-pane#result-album role="tabpanel"aria-labelledby="tab3"
     .album-group
-      .albums
-        = render partial: 'album', collection: albums
+      = render partial: 'album', collection: albums

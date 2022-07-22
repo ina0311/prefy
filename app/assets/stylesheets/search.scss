@@ -75,14 +75,32 @@
     }
   }
 
+  .tab-pane {
+    margin: 0 auto;
+  }
+
   .tab-content {
     height: 100%;
-    margin-top: 2rem;
     padding-top: 1rem;
     overflow: scroll;
+
+    .album-group, .artist-group {
+      padding-left: 3rem;
+      display: flex;
+      width: 100%;
+      flex-wrap: wrap;
+      gap: 1%;
+    }
   }
 
   .artist-label, .album-label, .track-label {
     font-size: 2.8rem;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .album-group, .artist-group {
+    padding-left: 0 !important;
+    gap: 3px;
   }
 }

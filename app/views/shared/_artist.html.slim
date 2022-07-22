@@ -1,11 +1,11 @@
-.col.artist
-  div class="artist card" id="js-artist-#{artist.spotify_id}"
-    .card-body
+div class="card" id="js-artist-#{artist.spotify_id}"
+  .card-body
+    .thumbnail-wrap
       = image_tag artist.decorate.image, class: 'card-thumbnail'
-      .card-title
-        = artist.name
-      div id="js-follow-button-#{artist.spotify_id}"
-        - if follow_artist_ids.include?(artist.spotify_id)
-          = render partial: 'shared/unfollow_button', locals: { artist_id: artist.spotify_id }
-        - else
-          = render partial: 'shared/follow_button', locals: { artist_id: artist.spotify_id }
+    .card-title
+      = artist.name
+    div id="js-follow-button-#{artist.spotify_id}"
+      - if follow_artist_ids.include?(artist.spotify_id)
+        = render partial: 'shared/unfollow_button', locals: { artist_id: artist.spotify_id }
+      - else
+        = render partial: 'shared/follow_button', locals: { artist_id: artist.spotify_id }
