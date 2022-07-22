@@ -8,13 +8,12 @@ ul.nav.nav-tabs role="tablist"
 .tab-content
   .tab-pane.active#result-track role="tabpanel"aria-labelledby="tab1"
     .track-group
-      .row
-        = render partial: 'track', collection: tracks
+      = render partial: 'track', collection: tracks
   .tab-pane#result-artist role="tabpanel"aria-labelledby="tab2"
     .artist-group
-      .artists.row.row-cols-5
+      .artists
         = render partial: 'shared/artist', collection: artists, locals: { follow_artist_ids: follow_artist_ids }
   .tab-pane#result-album role="tabpanel"aria-labelledby="tab3"
     .album-group
-      .albums.row.row-cols-5
+      .albums
         = render partial: 'album', collection: albums

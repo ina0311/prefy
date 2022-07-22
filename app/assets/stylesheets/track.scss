@@ -1,0 +1,86 @@
+.track-group {
+  .track {
+    display: flex;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+    width: auto;
+  
+    &:hover {
+      background: hsl(0, 0, 30%);
+    }
+
+    .track-inner {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+      width: 100%;
+      padding: 0 0.5rem;
+      
+      .track-item {
+        margin-right: 0.5rem;
+      }
+      .track-album-image-outer {
+        flex: 0.25;
+        text-align: center;
+
+        .track-album-image {
+          width: clamp(3rem, 5vw, 5rem);
+          height: clamp(3rem, 5vw, 5rem);
+        }
+      }
+
+      .track-name-outer {
+        flex: 1;
+        width: clamp(calc(100% - 70% - 1rem), 35vw, calc(100% - 47% - 1rem));
+        font-size: clamp(1rem, 2vw, 1.8rem);
+        overflow-x: scroll;
+        white-space: nowrap;
+      }
+    
+      .track-info {
+        flex: 2;
+        display: flex;
+        flex-direction: row;
+        max-width: 40%;
+
+        .track-artist-name, .track-album-name {
+          flex: 1.25;
+        }
+      }
+
+      .track-artist-name, .track-album-name, .track-playback-time {
+        overflow-x: scroll;
+        white-space: nowrap;
+        font-size: clamp(0.5rem, 2vw, 1.5rem);
+        opacity: 0.7;
+        padding: 0;
+      }
+
+      .track-playback-time {
+        flex: 0.25;
+        text-align: center;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 660px) {
+  .track-info {
+    flex-direction: column !important;
+    
+    .track-artist-name, .track-album-name {
+      flex: 1;
+    }
+  }
+
+  .track-playback-time {
+    text-align: end;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .track-playback-time {
+    display: none;
+  }
+}
