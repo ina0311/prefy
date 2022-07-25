@@ -1,8 +1,8 @@
-.col
-  div class="album card" id="js-album-#{album.id}"
-    .card-body
+div class="card" id="js-album-#{album.id}"
+  .card-body
+    .thumbnail-wrap
       = image_tag album.decorate.image, class: 'card-thumbnail'
-      .card-title
-        = album.name
-      .card-text
-        = album.artist_names.join(',')
+    .card-title
+      = album.name
+    .card-text
+      = album.artist_names.join(',')
