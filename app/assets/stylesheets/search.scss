@@ -18,6 +18,7 @@
 
   .search-form {
     font-size: 1.7rem;
+    width: clamp(250px, 2vw, 400px);
 
     &:focus {
       border-color: $sub-color !important;
