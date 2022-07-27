@@ -1,7 +1,6 @@
-.col.card-wrap
-  = link_to api_v1_saved_playlist_path(saved_playlist.id) do
-    .card
-      .card-body
-        = image_tag saved_playlist.playlist.decorate.image, class: 'card-thumbnail'
-        .card-title
-          = saved_playlist.playlist.name
+= link_to api_v1_saved_playlist_path(saved_playlist.id), { class: 'card' } do
+  .card-body
+    .thumbnail-wrap
+      = image_tag saved_playlist.playlist.decorate.image, class: 'card-thumbnail'
+    .card-title
+      = saved_playlist.playlist.name
