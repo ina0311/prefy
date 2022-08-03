@@ -6,6 +6,10 @@
   display: none;
 }
 
+.modal-xl {
+  max-width: 1000px !important;
+}
+
 .modal-content {
   background-color: hsl(0, 0, 15%) !important;
   height: 80rem;
@@ -29,10 +33,6 @@
   .modal-body {
     height: 83%;
     overflow: scroll;
-
-    .track-list-wrap {
-      padding: 0 3rem;
-    }
 
     .js-flash-message {
       height: 5.5rem;
