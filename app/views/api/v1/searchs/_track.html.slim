@@ -1,17 +1,21 @@
-div class="track row"
-  = link_to api_v1_play_path(id: track.album_id, type: 'album', position: track.position), remote: true, class: 'row col'
-    .col-1.track-item
+div class="track"
+  = link_to api_v1_play_path(id: track.album_id, type: 'album', position: track.position), remote: true, class: 'track-inner'
+    .track-item.track-album-image-outer
       = image_tag track.decorate.image, class: 'track-album-image'
-    .col.track-item.track-name
+    .track-item.track-name-outer
       = track.name
-    .col-3.track-item.track-artist-name
-      = track.decorate.artists
-    .col-3.track-item.track-album-name
-      = track.album_name
+    .track-info
+      .track-item.track-artist-name
+        = track.decorate.artists
+      .track-item.track-album-name
+        = track.album_name
     - if current_playlist
-      .col-2.track-item.track-add-button.align-self-center
+      .track-item.track-add-button
         = link_to '追加する',
           api_v1_playlist_playlist_of_tracks_path(playlist_id: current_playlist, track_id: track.spotify_id),
           method: :post, 
           remote: true, 
           class: 'btn btn-primary btn-lg'
+    - else
+      .track-item.track-playback-time
+        = track.decorate.convert_ms_to_min_and_sec 

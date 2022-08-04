@@ -1,61 +1,60 @@
-.home-container
-  .top-container
-    .top-hero
-      .main-catch.row
-        .logo-group.col-6
-          = image_svg_tag 'logo-hz.svg', class: 'logo'
-          .top-content
-            | より簡単に好みに合わせて
+.top-container
+  .top-hero
+    .main-catch
+      .logo-group
+        = image_svg_tag 'logo-hz.svg', class: 'logo'
+        .top-content
+          | より簡単に好みに合わせて
+          br
+          | プレイリストをSpotifyで作ろう
+        .link-group
+          .top-login
+            = link_to '/auth/spotify', method: :post, class: 'btn btnx-sub' do 
+              = image_tag 'spotify-icon-b.png', class: 'spotify-icon'
+              = t("default.spotify_login")
+          .guest-login
+            = link_to guest_login_path, method: :post, class: 'btn btn-primary' do 
+              = t("default.guest_login")
+      .audio-catch
+        = image_tag 'audio.png', class: 'main-catch-audio'
+.content-wrap
+  .recommend-wrap
+    .recommend-content
+      .recommend-headline
+        span 
+          | こんな方におすすめです
+      .recommend-list
+        ul
+          li
+            | 自分でプレイリストを作るのが面倒くさいと思う方
+          li
+            | より細かくジャンルや年代を絞ったプレイリストを作りたい方
+          li
+            | 通勤時間などの時間に合わせたプレイリストを作りたい方
+          li
+            | 更新されるプレイリストの曲が偏ってきた方
+  .step-wrap
+    .step-title
+      | プレイリストを作成するまでの３ステップ
+    .step-list-container
+      ul.step-list
+        li.step-list-item
+          .step
+            | STEP1
+          = image_tag 'loving.png', class: 'step-list-image'
+          .step-list-content
+            | Spotifyアカウントを作成して、
             br
-            | プレイリストをSpotifyで作ろう
-          .link-group
-            .top-login
-              = link_to '/auth/spotify', method: :post, class: 'btn btnx-sub' do 
-                = image_tag 'spotify-icon-b.png', class: 'spotify-icon'
-                = t("default.spotify_login")
-            .guest-login
-              = link_to guest_login_path, method: :post, class: 'btn btn-primary' do 
-                = t("default.guest_login")
-        .audio-catch.col-6
-          = image_tag 'audio.png', class: 'main-catch-audio'
-  .section
-    .recommend-wrap
-      .recommend-content
-        .recommend-headline
-          span 
-            | こんな方におすすめです
-        .recommend-list
-          ul
-            li
-              | 自分でプレイリストを作るのが面倒くさいと思う方
-            li
-              | より細かくジャンルや年代を絞ったプレイリストを作りたい方
-            li
-              | 通勤時間やワークアウトなどの時間に合わせたプレイリストを作りたい方
-            li
-              | 更新されるプレイリストの曲が偏ってきた方
-    .step-wrap
-      .step-title
-        | プレイリストを作成するまでの３ステップ
-      .step-list-container
-        ul.step-list
-          li.step-list-item
-            .step
-              | STEP1
-            = image_tag 'loving.png', class: 'step-list-image'
-            .step-list-content
-              | Spotifyアカウントを作成して、
-              br
-              |好きなアーティストをフォローする
-          li.step-list-item
-            .step
-              p STEP2
-            = image_tag 'choose.png', class: 'step-list-image'
-            .step-list-content
-              | 条件を指定してプレイリストを作る
-          li.step-list-item
-            .step 
-              | STEP3
-            = image_tag 'fitness.png', class: 'step-list-image'
-            .step-list-content
-              | あとはSpotifyで聞くだけ！
+            |好きなアーティストをフォローする
+        li.step-list-item
+          .step
+            | STEP2
+          = image_tag 'choose.png', class: 'step-list-image'
+          .step-list-content
+            | 条件を指定してプレイリストを作る
+        li.step-list-item
+          .step 
+            | STEP3
+          = image_tag 'fitness.png', class: 'step-list-image'
+          .step-list-content
+            | あとはSpotifyで聞くだけ！

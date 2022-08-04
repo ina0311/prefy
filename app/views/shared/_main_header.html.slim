@@ -1,0 +1,13 @@
+header.main-header
+  .logo-item
+    = image_svg_tag 'logo-background.svg', class: 'logo'
+  .nav-toggle
+    div class='btn' data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample"
+      = image_svg_tag 'menu.svg', class: 'navbar-toggle-icon'
+  .side-offcanvas
+    div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel"
+      .offcanvas-header
+        div class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"
+          | ✗
+      .offcanvas-body
+        = render 'shared/sidebar'

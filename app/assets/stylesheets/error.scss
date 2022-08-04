@@ -1,0 +1,35 @@
+.error-wrap {
+  width: 90%;
+  height: 92%;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .error-logo {
+    flex: 0.8;
+    text-align: center;
+    
+    .logo {
+      width: 80%;
+      height: 80%;
+    }
+  }
+
+  .error-section {
+    flex: 2;
+  
+    .error-title {
+      font-size: 5rem;
+      font-weight: bold;
+
+      .error-sub-title {
+        font-size: 3rem;
+      }
+    }
+
+    .error-content {
+      font-size: 2rem;
+    }
+  }
+}

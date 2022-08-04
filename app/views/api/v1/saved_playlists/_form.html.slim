@@ -8,7 +8,7 @@
         li.nav-item role="presentation"
           a.nav-link#tab2 data-bs-toggle="tab" href="#form2" aria-selected="false" 曲の絞り込み
         li.nav-item role="presentation"
-          a.nav-link#tab3 data-bs-toggle="tab" href="#form3"  aria-selected="false" ジャンル、 アーティスト
+          a.nav-link#tab3 data-bs-toggle="tab" href="#form3"  aria-selected="false" ジャンル / アーティスト
       .tab-content
         .tab-pane.form-section.active#form1 role="tabpanel" aria-labelledby="tab1"
           .title
@@ -34,7 +34,7 @@
           = render 'switch_form_number_or_duration', { form: form, f: f }
         .tab-pane.form-section#form3 role="tabpanel" aria-labelledby="tab3"
           .title
-            | 好みのジャンル、アーティストの設定
+            | ジャンル、アーティストの設定
           .form-group#js-genres
             .form-label 
               = f.label :genre_ids, t("form.refine_follow_artist_genres"), class: 'with-comment'
@@ -46,7 +46,7 @@
               = f.label :artist_ids, t("form.specify_artists"), class: 'with-comment'
               .comment
                 | (3組まで)
-          = f.collection_select :artist_ids, current_user.follow_artist_lists, :spotify_id, :name, { }, { name: "artist_ids[]", id: 'js-select2-artists', multiple: true }
+            = f.collection_select :artist_ids, current_user.follow_artist_lists, :spotify_id, :name, { }, { name: "artist_ids[]", class: 'mb-5 pb-5', id: 'js-select2-artists', multiple: true }
     = f.submit form.decorate.btn_text(action_name), class: 'btn btnx-sub btn-xl', id: 'js-form-button', data: { turbolinks: false }
     .annotation
       | *プレイリストを作成するとPrefyからは削除ができません、削除する場合はSpotifyから削除してください

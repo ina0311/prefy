@@ -10,7 +10,6 @@ module ErrorsHandler
   class AccessTokenExpiration < StandardError; end
 
   included do
-    rescue_from ActiveRecord::RecordNotFound, with: :render_404
     rescue_from ErrorsHandler::UnableToGetPlaylistOfTracksError, with: :unable_to_get_tracks
     rescue_from ErrorsHandler::NotUpdateSavedPlaylistError, with: :not_update_saved_playlist
     rescue_from ErrorsHandler::NotEnoughTrackInPlaylist, with: :not_enough_track_in_playlist
@@ -37,10 +36,6 @@ module ErrorsHandler
   def not_update_saved_playlist
     flash[:danger] = 'プレイリストの条件が正常に更新されませんでした'
     redirect_to api_v1_saved_playlist_path(@playlist)
-  end
-
-  def render_404(exception = nil, messages = nil)
-    render_error(400, 'Bad Request', exception&.message, *messages)
   end
 
   def access_token_expiration

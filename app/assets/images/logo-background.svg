@@ -1,4 +1,4 @@
-<svg width="750" height="200" viewBox="0 0 750 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="180" height="60" viewBox="0 0 750 200" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M0 55.5556C0 24.8731 27.0796 0 60.4839 0H689.516C722.92 0 750 24.8731 750 55.5556V144.444C750 175.127 722.92 200 689.516 200H60.4839C27.0795 200 0 175.127 0 144.444V55.5556Z" fill="white"/>
 <ellipse cx="108.871" cy="98.15" rx="72.5806" ry="66.6667" fill="white" stroke="#191414" stroke-width="1.35954"/>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M108.871 164.817V31.4833C68.7858 31.4833 36.2903 61.331 36.2903 98.15C36.2903 134.969 68.7858 164.817 108.871 164.817Z" fill="#27B76F"/>
