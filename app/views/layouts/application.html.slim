@@ -11,10 +11,12 @@ html
     - if Rails.env.production?
       = render 'layouts/google_analytics'
   body
-    .wrapper.row
-      .col-2.border-end.px-5
+    .wrapper
+      .main-header-wrap
+        = render 'shared/main_header'
+      .sidebar-wrap
         = render 'shared/sidebar'
-      main.col-10
+      main
         .js-flash-message
           = render 'shared/flash_message'
         = yield

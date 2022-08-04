@@ -1,30 +1,31 @@
 .playlist-wrapper
-  .playlist-head.row
-    .playlist-thumbnail-wrap.col-4
-      = image_tag @saved_playlist.playlist.decorate.image, class: 'playlist-thumbnail'
-    .playlist-info-wrap.col.row
-      .playlist-info.col
-        .playlist-title
-          | #{@saved_playlist.playlist.name}
+  .playlist-head
+    .playlist-info-wrap
+      .playlist-thumbnail-wrap
+        = image_tag @saved_playlist.playlist.decorate.image, class: 'playlist-thumbnail'
+      .playlist-info
+        .playlist-title-wrap
+          .playlist-title
+            | #{@saved_playlist.playlist.name}
         .button-aria
-          = link_to t("default.edit"), edit_api_v1_playlist_path(@saved_playlist.playlist_id), data: { toggle: "modal", target: "#modal-container"}, remote: true, id: 'js-edit-playlist', class: 'btn btnx-sub btn-lg' if current_user.own?(@saved_playlist.playlist)
+          = link_to t("default.edit"), edit_api_v1_playlist_path(@saved_playlist.playlist_id), data: { toggle: "modal", target: "#modal-container"}, remote: true, class: 'btn btnx-sub btn-lg', id: 'js-edit-playlist' if current_user.own?(@saved_playlist.playlist)
           = link_to t("default.play"), api_v1_play_path(id: @saved_playlist.playlist.playlist_of_tracks.position_first, type: 'playlist'), remote: true, class: 'btn btnx-sub btn-lg ms-3', id: 'js-player-open' unless current_user.guest_user?
           = render 'shared/modal'
-      - if current_user.own?(@saved_playlist.playlist)
-          = render 'status', saved_playlist: @saved_playlist, form: @form
+    - if current_user.own?(@saved_playlist.playlist)
+      = render 'status', saved_playlist: @saved_playlist, form: @form
   .track-list
-    .track-headline-outer.row
-      .track-headline.row.col
-        .col-1.headline-item.number
+    .track-headline-outer
+      .track-headline
+        .headline-item.number
           | #
-        .col-1.headline-item.track-img
-        .col.headline-item.track-title
+        .headline-item.track-img
+        .headline-item.track-title
           | タイトル
-        .col-3.headline-item.artist-name
+        .headline-item.artist-name
           | アーティスト
-        .col-3.headline-item.album-name
+        .headline-item.album-title
           | アルバム
-        .col-1.headline-item.playback-time
+        .headline-item.playback-time
           | 再生時間
     .track-list-body#js-playlist-of-tracks
       = render partial: 'api/v1/playlist_of_tracks/playlist_of_track', collection: @playlist_of_tracks

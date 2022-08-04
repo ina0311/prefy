@@ -1,7 +1,5 @@
-.row.px-5
-  .col.align-self-center.mx-5.px-5
-    .page-title
-      = t(".title")
-    section
-      = render 'form', form: @form, url: api_v1_saved_playlists_path, method: :post
-
+.new-playlist-wrap
+  .page-title
+    = t(".title")
+  .form-wrap
+    = render 'form', form: @form, url: api_v1_saved_playlists_path, method: :post

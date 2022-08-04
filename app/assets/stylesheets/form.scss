@@ -1,9 +1,12 @@
 @import 'color';
+.form-wrap {
+  width: 90%;
+  margin: 0 auto 3rem;
+}
 .form {
-  font-size: 1.8rem;
-  height: 60rem;
+  font-size: clamp(12px, 2vw, 18px);
   background: hsl(0, 0, 15%) !important;
-  padding: 4rem 5rem;
+  padding: 2vw;
 
   *:focus {
     border-color: $sub-color !important;
@@ -13,63 +16,72 @@
 }
 
 .form-container {
-  height: 85%;
-  margin-bottom: 3rem;
-}
+  .nav-tabs {
+    height: fit-content;
+    border-bottom: inset 2px $sub-color !important;
+  
+    .nav-link:hover {
+      border-color: $sub-color !important;
+    }
 
-.nav-tabs {
-  border-color: $sub-color !important;
+    a {
+      font-size: clamp(12px, 2vw, 18px);
+      padding: 0.3rem;
+    }
 
-  .nav-link:hover {
-    border-color: $sub-color !important;
-  }
-
-  .nav-item .nav-link.active, .nav-tabs .nav-item.show .nav-link {
-    background-color: $sub-color !important;
-    border-color: $sub-color;
-    transition: 0.3s
+    li {
+      height: auto;
+      margin: 0 !important;
+    }
+  
+    .nav-item .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+      background-color: $sub-color !important;
+      border-color: $sub-color;
+      transition: 0.3s;
+    }
   }
 }
 
 .tab-content {
-  padding: 3rem 1rem;
+  padding: 2rem 0 1rem;
 }
 
 .form-section {
-  margin-bottom: 3rem;
-  padding-bottom: 1.7rem;
+  padding-bottom: 4rem;
 
   .title {
     display: inline-block;
-    font-size: 3rem;
-    margin-bottom: 3rem;
+    font-size: clamp(18px, 2vw, 35px);
+    margin-bottom: 1rem;
     border-bottom: inset thick $accent-color;
   }
 
   .headline-content {
-    margin-bottom: 1.3rem;
+    margin-bottom: 0.5rem;
 
     .text {
       padding-top: 1rem;
       display: inline-block;
-      font-size: 2.3rem;
+      font-size: clamp(14px, 2vw, 23px);
       border-bottom: dashed thin $accent-color;
     }
 
     .btn {
+      font-size: clamp(10px, 2vw, 18px) !important;
       margin-left: 3rem;
     }
   }
 }
 
 .form-group {
+  height: auto;
   margin-bottom: 1.3rem;
 }
 
 .form-control {
-  width: 50% !important;
+  width: clamp(200px, 5vw, 500px) !important;
   height: 3.5rem;
-  font-size: 1.8rem !important;
+  font-size: 2rem !important;
 }
 
 .form-label {
@@ -82,7 +94,7 @@
 
 .comment {
   margin-left: 1.5rem;
-  font-size: 1.5rem;
+  font-size: clamp(10px, 2vw, 15px);
   opacity: 0.8;
   display: inline;
 }
@@ -130,6 +142,6 @@
 
 .annotation {
   margin-top: 0.5rem;
-  font-size: 1.2rem ;
+  font-size: clamp(10px, 2vw, 12px);
   opacity: 0.8;
 }

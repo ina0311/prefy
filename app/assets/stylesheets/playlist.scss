@@ -1,40 +1,57 @@
 @import 'color';
 
-.playlist-wrapper {
-  padding: 2rem;
+.playlist-group {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 1%;
+}
+
+.track-list-body {
+  width: 100%;
 }
 
 .playlist-head {
   display: flex;
-  padding: 1rem;
-
-  .playlist-thumbnail-wrap {
-    padding: 0.5rem;
-    
-    .playlist-thumbnail {
-      padding: 1rem;
-      width: 26rem;
-      height: 26rem;
-    }
-  }
+  flex-direction: row;
+  width: 100%;
 
   .playlist-info-wrap {
     display: flex;
+    flex-direction: row;
+    flex: 2;
     padding: 0.5rem;
+    margin-bottom: 1rem;
+
+    .playlist-thumbnail-wrap {
+      flex: 1;
+      padding: 0.5rem;
+      
+      .playlist-thumbnail {
+        width: clamp(10rem, 25vw, 26rem);
+        height: clamp(10rem, 25vw, 26rem);
+      }
+    }
 
     .playlist-info {
       display: flex;
       flex-direction: column;
+      flex: 2;
       overflow-x: scroll;
       overflow-wrap: break-word;
       justify-content: space-between;
+      padding-left: 1rem;
 
+      .playlist-title-wrap {
+        display: flex;
+        align-items: center;
+        height: 80%;
 
-      .playlist-title {
-        padding-top: 4rem;
-        font-size: 3rem;
+        .playlist-title {
+          font-size: clamp(1.5rem, 3vw, 3rem);
+        }
       }
-  
+
       .button-aria {
         margin-bottom: 1rem;
       }
@@ -43,18 +60,17 @@
 }
 
 .status-wrap {
+  flex: 1;
   padding: 0 1rem;
+  margin-bottom: 1rem;
 
   .status-headline {
     display: inline-flex;
   
     .status-title {
-      font-size: 2rem;
+      font-size: clamp(1.5rem, 2vw, 2rem);
       display: inline;
-    }
-  
-    .btn {
-      margin: auto 2rem;
+      margin-right: clamp(1rem, 2vw, 2rem);
     }
   }
 
@@ -88,78 +104,166 @@
     margin-bottom: 1rem;
 
     .track-headline {
+      display: flex;
       opacity: 0.5;
-      font-size: 1.3rem;
-      justify-content: flex-start;
+
+      .headline-item {
+        font-size: clamp(1rem, 1vw, 1.3rem);
+        margin-right: 1rem;
+      }
       
       .number {
-        text-align: center;
-        width: 4rem;
-        padding-left: 2rem;
+        text-align: right;
+        flex: 0.3;
       }
 
       .track-img{
-        width: 7rem;
+        flex: 0.7;
+      }
+
+      .track-title {
+        flex: 3;
+        margin-right: 2.5rem;
+      }
+
+      .artist-name, .album-title {
+        flex: 2;
       }
 
       .playback-time {
-        width: 7rem;
+        text-align: center;
+        flex: 0.7;
       }
     }
   }
 }
 
-.track-list-body{
+.playlist-of-track {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  height: clamp(4rem, 5vw, 6rem);
+  margin-bottom: 0.8rem;
+  opacity: 0.8;
+  border-radius: 0.5rem;
 
-  .playlist-of-track {
-    height: 6rem;
-    margin-bottom: 0.5rem;
-    opacity: 0.8;
-    border-radius: 0.5rem;
+  &:hover {
+    background: hsl(0, 0, 30%);
+  }
 
-    &:hover {
-      background: hsl(0, 0, 30%);
-    }
+  .playlist-of-track-body {
+    display: flex;
+    flex: 4;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
 
     .track-item {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 1.8rem;
+      font-size: clamp(1.3rem, 3vw, 2rem);
+      width: 100%;
       justify-content: flex-start;
       overflow-x: scroll;
       white-space: nowrap;
-
-      &:not(.track-image-outer, .delete-buttom) {
-        font-size: 1.4rem;
+      margin-right: 1rem;
+  
+      &:not(.track-image-outer, .track-title) {
+        font-size: clamp(1rem, 2vw, 1.4rem);
         opacity: 0.7;
+      }
+  
+      &:hover{
+        &:not(.track-image-outer, .track-title, .delete-bottom, .number, .playback-time) {
+          opacity: 1;
+        }
       }
     }
 
     .number {
-      justify-content: right;
-      padding-right: 1rem;
-      width: 4rem;
+      text-align: right;
+      flex: 0.3;
     }
-
+  
     .track-image-outer {
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 7rem;
-
+      flex: 0.5;
+  
       .track-image {
-        opacity: 1;
-        width: 4.5rem;
-        height: 4.5rem;
+        opacity: 0.8;
+        width: clamp(3.5rem, 5vw, 5.5rem);
+        height: clamp(3.5rem, 5vw, 5.5rem);
       }
     }
-
-    .playback-time {
-      width: 7rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+  
+    .track-title {
+      flex: 2.5;
+      width: 90%;
+      overflow-x: scroll;
+      white-space: nowrap;
     }
+  
+    .track-artist-and-album {
+      display: flex;
+      flex-direction: row;
+      flex: 3;
+      width: 100%;
+      overflow-x: scroll;
+      white-space: nowrap;
+  
+      .track-artist-name, .track-album-title {
+        width: 90%;
+        overflow-x: scroll;
+        white-space: nowrap;
+        flex: 1;
+      }
+    }
+  
+    .playback-time {
+      flex: 0.7;
+      text-align: center;
+    }
+  }
+
+  .delete-bottom {
+    flex: 0.3;
+    justify-self: center;
+  }
+}
+
+@media screen and (max-width: 950px) {
+  .modal-body {
+    .playlist-of-track-body {
+      .track-artist-and-album {
+        flex-direction: column !important;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .playlist-head {
+    flex-direction: column;
+  }
+
+  .playlist-of-track-body {
+    margin-bottom: 1rem
+  }
+
+  .artist-name, .album-title {
+    visibility: hidden;
+  }
+
+  .track-artist-and-album {
+    flex-direction: column !important;
+  }
+
+  .delete-bottom {
+    flex: 0.5;
+  }
+
+  .playback-time {
+    display: none !important;
   }
 }

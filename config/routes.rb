@@ -35,4 +35,6 @@ Rails.application.routes.draw do
       get '/close', to: 'player#close'
     end
   end
+
+  match "*path", to: 'application#render_404', via: :all
 end

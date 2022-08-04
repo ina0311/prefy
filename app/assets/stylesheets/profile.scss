@@ -1,17 +1,22 @@
 @import 'color';
 
 .profile-wrap {
-  margin-bottom: 4rem;
+  .user-image-wrap {
+    align-items: center;
+    justify-content: center;
+    margin: 2rem 0 4rem;
 
-  .user-thumbnail {
-    width: 20rem;
-    height: 20rem;
+    .user-thumbnail {
+      margin: 1rem;
+      width: 20rem;
+      height: 20rem;
+    }
   }
 
   .user-items {
-
+    margin-bottom: 4rem;
     .user-name {
-      font-size: 7rem;
+      font-size: clamp(5rem, 2vw, 7rem);
       overflow-x: scroll;
       white-space: nowrap;
       margin-bottom: 2.5rem;
@@ -24,8 +29,8 @@
       margin-bottom: 1rem;
 
       .age-label {
-        font-size: 2rem;
-        margin-right: 2rem;
+        font-size: 1.5rem;
+        margin-right: 1.5rem;
       }
 
       .age-form {
@@ -46,9 +51,10 @@
   }
 
   .user-follow-artist-genre {
+    margin-bottom: 4rem;
     padding: 0 3rem;
     .follow-artist-genre-title {
-      font-size: 1.8rem;
+      font-size: 1.5rem;
       margin-bottom: 1rem;
     }
 
@@ -76,7 +82,7 @@
 
     .follow-artists-title {
       display: inline-block;
-      font-size: 2.5rem;
+      font-size: clamp(1.8rem, 2vw, 2.5rem);
       margin-right: 5rem;
     }
 
@@ -87,5 +93,22 @@
         opacity: 1;
       }
     }
+  }
+
+  .five-follow-artists {
+    display: flex;
+    height: 30rem;
+    overflow-x: auto;
+  }
+}
+
+@media screen and (max-width: 1199px) {
+  .user-image-wrap {
+    padding-left: 2rem;
+  }
+
+  .user-thumbnail {
+    width: unquote("clamp(100px, 20vw, 180px)") !important;
+    height: unquote("clamp(100px, 20vw, 180px)") !important;
   }
 }

@@ -2,9 +2,9 @@
   = t(".title")
 section
   .profile-wrap.row
-    .user-image-content.col-3
+    .user-image-wrap.col-xl-3.col-5
       = image_tag @user.decorate.image, class: 'user-thumbnail'
-    .user-items.col-4
+    .user-items.col-xl-4.col-7
       .user-name
         = @user.name
       = form_with model: @user, url: age_api_v1_user_path, method: :post, class: 'user-age-group' do |f|
@@ -16,7 +16,7 @@ section
       - unless @user.age?
         .note
           | *年齢を登録すると自分の中学時代、高校時代などの年代にリリースされた曲を指定してプレイリストを作成できるようになります。
-    .user-follow-artist-genre.col-5
+    .user-follow-artist-genre.col-xl-5.col-12
       .follow-artist-genre-title
         | フォローアーティストの上位５ジャンル
       = render 'genre_table', genres: @genres
@@ -26,6 +26,6 @@ section
       .follow-artists-title
         = FollowArtist.model_name.human
       = link_to 'すべてを表示する', api_v1_follow_artists_path(@user), class: 'follow-artist-index-link'
-    .five-follow-artists.row.row-cols-5
+    .five-follow-artists
       = render partial: 'shared/artist', collection: @follow_artists, as: :artist, locals: { follow_artist_ids: @follow_artists.pluck(:spotify_id) }
     

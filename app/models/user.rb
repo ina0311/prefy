@@ -23,7 +23,7 @@ class User < ApplicationRecord
       image: auth[:info][:image],
       country: auth[:info][:country_code],
       access_token: auth[:credentials][:token],
-      refresh_token: auth[:credentials][:token]
+      refresh_token: auth[:credentials][:refresh_token]
     )
     user
   end

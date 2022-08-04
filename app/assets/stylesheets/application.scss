@@ -10,23 +10,37 @@
 @import 'player';
 @import 'profile';
 @import "loading";
+@import 'main_header';
+@import 'track';
+@import 'error';
 
 html, body {
+  width: 100%;
   height: 100%;
-  min-height: auto;
+  min-height: 100%;
   overflow-x: hidden;
   margin: 0;
   font-size: 62.5% !important;
 }
 
 .wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
   min-height: 100%;
+  height: auto;
   background-color: $main-color;
   color: #fff;
 }
 
 main {
-  padding: 4rem !important;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  width: calc(100% - 17vw);
+  height: 100%;
+  margin-left: auto;
+  padding: 2rem 2vw;
 }
 
 .hidden {
@@ -35,10 +49,6 @@ main {
 
 .show {
   display: block !important;
-}
-
-section {
-  padding: 2rem;
 }
 
 .flash {
@@ -61,6 +71,7 @@ a {
 
 .page-title {
   margin-top: 0.5rem;
+  margin-bottom: 2rem;
   padding-left: 2rem;
   font-size: 3.5rem;
 }
@@ -86,7 +97,19 @@ a {
 }
 
 .btn-xl {
-  font-size: 2rem !important;
-  width: 25rem !important;
+  font-size: clamp(1.5rem, 2vw, 2rem) !important;
+  width: unquote("max(30%, 200px)") !important;
   height: 4rem !important;
+}
+
+.new-playlist-wrap {
+  margin-bottom: 3rem;
+}
+
+@media screen and (max-width: 1199px) {
+  main {
+    width: 95%;
+    margin: 9rem auto 0 !important;
+    padding: 0;
+  }
 }

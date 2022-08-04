@@ -1,0 +1,54 @@
+@import 'color';
+.main-header-wrap {
+  display: none;
+}
+
+.nav-toggle {
+  display: none;
+}
+
+@media screen and (max-width: 1199px) {
+  .main-header-wrap {
+    display: block;
+  }
+
+  .main-header {
+    position: fixed;
+    display: flex;
+    background-color: $main-color;
+    align-items: center;
+    width: 100%;
+    padding: 1rem 4vw;
+    margin: 0;
+    border-bottom: inset thin #fff;
+    z-index: 500;
+  }
+
+  .nav-toggle{
+    display: block;
+    margin-left: auto;
+
+    .btn {
+      background: rgba(0,0,0,0);
+    }
+  }
+
+  .offcanvas {
+    background-color: $main-color !important;
+    width: 25rem !important;
+    z-index: 500;
+
+    .offcanvas-header {
+      height: fit-content;
+      justify-content: end;
+      padding-right: 3rem;
+    }
+
+    .btn-close {
+      height: fit-content;
+      width: fit-content;
+      font-size: 3rem;
+      color: #fff;
+    }
+  }
+}

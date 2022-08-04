@@ -10,24 +10,26 @@ header {
 
   .navbar {
     background-color: $main-color;
+    justify-content: space-between;
   }
 
   .navbar-brand {
-    margin-left: 5rem;
+    margin-left: 1rem;
 
     .header-logo {
-      width: 18rem;
+      width: clamp(14rem, 5vw, 18rem);
       height: 5rem;
     }
   }
   
   .nav {
-    margin-right: 5rem;
+    display: flex;
+    flex-direction: row !important;
+    margin: auto 1rem auto 0;
 
     .nav-item {
-      margin-left: 2rem;
-      margin-top: auto;
-      margin-bottom: auto;
+      margin: 0 2rem 0.5rem 0;
+      font-size: 2rem;
     }
   }
 }

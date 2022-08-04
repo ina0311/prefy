@@ -1,11 +1,10 @@
 header
   .navbar.navbar-expand-lg
-    .container-fluid
-      .navbar-brand
-        = link_to root_path do 
-          = image_svg_tag 'logo-background.svg', class: 'header-logo'
-      ul.nav.navbar-nav.navber-right
-        li.nav-item
-          = link_to t("default.login"), '/auth/spotify', method: :post
-        li.nav-item
-          = link_to t("default.register"), "https://www.spotify.com/jp/signup", target: '_blank', rel: 'noopener noreferrer'
+    .navbar-brand
+      = link_to root_path do 
+        = image_svg_tag 'logo-background.svg', class: 'header-logo'
+    ul.nav.navbar-nav.navber-right
+      li.nav-item
+        = link_to t("default.login"), '/auth/spotify', method: :post
+      li.nav-item
+        = link_to t("default.register"), "https://www.spotify.com/jp/signup", target: '_blank', rel: 'noopener noreferrer'
