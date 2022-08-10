@@ -98,7 +98,7 @@ a {
 
 .btn-xl {
   font-size: clamp(1.5rem, 2vw, 2rem) !important;
-  width: unquote("max(30%, 200px)") !important;
+  width: clamp(15rem, 30vw, 24rem) !important;
   height: 4rem !important;
 }
 
