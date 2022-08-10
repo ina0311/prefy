@@ -32,7 +32,7 @@
 
       .track-name-outer {
         flex: 1;
-        width: clamp(calc(100% - 70%), 35vw, calc(100% - 47%));
+        width: clamp(calc(30% - 1rem), 35vw, calc(53% - 1rem));
         font-size: clamp(1rem, 2vw, 1.8rem);
         overflow-x: scroll;
         white-space: nowrap;
