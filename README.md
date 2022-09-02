@@ -47,4 +47,3 @@ https://www.figma.com/file/P52rSSuHjJaxjzYG62WVtY/Prefy%E7%94%BB%E9%9D%A2%E9%81%
 <br>
 
 ## ER図
-https://drive.google.com/file/d/16nh0zLl0UZNXBo2g7SKOq9SAuenHPJPZ/view?usp=sharing
