@@ -6,6 +6,7 @@ ja:
     logout: 'ログアウト'
     register: '登録'
     create: '作成'
+    add: '追加'
     search_word: '検索ワード'
     show: '詳細'
     edit: '編集'

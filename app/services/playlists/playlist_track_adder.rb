@@ -19,6 +19,7 @@ class Playlists::PlaylistTrackAdder < SpotifyService
     Artists::ArtistRegistrar.call(user, pick_out_artist_ids(track), track[:album])
     playlist_of_track[:position] = PlaylistOfTrack.where(playlist_id: playlist_of_track.playlist_id).count
     playlist_of_track.save!
+    playlist_of_track
   end
 
   def request_playlist_add_track
