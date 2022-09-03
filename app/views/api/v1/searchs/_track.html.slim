@@ -11,7 +11,7 @@ div class="track"
         = track.album_name
     - if current_playlist
       .track-item.track-add-button
-        = link_to '追加する',
+        = link_to t("default.add"),
           api_v1_playlist_playlist_of_tracks_path(playlist_id: current_playlist, track_id: track.spotify_id),
           method: :post, 
           remote: true, 

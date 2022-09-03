@@ -33,11 +33,11 @@ class Track < ApplicationRecord
       end
     end
 
-    def find_or_initialize_by_response!(response)
-      Track.find_or_initialize_by(spotify_id: response[:id]) do |track|
+    def find_or_create_by_response!(response)
+      Track.find_or_create_by(spotify_id: response[:id]) do |track|
         track.name = response[:name]
         track.duration_ms = response[:duration_ms]
-        track.position = response[:traci_number]
+        track.position = response[:track_number]
         track.album_id = response[:album][:id]
       end
     end
