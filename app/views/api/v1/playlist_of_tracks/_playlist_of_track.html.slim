@@ -14,6 +14,6 @@ div class="playlist-of-track position-#{playlist_of_track.position}"
     - if action_name == 'show'
       .track-item.playback-time
         = playlist_of_track.track.decorate.convert_ms_to_min_and_sec
-  - if action_name == 'edit'
+  - unless action_name == 'show'
     .delete-bottom
       = link_to t("default.delete"), api_v1_playlist_playlist_of_track_path(id: playlist_of_track, playlist_id: playlist_of_track.playlist_id), method: :delete, remote: true, data: { confirm: t("message.delete_confirm", item: playlist_of_track.track.name) }, class: 'btn btn-danger btn-lg'
