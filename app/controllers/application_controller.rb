@@ -5,9 +5,10 @@ class ApplicationController < ActionController::Base
   before_action :require_login
 
   add_flash_types :success, :secondary, :info, :warning, :danger
-
-  rescue_from Exception, with: :render_500
-  rescue_from ActiveRecord::RecordNotFound, ActionController::RoutingError, with: :render_404
+  unless Rails.env.development?
+    rescue_from Exception, with: :render_500
+    rescue_from ActiveRecord::RecordNotFound, ActionController::RoutingError, with: :render_404
+  end
 
   def js_format_flash_message(type, message)
     respond_to do |format|
