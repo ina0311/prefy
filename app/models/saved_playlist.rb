@@ -1,6 +1,6 @@
 class SavedPlaylist < ApplicationRecord
-  PERCENTAGE = 0.2
   DEFAULT = 50
+  OFFSET = 20
   JUNIOR_HIGH_SCHOOL = 15
   HIGH_SCHOOL = 18
   UNIVERSITY = 22
@@ -56,9 +56,9 @@ class SavedPlaylist < ApplicationRecord
   # ジャンルが指定されていればフォローアーティストを絞り込み検索する
   def call_artist_ids
     if genres.present?
-      user.follow_artist_lists.includes(:genres).search_genre_names(genres.only_names).ids
+      user.follow_artist_lists.includes(:genres).search_genre_names(genres.only_names).ids.sample(OFFSET)
     else
-      user.follow_artist_lists.ids
+      user.follow_artist_lists.ids.sample(OFFSET)
     end
   end
 
@@ -89,42 +89,15 @@ class SavedPlaylist < ApplicationRecord
     end
   end
 
-  def refine_tracks(ramdom_tracks, target_tracks)
+  def refine_tracks(tracks, limit)
     if max_total_duration_ms
-      refine_by_duration_ms(ramdom_tracks, target_tracks)
+      refine_by_duration_ms(tracks, limit)
     else
-      refine_by_max_number_of_track(ramdom_tracks, target_tracks)
+      tracks.sample(limit)
     end
   end
 
-  # 曲数で絞り込む
-  def refine_by_max_number_of_track(ramdom_tracks, target_tracks)
-    total = max_number_of_track.presence || DEFAULT
-    if target_tracks.present?
-      refined_target_tracks = target_tracks.map { |tg_tracks| tg_tracks.sample(total * PERCENTAGE) }
-      remaining = total - refined_target_tracks.flatten.size
-      refined_ramdom_tracks = ramdom_tracks.sample(remaining)
-      { ramdom_tracks: refined_ramdom_tracks, target_tracks: refined_target_tracks }
-    else
-      { ramdom_tracks: ramdom_tracks.sample(total) }
-    end
-  end
-
-  # 再生時間で絞り込む
-  def refine_by_duration_ms(ramdom_tracks, target_tracks)
-    if target_tracks
-      limit = max_total_duration_ms * PERCENTAGE
-      refined_target_tracks = target_tracks.map { |tg_tracks| refine_total_duration_and_add_tracks(limit, tg_tracks) }.flatten
-      remaining = max_total_duration_ms - refined_target_tracks.pluck(:duration_ms).sum
-      refine_ramdom_tracks = refine_total_duration_and_add_tracks(remaining, ramdom_tracks)
-      { ramdom_tracks: refine_ramdom_tracks, target_tracks: refined_target_tracks }
-    else
-      { ramdom_tracks: refine_total_duration_and_add_tracks(max_total_duration_ms, ramdom_tracks) }
-    end
-  end
-
-  # 再生時間を判定し、追加
-  def refine_total_duration_and_add_tracks(limit, tracks)
+  def refine_by_duration_ms(tracks, limit)
     refine_tracks = []
     tracks.shuffle.each do |track|
       refine_tracks.push(track)
@@ -133,6 +106,16 @@ class SavedPlaylist < ApplicationRecord
     end
 
     refine_tracks
+  end
+
+  def meet_the_requirements?(tracks)
+    if max_number_of_track
+      max_number_of_track == tracks.size
+    elsif max_total_duration_ms
+      max_total_duration_ms >= tracks.flatten.pluck(:duration_ms).sum
+    else
+      DEFAULT == tracks.size
+    end
   end
 
   def not_has_track_by_require_artists(tracks)
